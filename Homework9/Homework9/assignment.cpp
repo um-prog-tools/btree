@@ -1,4 +1,7 @@
-// Darin check
+
+
+
+
 #include <iostream>
 #include <cstdlib>
 
@@ -46,6 +49,11 @@ btree::btree() {
 
 bool btree::isEmpty()
 {
+	if (root == NULL) {
+		return true;
+	} else {
+		return false;
+	}
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
