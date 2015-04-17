@@ -1,3 +1,6 @@
+/* Homework 9
+
+*/
 
 #include <iostream>
 #include <cstdlib>
@@ -49,6 +52,7 @@ bool btree::isEmpty()
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
+    return true;
 }
 
 void btree::insert(int d)
@@ -135,6 +139,7 @@ bool btree::search(int val)
     // search_element(node*,int) passing the root and
     // the integer value val as parameters. The function
     // must use recursion.
+    return true;
 }
 
 bool btree::search_element(node* p, int val) {
@@ -144,6 +149,7 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
+    return true;
 }
 
 int main(int argc, char* argv[])
