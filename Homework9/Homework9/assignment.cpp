@@ -1,7 +1,7 @@
 
 
 
-
+#include <vector>
 #include <iostream>
 #include <cstdlib>
 
@@ -61,6 +61,9 @@ bool btree::isEmpty()
 
 void btree::insert(int d)
 {
+	vector<int> Lefts;
+	vector<int> Rights;
+	int numLefts = 0, numRights = 0;
 	if (search(d) == false) {
 		if (isEmpty() == true) {
 			root = new node();
@@ -72,6 +75,9 @@ void btree::insert(int d)
 			if(d < compvalue) {
 				if(root->left != NULL) {
 					root = root->left;
+					numLefts++;
+					Lefts.push_back(1);
+					Rights.push_back(0);
 					insert(d);
 				} else {
 					root->left = new node();
@@ -82,6 +88,9 @@ void btree::insert(int d)
 			} else {
 				if(root->right != NULL) {
 					root = root->right;
+					numRights++;
+					Lefts.push_back(0);
+					Rights.push_back(1);
 					insert(d);
 				} else {
 					root->right = new node();
@@ -89,6 +98,14 @@ void btree::insert(int d)
 					root->right->left  = NULL;
 					root->right->right = NULL;
 				}
+			}
+		}
+		int total = numLefts + numRights;
+		for (int j = total; j > 0; total--) {
+			if (Lefts[j] == 1) {
+				root = root->right;
+			} else if (Rights[j] == 1) {
+				root = root->left;
 			}
 		}
 	} else {
@@ -193,15 +210,17 @@ bool btree::search_element(node* p, int val)
 {
 	if(p->data == val) {
 		return true;
-	} else if (p->data < val) {
+	} else if (val < p->data && p->left != NULL) {
 		p = p->left;
 		search_element(p, val);
-	} else {
-		p = p->right;
+		exit(EXIT_FAILURE);    // Will never get to this point
+	} else if (val > p->data && p->right != NULL) {
+		p = p->right;    
 		search_element(p, val);
+		exit(EXIT_FAILURE);    // Will never get to this point
+	} else {
+		return false;
 	}
-	
-	return false;
 	
     // this function receives a node and an integer as
     // parameters and searches for the value val in the
