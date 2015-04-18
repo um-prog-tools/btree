@@ -61,6 +61,36 @@ bool btree::isEmpty()
 
 void btree::insert(int d)
 {
+	if (search(d) == false) {
+		if (isEmpty() == true) {
+			root = new node();
+			root->data = d;
+		} else {
+			int compvalue = root->data;
+			if(d < compvalue) {
+				if(root->left != NULL) {
+					root = root->left;
+					insert(d);
+				} else {
+					root->left = new node();
+					root->left->data  = d;
+					root->left->left  = NULL;
+					root->left->right = NULL;
+				}
+			} else {
+				if(root->right != NULL) {
+					root = root->right;
+					insert(d);
+				} else {
+					root->right = new node();
+					root->right->data  = d;
+					root->right->left  = NULL;
+					root->right->right = NULL;
+				}
+			}
+		}
+	}
+	
     // this function must insert the value d in the tree
 
     // first of all, check if d already exists in the tree
