@@ -64,7 +64,9 @@ void btree::insert(int d)
 	if (search(d) == false) {
 		if (isEmpty() == true) {
 			root = new node();
-			root->data = d;
+			root->data  = d;
+			root->left  = NULL;
+			root->right = NULL;
 		} else {
 			int compvalue = root->data;
 			if(d < compvalue) {
@@ -89,6 +91,8 @@ void btree::insert(int d)
 				}
 			}
 		}
+	} else {
+		remove(d);
 	}
 	
     // this function must insert the value d in the tree
@@ -107,6 +111,10 @@ void btree::insert(int d)
 
 void btree::remove(int d)
 {
+	
+	
+	
+	
     // this function must remove the node that has the value d
 
     // first of all, check if the tree is empty
@@ -169,13 +177,32 @@ void btree::postorder(node* p)
 
 bool btree::search(int val)
 {
+	if(search_element(root, val) == true) {
+		return true;
+	} else {
+		return false;
+	}
+	
     // This function must call the private function
     // search_element(node*,int) passing the root and
     // the integer value val as parameters. The function
     // must use recursion.
 }
 
-bool btree::search_element(node* p, int val) {
+bool btree::search_element(node* p, int val)
+{
+	if(p->data == val) {
+		return true;
+	} else if (p->data < val) {
+		p = p->left;
+		search_element(p, val);
+	} else {
+		p = p->right;
+		search_element(p, val);
+	}
+	
+	return false;
+	
     // this function receives a node and an integer as
     // parameters and searches for the value val in the
     // data of the node. The function must be such that
