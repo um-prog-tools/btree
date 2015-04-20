@@ -1,6 +1,10 @@
 #ifndef _BTREE_H_
 #define _BTREE_H_
 
+#include <iostream>
+
+using namespace std;
+
 class btree
 {
 private:
@@ -10,6 +14,8 @@ private:
         node* left;
         node* right;
         int data;
+
+        node():left(NULL),right(NULL){}
     };
     node* root;
 

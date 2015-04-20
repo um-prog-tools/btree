@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include "btree.h"
 
 using namespace std;
 
@@ -34,7 +35,7 @@ int main(int argc, char* argv[]) {
     // arguments are a list of integers and it inserts one by
     // one into the tree.
     if (argc > 1) {
-        for (int i=1; i < argc; i++) {
+        for (int i = 1; i < argc; i++) {
             tmp = atoi(argv[i]);
             my_tree.insert(tmp);
         }
