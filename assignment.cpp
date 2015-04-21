@@ -78,6 +78,38 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
+    node* insert_node = new node;
+    insert_node->data = d;
+    insert_node->left = NULL;
+    insert_node->right = NULL;
+    node* child_node = root;
+    node* parent_node = NULL;
+    if(!search(d)){
+        while (child_node != NULL){
+            parent_node = child_node;
+            if (insert_node->data < child_node->data){
+                child_node = child_node->left;
+            }
+            else {
+                child_node = child_node->right;
+            }
+        }
+        if (parent_node == NULL){
+            root = insert_node;
+            root->left = NULL;
+            root->right = NULL;
+        }
+        else{
+            if (insert_node->data < parent_node->data)
+                parent_node->left = insert_node;
+
+            else
+
+                parent_node->right = insert_node;
+        }
+    }
+    else
+        cout << "Number " << d << " is already in the tree.\n";        
 }
 
 void btree::remove(int d)
@@ -162,13 +194,13 @@ bool btree::search_element(node* p, int val) {
         if (val == p->data) {
             return true;
         }
+        else if (val < p->data){
+                p = p->left;
+                return search_element(p, val);
+        }
         else{
-            if (val < p->data){
-                return search_element(p->left, val);
-            }
-            else{
-                return search_element(p->right,val);
-            }
+                p = p->right;
+                return search_element(p,val);
         }
     }
     else
