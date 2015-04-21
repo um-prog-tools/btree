@@ -101,10 +101,8 @@ void btree::insert(int d)
         }
         else{
             if (insert_node->data < parent_node->data)
-                parent_node->left = insert_node;
-
-            else
-
+                parent_node->left = insert_node;  
+            else       
                 parent_node->right = insert_node;
         }
     }
@@ -117,13 +115,121 @@ void btree::remove(int d)
     // this function must remove the node that has the value d
 
     // first of all, check if the tree is empty
+
+    if (root == NULL)
+        return;
+
     // if it is not, then locate the element with the value
+
+    node* child_node = root;
+    node* parent_node = NULL;
+    while(child_node != NULL && child_node->data != d){
+        if (d < child_node->data){
+            parent_node = child_node;
+            child_node = child_node->left;
+        }
+        else{
+            parent_node = child_node;
+            child_node = child_node->right;
+        }    
+    }
+    if (child_node == NULL){
+        cout << "Number " << d << " is not in the tree.\n";
+        return;
+    }
+    
     // once you know the location, that is, you have the pointer to the node
     // with the value you want to eliminate, you will have three cases:
     //    1. you're removing a leaf node
+
+    if (child_node->left == NULL && child_node->right == NULL){
+        if (child_node == root){
+            root = NULL;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        if (child_node == parent_node->left){
+            parent_node->left = NULL;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        else{
+            parent_node->right = NULL;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        delete child_node;
+        return;
+    }
+
     //    2. you're removing a node with a single child
+    // left leaf
+    if (child_node->left != NULL && child_node->right == NULL){
+        if (child_node == root){
+            root = child_node->left;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        if (child_node == parent_node->left){
+            parent_node->left = child_node->left;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        else{
+            parent_node->right = child_node->left;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        delete child_node;
+        return;
+    }
+    // right leaf
+    if (child_node->left == NULL && child_node->right != NULL){
+        if (child_node == root){
+            root = child_node->right;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        if (child_node == parent_node->left){
+            parent_node->left = child_node->right;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        else{
+            parent_node->right = child_node->right;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        delete child_node;
+        return;
+    }
+
     //    3. you're removing a node with 2 children
+
+    if (child_node->left != NULL && child_node->right != NULL){
+        node* grandchild_node = child_node->left;
+        if (grandchild_node->left == NULL && grandchild_node->right == NULL){
+            grandchild_node->right = child_node->right;
+            delete grandchild_node;
+            cout << "Number " << d << " is deleted.\n";
+        }
+        else{
+            if (grandchild_node->right != NULL){
+                node* grc_right_node = grandchild_node->right;
+                node* grc_rightP_node = grandchild_node;
+                while (grc_right_node != NULL){
+                    grc_rightP_node = grc_right_node;
+                    grc_right_node = grc_right_node->right;
+                }
+                child_node->data = grc_rightP_node->data;
+                grc_rightP_node->right = NULL;
+                delete grc_right_node;
+                cout << "Number " << d << " is delted.\n";
+            }
+            else{
+                child_node->right = grandchild_node->right;
+                child_node->data = grandchild_node->data;
+                delete grandchild_node;
+                cout << "Number " << d << " is delted.\n";
+            }
+        }
+    }
+
     // make sure you can handle all three cases.
+
+
+
 }
 
 void btree::print_inorder()
