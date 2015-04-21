@@ -1,5 +1,10 @@
 /* Homework 9
 
+
+*Github Repository:  https://github.com/YuanZhou2015/btree/commits/Yuan
+
+*By Yuan Zhou
+*April 17th 2015
 */
 
 #include <iostream>
@@ -45,6 +50,7 @@ private:
 
 btree::btree() {
     // set the root to NULL
+    root = NULL;
 }
 
 bool btree::isEmpty()
@@ -52,7 +58,10 @@ bool btree::isEmpty()
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
-    return true;
+    if (root == NULL)
+        return true;
+    else
+        return false;
 }
 
 void btree::insert(int d)
@@ -139,7 +148,7 @@ bool btree::search(int val)
     // search_element(node*,int) passing the root and
     // the integer value val as parameters. The function
     // must use recursion.
-    return true;
+    return search_element(root,val);
 }
 
 bool btree::search_element(node* p, int val) {
@@ -149,7 +158,21 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
-    return true;
+    if (p != NULL) {
+        if (val == p->data) {
+            return true;
+        }
+        else{
+            if (val < p->data){
+                return search_element(p->left, val);
+            }
+            else{
+                return search_element(p->right,val);
+            }
+        }
+    }
+    else
+    return false;
 }
 
 int main(int argc, char* argv[])
@@ -184,7 +207,7 @@ int main(int argc, char* argv[])
     // arguments are a list of integers and it inserts one by
     // one into the tree.
     if (argc > 1) {
-        for (int i=1; i < argc; i++) {
+        for (int i = 1; i < argc; i++) {
             tmp = atoi(argv[i]);
             my_tree.insert(tmp);
         }
