@@ -36,6 +36,8 @@ public:
     void print_preorder();
     void print_postorder();
 
+    void print_reverseorder();
+
     bool search(int);
 
 private:
@@ -43,6 +45,8 @@ private:
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
+
+    void reverseorder(node*);
 
     bool search_element(node*, int);
 
@@ -329,6 +333,31 @@ bool btree::search_element(node* p, int val) {
     return false;
 }
 
+
+void btree::print_reverseorder()
+{
+    // this function must call the private inorder(node*)
+    // function passing the root as the parameter
+
+    reverseorder(root);
+}
+
+void btree::reverseorder(node* p)
+{
+    // This function receives a node as parameter
+    // then traverses the tree following the in-order
+    // sequence. Every time it visits a node it will
+    // print the data in the node to cout leaving a blank
+    // space to separate from the next/previous value.
+    // The function must use recursion.
+
+    if (p != NULL){
+        reverseorder(p->right);
+        cout << p->data << ' ';
+        reverseorder(p->left);
+    }
+}
+
 int main(int argc, char* argv[])
 {
     // This is the main program.
@@ -377,6 +406,7 @@ int main(int argc, char* argv[])
         cout << " 4. Post-Order Traversal " << endl;
         cout << " 5. Removal "<< endl;
         cout << " 6. Search "<< endl;
+        cout << " 7. Reverse Order Traversal " << endl;
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
@@ -421,6 +451,11 @@ int main(int argc, char* argv[])
             if (ans) cout << tmp1 << " was found!!!" << endl;
             else cout << tmp1 << " was not found" << endl;
             break;
+
+        case 7:
+            cout << endl;
+            cout << " Reverse Order Traversal: " << endl << endl;
+            my_tree.print_reverseorder();
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
