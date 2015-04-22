@@ -8,14 +8,17 @@ CFLAGS = -Wall
 
 all: yang
 
-yang: main.o btree.o
-	${CC} -o yang main.o btree.o
+yang: main.o btree.o myFunction.o
+	${CC} -o yang main.o btree.o myFunction.o
 
 main.o: main.cpp
 	${CC} -c ${CFLAGS} main.cpp
 
 btree.o: btree.cpp
 	${CC} -c ${CFLAGS} btree.cpp
+
+myFunction.o: myFunction.cpp
+	${CC} -c ${CFLAGS} myFunction.cpp
 
 clean:
 	rm -rf *.o

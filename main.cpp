@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "btree.h"
+#include "myFunction.h"
 
 using namespace std;
 
@@ -29,15 +30,38 @@ int main(int argc, char* argv[]) {
 
     // some auxiliary variables
     int ch,tmp,tmp1;
+    string tmp_str;
     bool ans;
 
     // if arguments are passed, then the program assumes the
     // arguments are a list of integers and it inserts one by
-    // one into the tree.
+    // one into the tree. If an argument is not an integer, I
+    // assume it is a file contains a sequence of integers
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
-            tmp = atoi(argv[i]);
-            my_tree.insert(tmp);
+            if (is_integer(argv[i])) {
+                tmp = atoi(argv[i]);
+                my_tree.insert(tmp);
+            } else {
+                ifstream input_file(argv[i]);
+
+                if (!input_file.is_open()) {
+                    cout << "Warning: file " << argv[i] << " doesn't exist!" << endl;
+                    continue;
+                } else {
+                    while (input_file >> tmp_str) {
+                        if (is_integer(tmp_str)) {
+                            tmp = atoi(tmp_str.c_str());
+                            my_tree.insert(tmp);
+                        } else {
+                            continue;
+                        }
+                    }
+
+                    input_file.close();
+                }
+            } 
+            
         }
     }
 
