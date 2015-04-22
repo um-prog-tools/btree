@@ -1,10 +1,22 @@
+/**
+ * @short H9 Program
+ * Translating Knowledge about Trees into a tangible Code;
+ * And Learning How to Interact with a main Repository with No Push Permission.
+ * @author Shima Azizzadeh-Roodpish
+ * 22 April 2015
+ * No Copyright
+ * Github account: https://github.com/Shima63/btree.git
+ * @return 0 on Success, 1 on Failure
+ */
+ 
+/// External Libraries
 
 #include <iostream>
 #include <cstdlib>
 
 using namespace std;
 
-class btree
+class btree ///< Brief description after the member
 {
 private:
 
