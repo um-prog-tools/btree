@@ -205,24 +205,16 @@ void btree::remove(int d)
             cout << "Number " << d << " is deleted.\n";
         }
         else{
-            if (grandchild_node->right != NULL){
-                node* grc_right_node = grandchild_node->right;
-                node* grc_rightP_node = grandchild_node;
-                while (grc_right_node != NULL){
-                    grc_rightP_node = grc_right_node;
-                    grc_right_node = grc_right_node->right;
-                }
-                child_node->data = grc_rightP_node->data;
-                grc_rightP_node->right = NULL;
-                delete grc_right_node;
-                cout << "Number " << d << " is delted.\n";
+            node* grc_right_node = grandchild_node->right;
+            node* grc_rightP_node;
+            while (grc_right_node->right != NULL){
+                grc_rightP_node = grc_right_node;
+                grc_right_node = grc_right_node->right;
             }
-            else{
-                child_node->right = grandchild_node->right;
-                child_node->data = grandchild_node->data;
-                delete grandchild_node;
-                cout << "Number " << d << " is delted.\n";
-            }
+            child_node->data = grc_right_node->data;
+            grc_rightP_node->right = grc_right_node->left;
+            delete grandchild_node;
+            cout << "Number " << d << " is deleted.\n";
         }
     }
 
