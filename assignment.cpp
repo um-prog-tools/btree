@@ -37,21 +37,25 @@ public:
     void print_inorder();
     void print_preorder();
     void print_postorder();
-
-    void print_reverseorder();
-
     bool search(int);
+/******************************************************************
+        Bonus Functions prototype
+ ******************************************************************/
+    void print_reverseorder();
+    void print_height();
 
 private:
 
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
-
-    void reverseorder(node*);
-
     bool search_element(node*, int);
-
+/******************************************************************
+        Bonus Functions prototype
+ ******************************************************************/
+    void reverseorder(node*);
+    int height(node*);
+    int l,r;
 };
 
 // set the root to NULL
@@ -325,6 +329,17 @@ void btree::reverseorder(node* p)
         reverseorder(p->left);
     }
 }
+void btree::print_height(){
+    cout << height(root);
+}
+int btree::height(node* Height){
+    if(Height == NULL){
+        return 0;
+    }
+    else{
+        return 1+max(height(Height->left),height(Height->right));
+    }  
+}
 
 // function to open input file
 
@@ -423,6 +438,7 @@ int main(int argc, char* argv[])
         // to provide the user with those extra functions
         // ***************************************************
         cout << " 7. Reverse Order Traversal " << endl;
+        cout << " 8. Provid the height of the tree " << endl;
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
         cin >> ch;
@@ -462,16 +478,17 @@ int main(int argc, char* argv[])
             if (ans) cout << tmp1 << " was found!!!" << endl;
             else cout << tmp1 << " was not found" << endl;
             break;
-
+        // ***************************************************
+        //     Implement the extra credit options
+        // ***************************************************
         case 7:
             cout << endl;
             cout << " Reverse Order Traversal: " << endl << endl;
             my_tree.print_reverseorder();
-        // ***************************************************
-        // If you decide to implement the extra credit options
-        // this is one place where you will need to add code
-        // to provide the user with those extra functions
-        // ***************************************************
+        case 8:
+            cout << endl;
+            cout << " The height of this tree is: ";
+            my_tree.print_height(); 
         }
     }
 }
