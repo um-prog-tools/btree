@@ -29,9 +29,8 @@ int main(int argc, char* argv[]) {
     btree my_tree;
 
     // some auxiliary variables
-    int ch,tmp,tmp1;
+    int ch,tmp,tmp1,ans;
     string tmp_str;
-    bool ans;
 
     // if arguments are passed, then the program assumes the
     // arguments are a list of integers and it inserts one by
@@ -77,6 +76,7 @@ int main(int argc, char* argv[]) {
         cout << " 6. Search "<< endl;
         cout << " 7. Reverse-Order Traversal " << endl;
         cout << " 8. Display height of the tree " << endl;
+        cout << " 9. By-Level Traversal " << endl;
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
@@ -121,8 +121,8 @@ int main(int argc, char* argv[]) {
             cout << " Enter data to be searched: ";
             cin >> tmp1;
             ans = my_tree.search(tmp1);
-            if (ans) cout << tmp1 << " was found!!!" << endl;
-            else cout << tmp1 << " was not found" << endl;
+            if (ans) cout << tmp1 << " was found with occurence times " << ans << "!!!" << endl;
+            else cout << tmp1 << " was not found!!!" << endl;
             break;
         case 7:
             cout << endl;
@@ -132,6 +132,11 @@ int main(int argc, char* argv[]) {
         case 8:
             cout << endl;
             cout << "Height of the tree: " << my_tree.height();
+            break;
+        case 9:
+            cout << endl;
+            cout << " By-Level Traversal: " << endl << endl;
+            my_tree.print_level();
             break;
         // ***************************************************
         // If you decide to implement the extra credit options

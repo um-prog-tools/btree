@@ -51,6 +51,7 @@ void btree::insert(int d)
         } else if (new_node->data > current_node->data) {
             current_node = current_node->right;
         } else {
+            (current_node->occurrences)++;
             return;
         }
     }
@@ -106,6 +107,11 @@ void btree::remove(int d)
     }
 
     // change the number nodes
+    if (current_node->occurrences > 1) {
+        (current_node->occurrences)--;
+        return;
+    }
+
     numberOfNodes--;
 
     // case 1: removing a leaf code
@@ -208,7 +214,7 @@ void btree::inorder(node* p)
 
     if (p != NULL) {
         inorder(p->left);
-        cout << p->data << " ";
+        print_node(p);
         inorder(p->right);
     }
 
@@ -233,7 +239,7 @@ void btree::preorder(node* p)
     // The function must use recursion.
 
     if (p != NULL) {
-        cout << p->data << " ";
+        print_node(p);
         inorder(p->left);
         inorder(p->right);
     }
@@ -261,35 +267,77 @@ void btree::postorder(node* p)
     if (p != NULL) {
         inorder(p->left);
         inorder(p->right);
-        cout << p->data << " ";
+        print_node(p);
     }
 
 }
 
 void btree::print_reveorder() {
 
-    stack<int> treeStack;
+    stack<node *> treeStack;
     
     reveorder(root, treeStack);
 
     while(!treeStack.empty()) {
-        cout << treeStack.top() << " ";
+        print_node(treeStack.top());
         treeStack.pop();
     }
 
 }
 
-void btree::reveorder(node* p, stack<int> &myStack) {
+void btree::reveorder(node* p, stack<node *> &myStack) {
 
     if (p != NULL) {
         reveorder(p->left, myStack);
-        myStack.push(p->data);
+        myStack.push(p);
         reveorder(p->right, myStack);
     }
 
 }
 
-bool btree::search(int val)
+void btree::print_level() {
+
+    queue<node *> nodeQueue;
+
+    if (root == NULL) {
+        return;
+    }
+
+    node *tmp, *leftNode, *rightNode;
+
+    nodeQueue.push(root);
+    nodeQueue.push(NULL);
+
+    int level = 0;
+
+    cout << "level " << level << ": ";
+    while(!nodeQueue.empty()) {
+        tmp = nodeQueue.front();
+        nodeQueue.pop();
+
+        if (tmp != NULL) {
+            print_node(tmp);
+
+            leftNode = tmp->left;
+            rightNode = tmp->right;
+            if (leftNode != NULL) {
+                nodeQueue.push(leftNode);
+            }
+            if (rightNode !=NULL ) {
+                nodeQueue.push(rightNode);
+            }
+        } else {
+            if (!nodeQueue.empty()) {
+                level++;
+                nodeQueue.push(NULL);
+                cout << endl << "level " << level << ": ";;
+            }
+        }
+    }
+
+}
+
+int btree::search(int val)
 {
     // This function must call the private function
     // search_element(node*,int) passing the root and
@@ -300,7 +348,7 @@ bool btree::search(int val)
 
 }
 
-bool btree::search_element(node* p, int val) {
+int btree::search_element(node* p, int val) {
     // this function receives a node and an integer as
     // parameters and searches for the value val in the
     // data of the node. The function must be such that
@@ -310,14 +358,14 @@ bool btree::search_element(node* p, int val) {
 
     if (p != NULL) {
         if (val == p->data) {
-            return true;
+            return p->occurrences;
         } else if (val < p->data) {
             return search_element(p->left, val);
         } else {
             return search_element(p->right, val);
         }
     } else {
-        return false;
+        return 0;
     }
 
 }
@@ -338,5 +386,15 @@ int btree::height(node* p) {
     int rightHeight = height(p->right);
 
     return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+
+}
+
+void btree::print_node(node* p) {
+
+    if (p->occurrences == 1) {
+        cout << p->data << " ";
+    } else {
+        cout << p->data << "(" << p->occurrences << ") ";
+    }
 
 }

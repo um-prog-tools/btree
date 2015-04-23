@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stack>
+#include <queue>
 
 using namespace std;
 
@@ -15,8 +16,9 @@ private:
         node* left;
         node* right;
         int data;
+        int occurrences;
 
-        node():left(NULL),right(NULL){}
+        node():left(NULL),right(NULL),occurrences(1){}
     };
     node* root;
 
@@ -32,8 +34,9 @@ public:
     void print_preorder();
     void print_postorder();
     void print_reveorder();
+    void print_level();
 
-    bool search(int);
+    int search(int);
 
     int height();
 
@@ -42,11 +45,12 @@ private:
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
-    void reveorder(node*, stack<int> &);
+    void reveorder(node*, stack<node*> &);
+    void print_node(node*);
 
     int height(node*);
 
-    bool search_element(node*, int);
+    int search_element(node*, int);
 
     int numberOfNodes;
 
