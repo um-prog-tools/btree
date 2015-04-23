@@ -1,7 +1,7 @@
 /**
  * @short H9 Program
- * Translating Knowledge about Trees into a tangible Code;
- * And Learning How to Interact with a main Repository with No Push Permission.
+ * To Translate Knowledge about Trees into a tangible Code;
+ * And to Learn How to Interact with a main Repository with No Push Permission.
  * @author Shima Azizzadeh-Roodpish
  * 22 April 2015
  * No Copyright
@@ -54,6 +54,7 @@ private:
 
 btree::btree() {
     // set the root to NULL
+    root = NULL;
 }
 
 bool btree::isEmpty()
@@ -61,42 +62,124 @@ bool btree::isEmpty()
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
+    if ( root == NULL ) 
+    { 
+        return true;
+    }
+    else
+    {
+        return false;
+    }         
 }
 
 void btree::insert(int d)
-{
-    // this function must insert the value d in the tree
 
+// this function must insert the value d in the tree
+
+{
     // first of all, check if d already exists in the tree
     // you can do this by calling to the search(int) function
+    
+    bool check = btree::search(d);  
 
     // if d is not in the tree already, create a new node with data equal d
-
-    // if the tree is empty, set the root to the new node
-
-    // if the tree is not empty, look for the right place where to insert d
-    // in order to do this, you may need to keep track of the potential
-    // parent node to which the new node will be attached as a child
+       
+    if ( !check ) 
+    {
+        if ( btree::isEmpty() ) // if the tree is empty, set the root to the new node
+        {
+            root = new node;
+            root->data = d;
+            root->left = NULL;
+            root->right = NULL;
+            return;
+        }
+        // if the tree is not empty, look for the right place where to insert d
+        // in order to do this, you may need to keep track of the potential
+        // parent node to which the new node will be attached as a child        
+        else
+        {
+            node* temp = new node;
+            temp->data = d;
+            temp->left = NULL;
+            temp->right = NULL;
+            node* parent;
+            
+            if ( parent->data > temp->data )
+            {
+                parent->left = temp;
+                return;
+            }
+            else if (  parent->data < temp->data )
+            {
+                parent->right = temp;
+                return;
+            }    
+        }
+        return;  
+    }
+    else
+    {
+        return;
+    }
 }
 
 void btree::remove(int d)
 {
     // this function must remove the node that has the value d
-
-    // first of all, check if the tree is empty
+    
+    if ( btree::isEmpty() ) // first of all, check if the tree is empty
+    {
+        return;
+    }
+    else
     // if it is not, then locate the element with the value
-    // once you know the location, that is, you have the pointer to the node
-    // with the value you want to eliminate, you will have three cases:
-    //    1. you're removing a leaf node
-    //    2. you're removing a node with a single child
-    //    3. you're removing a node with 2 children
-    // make sure you can handle all three cases.
+    {
+        bool check = btree::search(d);
+        if ( !check ) 
+        {
+            cout << " There Is No Element Equal to That";
+        }       
+        else
+        {
+            bool check2 = false;
+            node* p = root;
+            while ( check2 == false )
+            {
+                check2 = btree::search_element(p, d);
+                p++;
+            }
+            // once you know the location, that is, you have the pointer to the node
+            // with the value you want to eliminate, you will have three cases:
+            //    1. you're removing a leaf node
+            if ( ( *right == NULL ) && ( *left == NULL ) )
+            {
+            }
+            else
+            {
+                //    2. you're removing a node with a single child
+                if ( ( *right == NULL ) || ( *left == NULL ) )
+                {
+                }
+                else
+                {
+                    //    3. you're removing a node with 2 children
+                    if ( ( *right != NULL ) && ( *left != NULL ) )
+                    {
+                    }
+                }
+            }
+            
+            // make sure you can handle all three cases.            
+        }
+    }    
 }
 
 void btree::print_inorder()
 {
     // this function must call the private inorder(node*)
     // function passing the root as the parameter
+    btree::inorder(root);
 }
 
 void btree::inorder(node* p)
@@ -107,12 +190,19 @@ void btree::inorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if ( p != NULL )
+    {  // (Otherwise, there's nothing to print.)
+        inorder( p->left );    // Print items in left subtree.
+        cout << p->item << " ";     // Print the Value.
+        inorder( p->right );   // Print items in right subtree.
+    }
 }
 
 void btree::print_preorder()
 {
     // This function must call the private pre-order(node*)
     // function passing the root as the parameter
+    btree::preorder(root);
 }
 
 void btree::preorder(node* p)
@@ -123,12 +213,19 @@ void btree::preorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if ( p != NULL )
+    {  // (Otherwise, there's nothing to print.)
+        cout << p->data << " ";      // Print the value.
+        preorder( p->left );    // Print items in left subtree.
+        preorder( p->right );   // Print items in right subtree.
+    }
 }
 
 void btree::print_postorder()
 {
     // This function must call the private post-order(node*)
     // function passing the root as the parameter
+    btree::postorder(root);
 }
 
 void btree::postorder(node* p)
@@ -139,6 +236,12 @@ void btree::postorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if ( p != NULL )
+    {  // (Otherwise, there's nothing to print.)
+        postorder( p->left );    // Print items in left subtree.
+        postorderPrint( p->right );   // Print items in right subtree.
+        cout << p->data << " ";       // Print the value.
+    }
 }
 
 bool btree::search(int val)
@@ -147,6 +250,14 @@ bool btree::search(int val)
     // search_element(node*,int) passing the root and
     // the integer value val as parameters. The function
     // must use recursion.
+    if ( btree::search_element(root, val) )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }        
 }
 
 bool btree::search_element(node* p, int val) {
