@@ -144,6 +144,8 @@ void btree::insert(int d)
 void btree::remove(int d)
 {
     // this function must remove the node that has the value d
+    node *temp1, *temp2;
+    bool check = false, found = false;
     
     if ( btree::isEmpty() ) // first of all, check if the tree is empty
     {
@@ -152,44 +154,182 @@ void btree::remove(int d)
     else
     // if it is not, then locate the element with the value
     {
-        bool check = btree::search(d);
+        check = btree::search(d);
         if ( !check ) 
         {
             cout << " There Is No Element Equal to That";
         }       
         else
         {
-            bool check2 = false;
-            node* p = root;
-            while ( check2 == false )
+            temp1 = root;
+            temp2 = root;
+            while ( ( temp1 != NULL ) && ( !found ) )
             {
-                check2 = btree::search_element(p, d);
-                p++;
-            }
-            // once you know the location, that is, you have the pointer to the node
-            // with the value you want to eliminate, you will have three cases:
-            //    1. you're removing a leaf node
-            if ( ( *right == NULL ) && ( *left == NULL ) )
-            {
-            }
-            else
-            {
-                //    2. you're removing a node with a single child
-                if ( ( *right == NULL ) || ( *left == NULL ) )
+                if ( temp1->data == d )
                 {
+                    found = true;
                 }
                 else
                 {
-                    //    3. you're removing a node with 2 children
-                    if ( ( *right != NULL ) && ( *left != NULL ) )
+                    temp2 = temp1;
+                    if ( temp1->data > d )
                     {
+                        temp1 = temp1->left;
+                    }
+                    else
+                    {
+                        temp1 = temp1->right;
                     }
                 }
             }
-            
-            // make sure you can handle all three cases.            
-        }
-    }    
+            // once you know the location, that is, you have the pointer to the node
+            // with the value you want to eliminate, you will have three cases:
+            // make sure you can handle all three cases. 
+            if ( found )
+            {
+                if ( temp1 == root )
+                {
+                    node *current, *trailCurrent, *temp;
+
+	                if (root->left == NULL && root->right == NULL)
+	                {
+		                temp = root;
+		                root = NULL;
+		                delete temp;
+	                }
+	                else if (root->left == NULL)
+	                {
+		                temp = root;
+		                root = temp->right;
+		                delete temp;
+	                }
+	               else if (root->right == NULL)
+	               {
+		                temp = root;
+		                root = temp->left;
+		                delete temp;
+	               }
+	               else
+	               {
+		                current = root->left;
+		                trailCurrent = NULL;
+
+		                while (current->right != NULL)
+		                {
+			                trailCurrent = current;
+			                current = current->right;
+		                }
+
+		                root->data = current->data;
+
+		                if (trailCurrent == NULL)
+		                {
+			                root->left = current->left;
+			            }    
+		                else
+		                {
+			                trailCurrent->right = current->left;
+			            }    
+
+		                delete current;
+		            }    
+                }
+                else if ( temp2->data > d)
+                {
+                    node *current, *trailCurrent, *temp;
+
+	                if (temp2->left->left == NULL && temp2->left->right == NULL)
+	                {
+		                temp = temp2->left;
+		                temp2->left = NULL;
+		                delete temp;
+	                }
+	                else if (temp2->left->left == NULL)
+	                {
+		                temp = temp2->left;
+		                temp2->left = temp->right;
+		                delete temp;
+	                }
+	               else if (temp2->left->right == NULL)
+	               {
+		                temp = temp2->left;
+		                temp2->left = temp->left;
+		                delete temp;
+	               }
+	               else
+	               {
+		                current = temp2->left->left;
+		                trailCurrent = NULL;
+
+		                while (current->right != NULL)
+		                {
+			                trailCurrent = current;
+			                current = current->right;
+		                }
+
+		                temp2->left->data = current->data;
+
+		                if (trailCurrent == NULL) 
+		                {
+			                temp2->left->left = current->left;
+			            }    
+		                else
+		                {
+			                trailCurrent->right = current->left;
+			            }    
+
+		                delete current;
+		            }    
+                    }
+                else
+                {
+                    node *current, *trailCurrent, *temp;
+
+	                if (temp2->right->left == NULL && temp2->right->right == NULL)
+	                {
+		                temp = temp2->right;
+		                temp2->right = NULL;
+		                delete temp;
+	                }
+	                else if (temp2->right->left == NULL)
+	                {
+		                temp = temp2->right;
+		                temp2->right = temp->right;
+		                delete temp;
+	                }
+	               else if (temp2->right->right == NULL)
+	               {
+		                temp = temp2->right;
+		                temp2->right = temp->left;
+		                delete temp;
+	               }
+	               else
+	               {
+		                current = temp2->right->left;
+		                trailCurrent = NULL;
+
+		                while (current->right != NULL)
+		                {
+			                trailCurrent = current;
+			                current = current->right;
+		                }
+
+		                temp2->right->data = current->data;
+
+		                if (trailCurrent == NULL)
+		                {
+			                temp2->right->left = current->left;
+			            }    
+		                else
+		                {
+			                trailCurrent->right = current->left;
+			            }    
+
+		                delete current;
+		            }                    }
+            }
+        }               
+    }
 }
 
 void btree::print_inorder()
