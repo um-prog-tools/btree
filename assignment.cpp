@@ -16,6 +16,7 @@ private:
     };
     node* root;
 
+
 public:
 
     btree();
@@ -42,6 +43,7 @@ private:
 
 btree::btree() {
     // set the root to NULL
+    root = NULL;
 }
 
 bool btree::isEmpty()
@@ -51,6 +53,8 @@ bool btree::isEmpty()
     // need to look at the root.
 }
 
+
+//Insert a new element :
 void btree::insert(int d)
 {
     // this function must insert the value d in the tree
@@ -65,6 +69,25 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
+    node* newNode;
+
+    if(root == NULL) {
+
+        newNode = new node;
+        newNode->data = d;
+        newNode->right = NULL;
+        newNode->left = NULL; 
+    } 
+    else if (search(d))
+        std::cout << d << " already in the database " << std::endl;
+    
+    else if (d <= root->data) {
+        root->left = insert(d);
+    }
+    else (d >= root->data) {
+        root->left = insert(d);
+    }
+
 }
 
 void btree::remove(int d)
@@ -135,6 +158,12 @@ bool btree::search(int val)
     // search_element(node*,int) passing the root and
     // the integer value val as parameters. The function
     // must use recursion.
+
+    node* p;
+
+    if (search_element(p, val)) return true;
+    else return false;
+
 }
 
 bool btree::search_element(node* p, int val) {
@@ -144,7 +173,18 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
+    bool isPresent = false;
+
+    if (p != NULL){
+        if (val == p->data) isPresent = true;
+        else if (val < p->data) search_element(p->left, val);
+        else search_element(p->right, val);
+    }
+
+    return isPresent;
 }
+
+
 
 int main(int argc, char* argv[])
 {
@@ -166,6 +206,7 @@ int main(int argc, char* argv[])
     // credit. In which case, the place to make changes is indica-
     // below.
     // ***********************************************************
+
 
     // instantiate the tree
     btree my_tree;
