@@ -77,6 +77,7 @@ int main(int argc, char* argv[]) {
         cout << " 7. Reverse-Order Traversal " << endl;
         cout << " 8. Display height of the tree " << endl;
         cout << " 9. By-Level Traversal " << endl;
+        cout << " 10. Print number of Nodes " << endl;
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
@@ -137,6 +138,13 @@ int main(int argc, char* argv[]) {
             cout << endl;
             cout << " By-Level Traversal: " << endl << endl;
             my_tree.print_level();
+            break;
+        case 10:
+            cout << endl;
+            tmp = my_tree.get_number_of_nodes();
+            tmp1 = my_tree.get_number_of_leaves();
+            cout << "The tree has " << tmp << " total nodes." << endl;
+            cout << tmp1 << " are leaves and " << tmp - tmp1 << " are interior nodes" << endl;
             break;
         // ***************************************************
         // If you decide to implement the extra credit options

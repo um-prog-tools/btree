@@ -398,3 +398,29 @@ void btree::print_node(node* p) {
     }
 
 }
+
+int btree::get_number_of_leaves() {
+
+    return number_of_leaves(root);
+
+}
+
+int btree::number_of_leaves(node *p) {
+
+    if (p == NULL) {
+        return 0;
+    }
+
+    if (p->left == NULL && p->right == NULL) {
+        return 1;
+    } else {
+        return number_of_leaves(p->left) + number_of_leaves(p->right);
+    }
+
+}
+
+int btree::get_number_of_nodes() {
+
+    return numberOfNodes;
+
+}

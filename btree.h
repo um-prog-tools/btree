@@ -40,6 +40,9 @@ public:
 
     int height();
 
+    int get_number_of_leaves();
+    int get_number_of_nodes();
+
 private:
 
     void inorder(node*);
@@ -51,6 +54,8 @@ private:
     int height(node*);
 
     int search_element(node*, int);
+
+    int number_of_leaves(node *);
 
     int numberOfNodes;
 
