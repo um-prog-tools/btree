@@ -43,6 +43,7 @@ public:
  ******************************************************************/
     void print_reverseorder();
     void print_height();
+    void print_numberofNode();
 
 private:
 
@@ -56,6 +57,7 @@ private:
     void reverseorder(node*);
     int height(node*);
     int l,r;
+    int countNode(node*);
 };
 
 // set the root to NULL
@@ -353,8 +355,25 @@ bool openInput(ifstream &inputFile, string fileName) {
         return false;
     }
 
-    return true;
+    return true; 
+}
 
+void btree::print_numberofNode(){
+    cout << countNode(root);
+}
+
+// function for counting the interior nodes
+
+int btree::countNode(node* node){
+    if (node == NULL){
+        return 0;
+    }
+    if (node->left == NULL && node->right == NULL){
+        return 0;
+    }
+    else{
+        return countNode(node->left)+ countNode(node->right) + 1;
+    }
 }
 
 int main(int argc, char* argv[])
@@ -439,6 +458,7 @@ int main(int argc, char* argv[])
         // ***************************************************
         cout << " 7. Reverse Order Traversal " << endl;
         cout << " 8. Provid the height of the tree " << endl;
+        cout << " 9. Provid the number of interior nodes of the tree " << endl;
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
         cin >> ch;
@@ -485,10 +505,17 @@ int main(int argc, char* argv[])
             cout << endl;
             cout << " Reverse Order Traversal: " << endl << endl;
             my_tree.print_reverseorder();
+            break;
         case 8:
             cout << endl;
             cout << " The height of this tree is: ";
             my_tree.print_height(); 
+            break;
+        case 9:
+            cout << endl;
+            cout << " The number of interior node of this tree is: ";
+            my_tree.print_numberofNode();
+            break;
         }
     }
 }
