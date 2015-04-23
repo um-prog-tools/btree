@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <string>
 #include <fstream>
+#include <queue> 
 
 using namespace std;
 
@@ -43,9 +44,10 @@ public:
  ******************************************************************/
     void print_reverseorder();
     void print_height();
-    void print_numberofNode();
+    void print_numberofinNode();
     void print_numberofLeaf();
     void print_totalNode();
+    void print_LevelOrder();
 
 private:
 
@@ -59,8 +61,9 @@ private:
     void reverseorder(node*);
     int height(node*);
     int l,r;
-    int countNode(node*);
+    int countinNode(node*);
     int countLeaf(node*);
+    void LevelOrder(node*);
 };
 
 // set the root to NULL
@@ -361,13 +364,13 @@ bool openInput(ifstream &inputFile, string fileName) {
     return true; 
 }
 
-void btree::print_numberofNode(){
-    cout << countNode(root);
+void btree::print_numberofinNode(){
+    cout << countinNode(root);
 }
 
 // function for counting the interior nodes
 
-int btree::countNode(node* node){
+int btree::countinNode(node* node){
     if (node == NULL){
         return 0;
     }
@@ -375,7 +378,7 @@ int btree::countNode(node* node){
         return 0;
     }
     else{
-        return countNode(node->left)+ countNode(node->right) + 1;
+        return countinNode(node->left)+ countinNode(node->right) + 1;
     }
 }
 
@@ -397,9 +400,41 @@ int btree::countLeaf(node* node){
     }
 }
 
+// offer the total number of node
 void btree::print_totalNode(){
-    cout << countLeaf(root) + countNode(root);
+    cout << countLeaf(root) + countinNode(root);
 }
+
+void btree::print_LevelOrder(){
+    LevelOrder(root);
+}
+void btree::LevelOrder(node* p){
+    if (!p)
+        return;
+    queue<node*> nodesQueue;
+    int nodeinCurrentLevel = 1;
+    int nodeinNextlevel = 0;
+    nodesQueue.push(p);
+    while (!nodesQueue.empty()) {
+        node* currentNode = nodesQueue.front();
+        nodesQueue.pop();
+        nodeinCurrentLevel --;
+        if (currentNode){
+            cout << currentNode->data << ' ';
+            nodesQueue.push(currentNode->left);
+            nodesQueue.push(currentNode->right);
+            nodeinNextlevel += 2;
+        }
+        if (nodeinCurrentLevel == 0){
+            cout << endl;
+            nodeinCurrentLevel = nodeinNextlevel;
+            nodeinNextlevel = 0;
+        }
+    }    
+}
+
+
+
 
 int main(int argc, char* argv[])
 {
@@ -485,6 +520,7 @@ int main(int argc, char* argv[])
         cout << " 8. Provid the height of the tree " << endl;
         cout << " 9. Track the nodes in the tree";
         cout << " (number of Total nodes, Interior node and Leaf node " << endl;
+        cout << " 10. Print the tree by levels" << endl;
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
         cin >> ch;
@@ -542,9 +578,14 @@ int main(int argc, char* argv[])
             cout << " The total number of node of this tree is: ";
             my_tree.print_totalNode();
             cout << endl << " Number of interior node is: ";
-            my_tree.print_numberofNode();
+            my_tree.print_numberofinNode();
             cout << endl << " Number of leaf node is: ";
             my_tree.print_numberofLeaf();
+            break;
+        case 10:
+            cout << endl;
+            cout << " Printing the tree by levels: " << endl;
+            my_tree.print_LevelOrder(); 
             break;
         }
     }
