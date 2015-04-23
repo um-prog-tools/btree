@@ -180,6 +180,7 @@ void btree::print_inorder()
     // this function must call the private inorder(node*)
     // function passing the root as the parameter
     btree::inorder(root);
+    return;
 }
 
 void btree::inorder(node* p)
@@ -193,7 +194,7 @@ void btree::inorder(node* p)
     if ( p != NULL )
     {  // (Otherwise, there's nothing to print.)
         inorder( p->left );    // Print items in left subtree.
-        cout << p->item << " ";     // Print the Value.
+        cout << p->data << " ";     // Print the Value.
         inorder( p->right );   // Print items in right subtree.
     }
 }
@@ -203,6 +204,7 @@ void btree::print_preorder()
     // This function must call the private pre-order(node*)
     // function passing the root as the parameter
     btree::preorder(root);
+    return;
 }
 
 void btree::preorder(node* p)
@@ -226,6 +228,7 @@ void btree::print_postorder()
     // This function must call the private post-order(node*)
     // function passing the root as the parameter
     btree::postorder(root);
+    return;
 }
 
 void btree::postorder(node* p)
@@ -239,7 +242,7 @@ void btree::postorder(node* p)
     if ( p != NULL )
     {  // (Otherwise, there's nothing to print.)
         postorder( p->left );    // Print items in left subtree.
-        postorderPrint( p->right );   // Print items in right subtree.
+        postorder( p->right );   // Print items in right subtree.
         cout << p->data << " ";       // Print the value.
     }
 }
@@ -267,6 +270,26 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
+    if ( p == NULL )
+    {
+        // Tree is empty, so it certainly doesn't contain item.
+        return false;
+    }
+    else if ( val == p->data )
+    {
+        // the item has been found in the root node.
+        return true;
+    }
+    else if ( val < p->data )
+    {
+        // If the item occurs, it must be in the left subtree.
+        return search_element( p->left, val );
+    }
+    else
+    {
+    // If the item occurs, it must be in the right subtree.
+    return search_element( p->right, val );
+    }
 }
 
 int main(int argc, char* argv[])
