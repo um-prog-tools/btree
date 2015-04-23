@@ -4,6 +4,7 @@ btree::btree() {
     // set the root to NULL
 
     root = NULL;
+    numberOfNodes = 0;
 
 }
 
@@ -65,6 +66,7 @@ void btree::insert(int d)
         }
     }
 
+    numberOfNodes++;
     return;
 }
 
@@ -102,6 +104,9 @@ void btree::remove(int d)
     if (current_node == NULL) {
         return;
     }
+
+    // change the number nodes
+    numberOfNodes--;
 
     // case 1: removing a leaf code
     if (current_node->left == NULL && current_node->right == NULL) {
@@ -261,6 +266,29 @@ void btree::postorder(node* p)
 
 }
 
+void btree::print_reveorder() {
+
+    stack<int> treeStack;
+    
+    reveorder(root, treeStack);
+
+    while(!treeStack.empty()) {
+        cout << treeStack.top() << " ";
+        treeStack.pop();
+    }
+
+}
+
+void btree::reveorder(node* p, stack<int> &myStack) {
+
+    if (p != NULL) {
+        reveorder(p->left, myStack);
+        myStack.push(p->data);
+        reveorder(p->right, myStack);
+    }
+
+}
+
 bool btree::search(int val)
 {
     // This function must call the private function
@@ -291,5 +319,24 @@ bool btree::search_element(node* p, int val) {
     } else {
         return false;
     }
+
+}
+
+int btree::height() {
+
+    return height(root);
+
+}
+
+int btree::height(node* p) {
+
+    if (p == NULL) {
+        return 0;
+    }
+
+    int leftHeight = height(p->left);
+    int rightHeight = height(p->right);
+
+    return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
 
 }

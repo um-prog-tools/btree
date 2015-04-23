@@ -75,6 +75,8 @@ int main(int argc, char* argv[]) {
         cout << " 4. Post-Order Traversal " << endl;
         cout << " 5. Removal "<< endl;
         cout << " 6. Search "<< endl;
+        cout << " 7. Reverse-Order Traversal " << endl;
+        cout << " 8. Display height of the tree " << endl;
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
@@ -88,6 +90,7 @@ int main(int argc, char* argv[]) {
         case 0:
             return 0;
         case 1:
+            cout << endl;
             cout << " Enter Number to be inserted: ";
             cin >> tmp;
             my_tree.insert(tmp);
@@ -108,22 +111,36 @@ int main(int argc, char* argv[]) {
             my_tree.print_postorder();
             break;
         case 5:
+            cout << endl;
             cout << " Enter data to be deleted: ";
             cin >> tmp1;
             my_tree.remove(tmp1);
             break;
         case 6:
+            cout << endl;
             cout << " Enter data to be searched: ";
             cin >> tmp1;
             ans = my_tree.search(tmp1);
             if (ans) cout << tmp1 << " was found!!!" << endl;
             else cout << tmp1 << " was not found" << endl;
             break;
+        case 7:
+            cout << endl;
+            cout << "Reverse-Order Traversal: " << endl << endl;
+            my_tree.print_reveorder();
+            break;
+        case 8:
+            cout << endl;
+            cout << "Height of the tree: " << my_tree.height();
+            break;
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
         // to provide the user with those extra functions
         // ***************************************************
+        default:
+            cout << "Please enter a correct choice!" << endl;
+            break;
         }
     }
 }
