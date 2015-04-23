@@ -44,6 +44,7 @@ public:
     void print_reverseorder();
     void print_height();
     void print_numberofNode();
+    void print_numberofLeaf();
 
 private:
 
@@ -58,6 +59,7 @@ private:
     int height(node*);
     int l,r;
     int countNode(node*);
+    int countLeaf(node*);
 };
 
 // set the root to NULL
@@ -376,6 +378,24 @@ int btree::countNode(node* node){
     }
 }
 
+void btree::print_numberofLeaf(){
+    cout << countLeaf(root);
+}
+
+// function for counting the leaves
+
+int btree::countLeaf(node* node){
+    if (node == NULL){
+        return 0;
+    }
+    if (node->left == NULL && node->right == NULL){
+        return 1;
+    }
+    else{
+        return countLeaf(node->left)+ countLeaf(node->right);
+    }
+}
+
 int main(int argc, char* argv[])
 {
     // This is the main program.
@@ -459,6 +479,7 @@ int main(int argc, char* argv[])
         cout << " 7. Reverse Order Traversal " << endl;
         cout << " 8. Provid the height of the tree " << endl;
         cout << " 9. Provid the number of interior nodes of the tree " << endl;
+        cout << " 10. Provid the number of leaves of the tree " << endl;
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
         cin >> ch;
@@ -515,6 +536,11 @@ int main(int argc, char* argv[])
             cout << endl;
             cout << " The number of interior node of this tree is: ";
             my_tree.print_numberofNode();
+            break;
+        case 10:
+            cout << endl;
+            cout << " The number of leaves of this tree is: ";
+            my_tree.print_numberofLeaf();
             break;
         }
     }
