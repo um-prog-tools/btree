@@ -10,7 +10,6 @@
  */
  
 /// External Libraries
-
 #include <iostream>
 #include <cstdlib>
 
@@ -39,7 +38,9 @@ public:
     void print_inorder();
     void print_preorder();
     void print_postorder();
-
+    void print_reverse_order_traversal();
+    void print_Height();
+    
     bool search(int);
 
 private:
@@ -47,6 +48,8 @@ private:
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
+    void reverse_order_traversal(node*);
+    void Height(node*);
 
     bool search_element(node*, int);
 
@@ -404,6 +407,24 @@ void btree::postorder(node* p)
     }
 }
 
+void btree::print_reverse_order_traversal()
+{
+    // this function must call the private reverse order(node*)
+    // function passing the root as the parameter
+    btree::reverse_order_traversal(root);
+    return;
+}
+
+void btree::reverse_order_traversal(node* p)
+{
+    if ( p != NULL )
+    {  // (Otherwise, there's nothing to print.)
+        reverse_order_traversal( p->right );    // Print items in right subtree.
+        cout << p->data << " ";     // Print the Value.
+        reverse_order_traversal( p->left );   // Print items in left subtree.
+    }
+}
+
 bool btree::search(int val)
 {
     // This function must call the private function
@@ -447,6 +468,21 @@ bool btree::search_element(node* p, int val) {
     // If the item occurs, it must be in the right subtree.
     return search_element( p->right, val );
     }
+}
+
+void btree::print_Height()
+{
+    // this function must call the private Height(node*)
+    // function passing the root as the parameter
+    btree::Height(root);
+    return;
+}
+
+void btree::Height(node* p)
+{
+    // This function receives a node as parameter
+    // then print the Height of that node
+
 }
 
 int main(int argc, char* argv[])
@@ -502,6 +538,8 @@ int main(int argc, char* argv[])
         // this is one place where you will need to add code
         // to provide the user with those extra functions
         // ***************************************************
+        cout << " 7. Reverse-Order Traversal " << endl;
+        cout << " 8. Height of the tree " << endl;
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
         cin >> ch;
@@ -546,6 +584,16 @@ int main(int argc, char* argv[])
         // this is one place where you will need to add code
         // to provide the user with those extra functions
         // ***************************************************
+        case 7:
+            cout << endl;
+            cout << " Reverse-Order Traversal: " << endl << endl;
+            my_tree.print_reverse_order_traversal();
+            break;
+        case 8:
+            cout << endl;
+            cout << " Height of the tree: " << endl << endl;
+            my_tree.print_Height();
+            break;    
         }
     }
 }
