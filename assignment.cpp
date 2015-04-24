@@ -13,6 +13,9 @@
 #include <iostream>
 #include <cstdlib>
 
+/// Additional Libraries
+#include <queue>
+
 using namespace std;
 
 class btree ///< Brief description after the member
@@ -49,7 +52,7 @@ private:
     void preorder(node*);
     void postorder(node*);
     void reverse_order_traversal(node*);
-    void Height(node*);
+    int Height(node*);
 
     bool search_element(node*, int);
 
@@ -474,15 +477,51 @@ void btree::print_Height()
 {
     // this function must call the private Height(node*)
     // function passing the root as the parameter
-    btree::Height(root);
+    int height = btree::Height(root);
+    cout << height << " ";     // Print the height.
     return;
 }
 
-void btree::Height(node* p)
+int btree::Height(node* p)
 {
     // This function receives a node as parameter
     // then print the Height of that node
-
+    // Base Case
+    if (root == NULL)
+    {
+        return 0;
+    }    
+ 
+    // Create an empty queue for LEVEL ORDER tarversal
+    queue<node *> q;
+ 
+    // Enqueue Root and initialize height
+    q.push(root);
+    int height = 0;
+ 
+    while (1)
+    {
+        // nodeCount (queue size) indicates NUMBER of nodes
+        // at current lelvel.
+        int nodeCount = q.size();
+        if (nodeCount == 0)
+            return height;
+ 
+        height++;
+ 
+        // Dequeue all nodes of current level and Enqueue all
+        // nodes of next level
+        while (nodeCount > 0)
+        {
+            node *node = q.front();
+            q.pop();
+            if (node->left != NULL)
+                q.push(node->left);
+            if (node->right != NULL)
+                q.push(node->right);
+            nodeCount--;
+        }
+    }
 }
 
 int main(int argc, char* argv[])
