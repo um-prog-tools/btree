@@ -1,9 +1,25 @@
 /* Homework 9
 
+ Understand the stuctrual of binary tree.
+ Implement the functions of 
+ 1. Insertion/C reation
+ 2. In-Order Traversal
+ 3. Pre-Order Traversal
+ 4. Post-Order Traversal
+ 5. Removal
+ 6. Search
+
+ *Also try to implement the bonus functions of 
+ 7. reverse order Traversal
+ 8. Provid the height of the tree 
+ 9. Track the nodes in the tree (interior and leaf)
+ 10. Print the tree by levels 
+
+ *Implement reading numbers from an input file.
 
 *Github Repository:  https://github.com/YuanZhou2015/btree/commits/Yuan
 
-*By Yuan Zhou
+*By Yuan Zhou 
 *April 17th 2015
 */
 
@@ -438,16 +454,10 @@ void btree::LevelOrder(node* p){
 
 int main(int argc, char* argv[])
 {
-    // This is the main program.
 
     // If the program is called without arguments, then
     // the user is taken straight to the list of options
-    // if the program is called with parameters, the program
-    // assumes these parameters are a list of integers and
-    // inserts those into the tree.
 
-    // Reading the program may help you understand how the
-    // class functions are called.
 
     // ********************** W A R N I N G **********************
     // In general, you do not need to make any change in the main
@@ -464,22 +474,21 @@ int main(int argc, char* argv[])
     int ch,tmp,tmp1;
     bool ans;
 
-    // if arguments are passed, then the program assumes the
-    // arguments are a list of integers and it inserts one by
-    // one into the tree.
-/*
-    if (argc > 1) {
-        for (int i = 1; i < argc; i++) {
-            tmp = atoi(argv[i]);
-            my_tree.insert(tmp);
-        }
-    }
-*/
+
 /******************************************************************
 
        Bonus for Reading numbers from an input file.
 
 ******************************************************************/
+    // If an argument is passed to the program and that argument is
+    // alphabetic, the program will assume that it refers to an input
+    // file and the input file will contain a sequence of numbers 
+    // which will be read and stored in the tree before prompting the 
+    // menu to the terminal.
+
+    // Else, then the program assumes the arguments are a list of
+    // integers and it inserts one by one into the tree.
+
     if (argc > 1) {
         if (isalpha(*argv[1])){
             ifstream inputFile;
@@ -495,8 +504,7 @@ int main(int argc, char* argv[])
             for (int i = 1; i < argc; i++) {
                 tmp = atoi(argv[i]);
                 my_tree.insert(tmp);
-            }
-
+            }     
         }
     }
 
@@ -512,14 +520,12 @@ int main(int argc, char* argv[])
         cout << " 6. Search "<< endl;
 
         // ***************************************************
-        // If you decide to implement the extra credit options
-        // this is one place where you will need to add code
-        // to provide the user with those extra functions
+        // provide the user with extra functions
         // ***************************************************
         cout << " 7. Reverse Order Traversal " << endl;
         cout << " 8. Provid the height of the tree " << endl;
-        cout << " 9. Track the nodes in the tree";
-        cout << " (number of Total nodes, Interior node and Leaf node " << endl;
+        cout << " 9. Track the nodes in the tree" << endl;
+        cout << "    (Number of Total, Interior and Leaf node)" << endl;
         cout << " 10. Print the tree by levels" << endl;
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
