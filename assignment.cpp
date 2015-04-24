@@ -43,6 +43,8 @@ public:
     void print_postorder();
     void print_reverse_order_traversal();
     void print_Height();
+    void print_level_order();
+    void print_info();
     
     bool search(int);
 
@@ -53,6 +55,8 @@ private:
     void postorder(node*);
     void reverse_order_traversal(node*);
     int Height(node*);
+    void level_order(node*);
+    void info(node*);
 
     bool search_element(node*, int);
 
@@ -524,6 +528,54 @@ int btree::Height(node* p)
     }
 }
 
+void btree::print_level_order()
+{
+    // this function must call the private level order(node*)
+    // function passing the root as the parameter
+    btree::level_order(root);
+    return;
+}
+
+void btree::level_order(node* p)
+{
+    if ( root == NULL )
+    {
+        return;
+    }    
+    queue<node *> clevel, nlevel;
+    clevel.push(root);
+    while (!clevel.empty())
+    {
+        node *currNode = clevel.front();
+        clevel.pop();
+        if (currNode)
+        {
+            cout << currNode->data << " ";
+            nlevel.push(currNode->left);
+            nlevel.push(currNode->right);
+        }
+        if (clevel.empty()) {
+            cout << endl;
+            swap(clevel, nlevel);
+        }
+    }
+}
+
+void btree::print_info()
+{
+    // this function must call the info(node*)
+    // function passing the root as the parameter
+    btree::info(root);
+    return;
+}
+
+void btree::info(node* p)
+{
+    int num_nodes = 0, num_leaf_nodes = 0, num_interior_nodes = 0;
+    cout << "The tree has " << num_nodes << " total nodes, out of which " 
+         << num_interior_nodes << " are interior, and " << num_leaf_nodes << " are leaves.";    
+}
+
 int main(int argc, char* argv[])
 {
     // This is the main program.
@@ -579,6 +631,8 @@ int main(int argc, char* argv[])
         // ***************************************************
         cout << " 7. Reverse-Order Traversal " << endl;
         cout << " 8. Height of the tree " << endl;
+        cout << " 9. Level Order " << endl;
+        cout << " 10. Info " << endl;
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
         cin >> ch;
@@ -632,6 +686,16 @@ int main(int argc, char* argv[])
             cout << endl;
             cout << " Height of the tree: " << endl << endl;
             my_tree.print_Height();
+            break;
+        case 9:
+            cout << endl;
+            cout << " Level Order: " << endl << endl;
+            my_tree.print_level_order();
+            break;
+        case 10:
+            cout << endl;
+            cout << " Info: " << endl << endl;
+            my_tree.print_info();
             break;    
         }
     }
