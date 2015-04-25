@@ -1,3 +1,11 @@
+//-----------------------------------------------------------------------------
+//
+// btree
+// Amirhossein Naemi
+// Avril, 2015
+// GIT: https://github.com/amirhossein-naemi/btree/
+//
+//-----------------------------------------------------------------------------
 
 #include <iostream>
 #include <cstdlib>
