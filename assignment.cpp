@@ -1,27 +1,27 @@
-/* Homework 9
 
- Understand the stuctrual of binary tree.
- Implement the functions of 
- 1. Insertion/C reation
- 2. In-Order Traversal
- 3. Pre-Order Traversal
- 4. Post-Order Traversal
- 5. Removal
- 6. Search
+/**
+ * @mainpage The Binary Tree Practice Program
+ */
 
- *Also try to implement the bonus functions of 
- 7. reverse order Traversal
- 8. Provid the height of the tree 
- 9. Track the nodes in the tree (interior and leaf)
- 10. Print the tree by levels 
+ /**
+ * @short   Homework 9
+ * @file    assignment.cpp
+ * @author  Yuan Zhou
+ * @date    April 17th 2015
+ * @param   none
+ * @return  0 on success
+ * 
+ * This assignment has two main objectives:
+ * (1) Understand the structure of binary tree and 
+ *     implement the differnt functions operate with
+ *     the structure of the tree.
+ * (2) Learning how to interact with a main repository
+ *     (with no push permission).
+ * (3) Try to use the right way to document the code,
+ *     so that to run with the Documentation Generator.
+ * Github Repository:  https://github.com/YuanZhou2015/btree/commits/Yuan
+ */
 
- *Implement reading numbers from an input file.
-
-*Github Repository:  https://github.com/YuanZhou2015/btree/commits/Yuan
-
-*By Yuan Zhou 
-*April 17th 2015
-*/
 
 #include <iostream>
 #include <cstdlib>
@@ -82,14 +82,17 @@ private:
     void LevelOrder(node*);
 };
 
-// set the root to NULL
+/** set the root to NULL */
 
 btree::btree() {
     root = NULL;
 }
 
-// This functions returns true if the tree is
-// empty and false if it is not empty.
+/** This functions returns true if the tree is
+ * empty and false if it is not empty.  
+ * @param none
+ * @return boolean value
+ */
 
 bool btree::isEmpty()
 {
@@ -99,8 +102,10 @@ bool btree::isEmpty()
         return false;
 }
 
-// this function insert the value d in the tree
-
+/** This functions insert the value d in the tree 
+ * @param The integer number need to be inserted
+ * @return boolean value
+ */
 void btree::insert(int d)
 {
     node* insert_node = new node;
@@ -145,7 +150,10 @@ void btree::insert(int d)
         cout << "Number " << d << " is already in the tree.\n";        
 }
 
-// this function must remove the node that has the value d
+/** This function must remove the node that has the value d
+ * @param The integer need to be removed
+ * @return none
+*/
 
 void btree::remove(int d)
 {
@@ -254,13 +262,27 @@ void btree::remove(int d)
     }
 }
 
+/**
+ * @short print out in inorder sequence
+ * @param none
+ * @return none
+ *
+ * Inorder traverse the binary from the root node 
+ * by calling the function inorder(node*).
+*/
 void btree::print_inorder()
 {
     inorder(root);
 }
 
-// This function receives a node as parameter then traverses
-// the tree following the in-order sequence.
+/** 
+ * @short inorder traversal
+ * @param p a node from which the traversal start
+ * @return none
+ *
+ * This function receives a node as parameter then
+ * traverses  the tree following the in-order sequence.
+*/
 
 void btree::inorder(node* p)
 {
@@ -270,15 +292,27 @@ void btree::inorder(node* p)
         inorder(p->right);
     }
 }
-
+/**
+ * @short print out in preorder sequence
+ * @param none
+ * @return none
+ *
+ * Preorder traverse the binary from the root node 
+ * by calling the function preorder(node*).
+*/
 void btree::print_preorder()
 {
     preorder(root);
 }
 
-// This function receives a node as parameter then traverses
-// the tree following the pre-order sequence.
-
+/** 
+ * @short preorder traversal
+ * @param p a node from which the traversal start
+ * @return none
+ *
+ * This function receives a node as parameter then
+ * traverses the tree following the pre-order sequence.
+*/
 void btree::preorder(node* p)
 {
     if (p != NULL){
@@ -287,15 +321,27 @@ void btree::preorder(node* p)
         preorder(p->right);
     }
 }
-
+/**
+ * @short print out in postorder sequence
+ * @param none
+ * @return none
+ *
+ * Postorder traverse the binary from the root node 
+ * by calling the functionpostorder(node*).
+*/
 void btree::print_postorder()
 {
     postorder(root);
 }
 
-// This function receives a node as parameter then traverses
-// the tree following the post-order sequence.
-
+/** 
+ * @short postorder traversal
+ * @param p a node from which the traversal start
+ * @return none
+ *
+ * This function receives a node as parameter then
+ * traverses the tree following the post-order sequence.
+*/
 void btree::postorder(node* p)
 {
     if(p !=NULL){
@@ -305,7 +351,15 @@ void btree::postorder(node* p)
     }
 
 }
-
+/**
+ * @short search a integer in the tree
+ * @param val the integer need to search
+ * @return boolean value
+ *
+ * This function recieve a integer as parameter then
+ * search the integer from the root node 
+ * by calling the earch_element(node*,int).
+*/
 bool btree::search(int val)
 {
     return search_element(root,val);
@@ -313,7 +367,16 @@ bool btree::search(int val)
 
 // this function receives a node and an integer as parameters and
 // searches for the value val in the data of the node.
-
+/** 
+ * @short search an element in the tree
+ * @param p a node from which the search start
+ * @param val value of the integer need to search
+ * @return boolean value
+ *
+ * This function receives a node and the value need to search 
+ * as parameter, then look through the tree until find the node
+ * which have the data with the same value.
+*/
 bool btree::search_element(node* p, int val) {
     if (p != NULL) {
         if (val == p->data) {
@@ -338,13 +401,27 @@ bool btree::search_element(node* p, int val) {
 
 ******************************************************************/
 
+/**
+ * @short print out in reverseorder sequence
+ * @param none
+ * @return none
+ *
+ * Reverseorder traverse the binary from the root node 
+ * by calling the function reverseorder(node*).
+*/
 void btree::print_reverseorder()
 {
     reverseorder(root);
 } 
 
-// This function receives a node as parameter then traverses the
-// tree following the reverse-order sequence.
+/** 
+ * @short reverseorder traversal
+ * @param p a node from which the traversal start
+ * @return none
+ *
+ * This function receives a node as parameter then
+ * traverses the tree following the reverse-order sequence.
+*/
 void btree::reverseorder(node* p)
 {
     if (p != NULL){
@@ -365,7 +442,17 @@ int btree::height(node* Height){
     }  
 }
 
-// function to open input file
+/**
+ * @short Function to open input file
+ * @param inputFile [in] the filestream to be open
+ * @param fileName [in] the string of the input file name
+ * @return boolean value 
+ *
+ * This function receives a ifstream and a string as
+ * parameters. Then check if the inputfile is opened
+ * successfully. Finally, return the result that the
+ * file is open or not.
+ */
 
 bool openInput(ifstream &inputFile, string fileName) {
 
@@ -384,7 +471,15 @@ void btree::print_numberofinNode(){
     cout << countinNode(root);
 }
 
-// function for counting the interior nodes
+/** 
+ * @short Function for counting the interior nodes
+ * @param node the node from which start to count the node number
+ * @return the number of the interior nodes
+ *
+ * This funciton recieves a node as a parameter 
+ * from which it starts to count the interior node,
+ * then return the number of the interior node.
+*/
 
 int btree::countinNode(node* node){
     if (node == NULL){
@@ -402,7 +497,15 @@ void btree::print_numberofLeaf(){
     cout << countLeaf(root);
 }
 
-// function for counting the leaves
+/** 
+ * @short Function for counting the leaf nodes
+ * @param node the node from which start to count the leaf number
+ * @return the number of the leaf nodes
+ *
+ * This funciton recieves a node as a parameter 
+ * from which it starts to count the leaf node,
+ * then return the number of the interior node.
+*/
 
 int btree::countLeaf(node* node){
     if (node == NULL){
@@ -416,14 +519,35 @@ int btree::countLeaf(node* node){
     }
 }
 
-// offer the total number of node
+/** 
+ * @short Function for offering the total number of node
+ * @param none
+ * @return none
+*/
 void btree::print_totalNode(){
     cout << countLeaf(root) + countinNode(root);
 }
 
+/** 
+ * @short Function for printing the tree in level order
+ * @param none
+ * @return none
+ *
+ * This funciton is to print the tree in level order 
+ * from the root by calling the function LevelOrder(*).
+*/
 void btree::print_LevelOrder(){
     LevelOrder(root);
 }
+/** 
+ * @short Print tree in level order
+ * @param p the node from which start to print
+ * @return none
+ *
+ * This funciton recieves a node as a parameter 
+ * from which it starts to print the tree,
+ * then print out the tree in the level order.
+*/
 void btree::LevelOrder(node* p){
     if (!p)
         return;
@@ -455,8 +579,10 @@ void btree::LevelOrder(node* p){
 int main(int argc, char* argv[])
 {
 
-    // If the program is called without arguments, then
-    // the user is taken straight to the list of options
+    /**
+        If the program is called without arguments, then
+        the user is taken straight to the list of options
+    */
 
 
     // ********************** W A R N I N G **********************
@@ -480,14 +606,16 @@ int main(int argc, char* argv[])
        Bonus for Reading numbers from an input file.
 
 ******************************************************************/
-    // If an argument is passed to the program and that argument is
-    // alphabetic, the program will assume that it refers to an input
-    // file and the input file will contain a sequence of numbers 
-    // which will be read and stored in the tree before prompting the 
-    // menu to the terminal.
+    /**
+        If an argument is passed to the program and that argument is
+        alphabetic, the program will assume that it refers to an input
+        file and the input file will contain a sequence of numbers 
+        which will be read and stored in the tree before prompting the 
+        menu to the terminal.
 
-    // Else, then the program assumes the arguments are a list of
-    // integers and it inserts one by one into the tree.
+        Else, then the program assumes the arguments are a list of
+        integers and it inserts one by one into the tree. 
+    */
 
     if (argc > 1) {
         if (isalpha(*argv[1])){
