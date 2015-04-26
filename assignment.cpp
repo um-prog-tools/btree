@@ -42,7 +42,6 @@ private:
 
 btree::btree() {
     // set the root to NULL
-//testing 1
 }
 
 bool btree::isEmpty()
