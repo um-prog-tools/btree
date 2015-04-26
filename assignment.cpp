@@ -92,10 +92,10 @@ void btree::insert(int d)
                 
              // cout << "Btree is empty 1 : " << btree::isEmpty() << endl;
                 
-            }else{
+            }else if (btree::search(d)==1){
             
            // cout << "Btree is empty 2 : " << btree::isEmpty() << endl;
-            
+            }else {
             temp_root=root;
             while (temp_root!=NULL) {
                 if ( d < temp_root->data )
@@ -124,6 +124,7 @@ void btree::insert(int d)
                 
             }
             }
+
 }
 
 
@@ -155,7 +156,106 @@ void btree::remove(int d)
     
     if (d_exist == 1 ){
         
-        cout << "I'm going to remove this number." << endl;
+//        cout << "I'm going to remove this number." << endl;
+        //finding the position of the number.
+        
+        node *temp_root1, *temp_root2;
+        
+        temp_root1 = root;
+        temp_root2 = root;
+        
+        
+        
+        //cout << "the initial value of temp_root1 : " << temp_root1->data << endl;
+        
+        
+        while (temp_root1->data != d) {
+            if (d < temp_root1->data) {
+                 temp_root2 = temp_root1; // previous node;
+                 temp_root1 = temp_root1->left;
+            }else if (d > temp_root1->data)  {
+                 temp_root2 = temp_root1; // previous node;
+                 temp_root1 = temp_root1->right;
+            }else {
+        }
+        }
+        
+        //cout << "I got the data that you were looking at :" << temp_root1->data <<endl;
+        
+        if ((temp_root1->right == NULL) && (temp_root1->left == NULL)){
+            
+            // the number is on the leaf.
+            cout << "The number was on leaf and deleted." << endl;
+            
+            
+            if (temp_root1->data < temp_root2->data) {
+                delete temp_root1;
+                temp_root2->left=NULL; // if the leaf is in the left side of previous node, now it should point to null.
+            }else{
+                delete temp_root1;
+                temp_root2->right=NULL; // if the leaf is in the right side of previous node, now it should point to null.
+            }
+            
+            cout << "Is empty btree : " << btree::isEmpty()<<endl;
+            
+            cout << " root data :" << root->data <<endl;
+            cout << " root left pointer :" << root->left;
+            cout << " root right pointer :" << root->right;
+            
+            if (btree::isEmpty()==1) {
+                
+                root = NULL;
+            }
+            
+        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)) {
+            
+            // the node only has one child on left side.
+            
+            
+            if (temp_root2->data < temp_root1->data) {
+                
+                
+                cout << "The number has one child on left side, and we need to attach that to rightside of the upper node. deleted."<< endl;
+                temp_root2->right = temp_root1->left;
+                delete temp_root1;
+                
+            } else {
+                
+                cout << "The number has one child on left side, and we need to attach that to leftside of the upper node. deleted."<< endl;
+                temp_root2->left = temp_root1->left;
+                delete temp_root1;
+                
+            }
+           
+           
+        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)) {
+            
+          // the node only has one child on right side.
+            
+            if (temp_root2->data < temp_root1->data) {
+                
+                
+                cout << "The number has one child on right side, and we need to attach that to rightside of the upper node. deleted."<< endl;
+                temp_root2->right = temp_root1->right;
+                delete temp_root1;
+                
+            } else {
+                
+                cout << "The number has one child on right side, and we need to attach that to leftside of the upper node. deleted."<< endl;
+                temp_root2->left = temp_root1->right;
+                delete temp_root1;
+                
+            }
+            
+            
+            
+        }else{
+        
+            cout << "The number exist but it has two childs. Can't delete."<< endl;
+            
+        }
+            
+        
         
     }else if(d_exist==0){
         cout << "The number is not in the list. " << endl;
