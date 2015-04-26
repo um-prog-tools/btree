@@ -156,6 +156,25 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
+    while (p != NULL)
+    {
+        if (p->data == val)
+            break;
+
+        if (val > p->data)
+            p = p->right;
+        else
+        if (val < p->data)
+            p = p->left;
+    }
+
+    if (p == NULL)
+        return false;
+
+    if (p->data == val)
+        return true;
+
+    return false;
 }
 
 int main(int argc, char* argv[])
