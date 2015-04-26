@@ -141,6 +141,27 @@ void btree::remove(int d)
     //    2. you're removing a node with a single child
     //    3. you're removing a node with 2 children
     // make sure you can handle all three cases.
+    
+    
+    //cout << "Remove function got here. " << endl;
+    
+    
+    // Making sure that btree is not empty
+    
+    // first case, deleting leaf node.
+    // first make sure that the value is in the tree.
+    
+    bool d_exist = btree::search(d);
+    
+    if (d_exist == 1 ){
+        
+        cout << "I'm going to remove this number." << endl;
+        
+    }else if(d_exist==0){
+        cout << "The number is not in the list. " << endl;
+    }
+    
+    
 }
 
 void btree::print_inorder()
@@ -171,6 +192,8 @@ void btree::print_preorder()
 {
     // This function must call the private pre-order(node*)
     // function passing the root as the parameter
+    
+     btree::preorder(root);
 }
 
 void btree::preorder(node* p)
@@ -181,12 +204,20 @@ void btree::preorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    
+    if ( p != NULL ){
+        
+        cout << p->data << " ";
+        preorder( p->left );
+        preorder( p->right );
+    }
 }
 
 void btree::print_postorder()
 {
     // This function must call the private post-order(node*)
     // function passing the root as the parameter
+       btree::postorder(root);
 }
 
 void btree::postorder(node* p)
@@ -197,6 +228,14 @@ void btree::postorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    
+    if ( p != NULL ){
+        
+       
+        preorder( p->left );
+        preorder( p->right );
+        cout << p->data << " ";
+    }
 }
 
 bool btree::search(int val)
