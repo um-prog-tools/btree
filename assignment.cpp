@@ -161,7 +161,7 @@ void btree::remove(int d) {
         
         //cout << "I got the data that you were looking at :" << temp_root1->data <<endl;
         
-        if ((temp_root1->right == NULL) && (temp_root1->left == NULL)) {
+        if ((temp_root1->right == NULL) && (temp_root1->left == NULL)&& (temp_root1->data != root->data)) {
             
             // the number is on the leaf.
             cout << "The number was on leaf and deleted." << endl;
@@ -185,7 +185,7 @@ void btree::remove(int d) {
                 root = NULL;
             }
             
-        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)) {
+        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)&& (temp_root1->data != root->data)) {
             
             // the node only has one child on left side.
             
@@ -207,7 +207,7 @@ void btree::remove(int d) {
                 
             }
             
-        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)) {
+        } else if ((temp_root1->right != NULL) && (temp_root1->left == NULL)&& (temp_root1->data != root->data)) {
             
             // the node only has one child on right side.
             
@@ -228,8 +228,48 @@ void btree::remove(int d) {
                 delete temp_root1;
                 
             }
+        } else if ((temp_root1->right != NULL) && (temp_root1->left == NULL) && (temp_root1->data == root->data))  {
             
+            node *fnode_handle;
+            
+            fnode_handle = temp_root1->right;
+            
+            temp_root1->data = fnode_handle->data;
+            temp_root1->right = fnode_handle -> right;
+            temp_root1->left = fnode_handle -> left;
+            delete fnode_handle;
+            
+        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL) && (temp_root1->data == root->data))  {
+            
+            node *fnode_handle;
+            
+            fnode_handle = temp_root1->left;
+            
+            temp_root1->data = fnode_handle->data;
+            temp_root1->right = fnode_handle -> right;
+            temp_root1->left = fnode_handle -> left;
+            delete fnode_handle;
+
+        } else if ((temp_root1->right == NULL) && (temp_root1->left == NULL) && (temp_root1->data == root->data)){
+        
+            delete root;
+            root = NULL;
         } else {
+            
+//            if (temp_root1->data == root->data){
+//                
+//                cout << "This is the head node, needs extra attention. deleted." << endl;
+//                
+//                node *fnode_handle;
+//                
+//                fnode_handle = temp_root1->left;
+//                
+//                temp_root1->data = fnode_handle->data;
+//                00
+//                temp_root1->left = fnode_handle -> left;
+//                delete fnode_handle;
+//                
+//            }else{
             
             //cout << "The number exist but it has two childs. Can't delete."<< endl;
             
@@ -267,14 +307,22 @@ void btree::remove(int d) {
                 << endl;
             } else {
                 temp_root1->data = temp_root_max->data;
+                temp_root1->left =temp_root_max->left;
+                
+                if (temp_root_max->left == NULL){
                 delete temp_root_max;
                 temp_root1->left = NULL; // the case that we have only child on the left side.
-                
-            }
+                }else{
+                delete temp_root_max;// the case that we have children just on left side on the left side.
+                }
+//            }
             
         }
         
+        }
+        
     } else if (d_exist == 0) {
+        
         cout << "The number is not in the list. " << endl;
     }
     
