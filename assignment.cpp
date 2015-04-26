@@ -55,10 +55,11 @@ bool btree::isEmpty()
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
-    if (root==NULL)
+    if (root==NULL){
     return true;
-    else
+    } else {
     return false;
+    }
 }
 
 void btree::insert(int d)
@@ -75,6 +76,21 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
+    if( root == 0 )
+        {
+            root *temp = new root;
+            temp->setData(100);
+            temp->setRight(0);
+            temp->setLeft(0);
+            root = temp;
+        }
+        else
+        {
+        if( d > root->getData() )
+            return insert( d, root->getRight() );
+        else
+            return insert( d, root->getLeft() );
+        }
 }
 
 void btree::remove(int d)
