@@ -130,20 +130,41 @@ void btree::postorder(node* p)
 
 bool btree::search(int val)
 {
-    // This function must call the private function
-    // search_element(node*,int) passing the root and
-    // the integer value val as parameters. The function
-    // must use recursion.
+    if (search_element(root, val) == true) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-bool btree::search_element(node* p, int val) {
-    // this function receives a node and an integer as
-    // parameters and searches for the value val in the
-    // data of the node. The function must be such that
-    // if the value is never found, it returns false.
-    // If the value is found, then it returns true.
-    // The function must use recursion.
+
+bool btree::search_element(node* p, int val)
+{
+    if (p->data == val)
+    {
+        return true;
+    } else if (val < p->data && p->left != NULL)
+    {
+        p = p->left;
+        if (search_element(p, val) == true)
+        {
+            return true;
+        }
+    } else if (val > p->data && p->right != NULL)
+    {
+        p = p->right;
+        if (search_element(p, val) == true)
+        {
+            return true;
+        }
+    } else
+    {
+        return false;
+    }
+
+    return false;
 }
+
 
 int main(int argc, char* argv[])
 {
@@ -170,20 +191,20 @@ int main(int argc, char* argv[])
     btree my_tree;
 
     // some auxiliary variables
-    int ch,tmp,tmp1;
+    int ch, tmp, tmp1;
     bool ans;
 
     // if arguments are passed, then the program assumes the
     // arguments are a list of integers and it inserts one by
     // one into the tree.
     if (argc > 1) {
-        for (int i=1; i < argc; i++) {
+        for (int i = 1; i < argc; i++) {
             tmp = atoi(argv[i]);
             my_tree.insert(tmp);
         }
     }
 
-    while(1)
+    while (1)
     {
         cout << endl << endl;
         cout << " Binary Tree Operations " << endl;
@@ -191,17 +212,17 @@ int main(int argc, char* argv[])
         cout << " 2. In-Order Traversal " << endl;
         cout << " 3. Pre-Order Traversal " << endl;
         cout << " 4. Post-Order Traversal " << endl;
-        cout << " 5. Removal "<< endl;
-        cout << " 6. Search "<< endl;
+        cout << " 5. Removal " << endl;
+        cout << " 6. Search " << endl;
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
         // to provide the user with those extra functions
         // ***************************************************
-        cout << " 0. Exit "<< endl;
+        cout << " 0. Exit " << endl;
         cout << " Enter your choice : ";
         cin >> ch;
-        switch(ch)
+        switch (ch)
         {
         case 0:
             return 0;
@@ -237,11 +258,11 @@ int main(int argc, char* argv[])
             if (ans) cout << tmp1 << " was found!!!" << endl;
             else cout << tmp1 << " was not found" << endl;
             break;
-        // ***************************************************
-        // If you decide to implement the extra credit options
-        // this is one place where you will need to add code
-        // to provide the user with those extra functions
-        // ***************************************************
+            // ***************************************************
+            // If you decide to implement the extra credit options
+            // this is one place where you will need to add code
+            // to provide the user with those extra functions
+            // ***************************************************
         }
     }
 }
