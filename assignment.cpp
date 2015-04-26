@@ -51,6 +51,8 @@ bool btree::isEmpty()
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
+    if (root == NULL) return true;
+    else false;
 }
 
 
@@ -69,24 +71,33 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
-    node* newNode;
 
-    if(root == NULL) {
+    node *temp, *parent;
 
-        newNode = new node;
-        newNode->data = d;
-        newNode->right = NULL;
-        newNode->left = NULL; 
+    if(isEmpty()) {
+        root = new node;
+        root->data = d;
+        root->right = NULL;
+        root->left = NULL; 
     } 
-    else if (search(d))
+    else {
+        temp = root;
+        if (search(d))
         std::cout << d << " already in the database " << std::endl;
-    
-    else if (d <= root->data) {
-        root->left = insert(d);
+        else if (d <= temp->data) {
+
+            parent = temp;
+            temp = temp->left;
+        } else {
+            parent = temp;
+            temp = temp->right;
+
+        }
+
+
+
     }
-    else (d >= root->data) {
-        root->left = insert(d);
-    }
+
 
 }
 
@@ -159,9 +170,11 @@ bool btree::search(int val)
     // the integer value val as parameters. The function
     // must use recursion.
 
-    node* p;
-
-    if (search_element(p, val)) return true;
+    if(isEmpty()){
+        std::cout << "The tree is empty, insert a number" << std::endl;
+        return false;
+    }
+    if (search_element(root, val)) return true;
     else return false;
 
 }
@@ -176,6 +189,7 @@ bool btree::search_element(node* p, int val) {
     bool isPresent = false;
 
     if (p != NULL){
+
         if (val == p->data) isPresent = true;
         else if (val < p->data) search_element(p->left, val);
         else search_element(p->right, val);
