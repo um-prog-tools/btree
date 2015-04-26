@@ -77,20 +77,20 @@ void btree::insert(int d)
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
     if( root == 0 )
-        {
-            root *temp = new root;
-            temp->setData(100);
-            temp->setRight(0);
-            temp->setLeft(0);
-            root = temp;
-        }
-        else
-        {
-        if( d > root->getData() )
-            return insert( d, root->getRight() );
-        else
-            return insert( d, root->getLeft() );
-        }
+    {
+        root *temp = new root;
+        temp->setData(100);
+        temp->setRight(0);
+        temp->setLeft(0);
+        root = temp;
+    }
+    else
+    {
+    if( d > root->getData() )
+        return insert( d, root->getRight() );
+    else
+        return insert( d, root->getLeft() );
+    }
 }
 
 void btree::remove(int d)
@@ -98,6 +98,11 @@ void btree::remove(int d)
     // this function must remove the node that has the value d
 
     // first of all, check if the tree is empty
+    if (!root)
+    {
+        cout << "The tree is empty\n";
+        return;
+    }
     // if it is not, then locate the element with the value
     // once you know the location, that is, you have the pointer to the node
     // with the value you want to eliminate, you will have three cases:
@@ -105,6 +110,94 @@ void btree::remove(int d)
     //    2. you're removing a node with a single child
     //    3. you're removing a node with 2 children
     // make sure you can handle all three cases.
+    
+    Node* current;
+    Node* parent;
+    current=root;
+    //Node with single child.
+    if((current->lChildptr == NULL && current->rChildptr != NULL)||(current->lChildptr != NULL && current->rChildptr == NULL))
+    {
+        if(current->lChildptr == NULL && current->rChildptr != NULL)
+        {
+            if(parent->lChildptr==current)
+            {
+                parent->lChildptr = current->rChildptr;
+                delete current;
+            }
+            else
+            {
+                parent->rChildptr = current->rChildptr;
+                delete current;
+            }
+        }
+        else //left child ok, no right child
+        {
+            if(parent->lChildptr==current)
+            {
+                parent->lChildptr = current->lChildptr;
+                delete current;
+            }
+            else
+            {
+                parent->rChildptr = current->lChildptr;
+                delete current;
+            }
+        }
+    return;
+    }
+    //We found a leaf(a node with not a single child)
+    if(current->lChildptr == NULL && current->rChildptr == NULL)
+    {
+        if (parent->lChildptr == current)
+            parent->lChildptr = NULL;
+        else
+            parent->rChildptr = NULL;
+        delete current;
+        return;
+    }
+    //Node with 2 children
+    // replace node with smallest value in right subtree
+    if (current->lChildptr != NULL && current->rChildptr != NULL)
+    {
+        Node* checkr;
+        checkr = current->rChildptr;
+        if((checkr->lChildptr == NULL)&&(checkr->rChildptr == NULL))
+        {
+            current=checkr;
+            delete checkr;
+            current->rChildptr = NULL;
+        }
+        else //right child has children
+        {
+        //if the node's right child has a left child
+        //Move all the way down left to locate smallest element
+            if ((current->rChildptr)->lChildptr != NULL)
+            {
+            Node* lcurr;
+            Node* lcurrp;
+            lcurrp = current->rChildptr;
+            lcurr = (current->rChildptr)->lChildptr;
+            while(lcurr->lChildptr != NULL)
+                {
+                    lcurrp = lcurr;
+                    lcurr = lcurr->lChildptr;
+                }
+            current->data = lcurr->data;
+            delete lcurr;
+            lcurrp->lChildptr = NULL;
+            }
+            else 
+            {
+                Node* temp;
+                temp = current->rChildptr;
+                current->data = temp ->data;
+                current->rChildptr = temp->rChildptr;
+                delete temp;
+            }
+
+        }
+        return;
+    }
 }
 
 void btree::print_inorder()
