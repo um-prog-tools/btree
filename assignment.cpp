@@ -41,14 +41,13 @@ private:
 };
 
 btree::btree() {
-    // set the root to NULL
+    root = NULL;
 }
 
 bool btree::isEmpty()
 {
-    // This functions returns true if the tree is
-    // empty and false if it is not empty. You just
-    // need to look at the root.
+    if (root == NULL) return true;
+    return false;
 }
 
 void btree::insert(int d)
