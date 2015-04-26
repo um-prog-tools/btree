@@ -133,8 +133,10 @@ bool btree::search(int val)
 {
     // This function must call the private function
     // search_element(node*,int) passing the root and
-    // the integer value val as parameters. The function
-    // must use recursion.
+    // the integer value val as parameters and returning
+    // the same answer it gets from search_element()
+    // back to the main program.
+
 }
 
 bool btree::search_element(node* p, int val) {
