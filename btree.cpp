@@ -1,5 +1,3 @@
-#include "btree.h"
-
 btree::btree() {
     // set the root to NULL
 
