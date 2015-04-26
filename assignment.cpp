@@ -159,7 +159,7 @@ void btree::remove(int d)
 //        cout << "I'm going to remove this number." << endl;
         //finding the position of the number.
         
-        node *temp_root1, *temp_root2;
+        node *temp_root1, *temp_root2, *temp_root_max, *temp_root_bmax;
         
         temp_root1 = root;
         temp_root2 = root;
@@ -251,7 +251,45 @@ void btree::remove(int d)
             
         }else{
         
-            cout << "The number exist but it has two childs. Can't delete."<< endl;
+            //cout << "The number exist but it has two childs. Can't delete."<< endl;
+            
+            // need to find the maximum number in the left hand side.
+            // put the maximum number instead of the node data.
+            // remove the max number.
+            
+            int temp_max = temp_root1->data;
+            int k=1; // check to see whether is the first node in the left or not.
+            
+            temp_root_max = temp_root1->left;
+            
+            cout << "temp root max data left : " <<  temp_root_max->data << endl;
+            
+            while (temp_root_max->right != NULL) {
+            
+                
+                temp_root_bmax = temp_root_max;
+                temp_root_max = temp_root_max -> right;
+                cout << "Level is not null. " << endl;
+                k=k+1;
+                
+            }
+            
+            if (k>1){
+            cout << "temp root bmax data: " <<  temp_root_bmax->data << endl;
+            cout << "temp_root_max : " << temp_root_max->data << endl;
+            
+            temp_root1->data = temp_root_max->data;
+                
+            temp_root_bmax->right=NULL;
+            delete temp_root_max;
+            
+            cout << "Point had two child. It substituted with max of left hand side. and the max deleted." << endl;
+            }else{
+                temp_root1->data = temp_root_max->data;
+                delete temp_root_max;
+                temp_root1->left=NULL; // the case that we have only child on the left side.
+                
+            }
             
         }
             
