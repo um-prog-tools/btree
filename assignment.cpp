@@ -42,6 +42,7 @@ private:
 
 btree::btree() {
     // set the root to NULL
+    root = NULL;
 }
 
 bool btree::isEmpty()
@@ -49,6 +50,13 @@ bool btree::isEmpty()
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
+    
+    if ( root == NULL )
+    {
+        return 1;
+    }else {
+        return 0;
+    }
 }
 
 void btree::insert(int d)
@@ -65,7 +73,61 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
+    
+    
+    
+    node *parent_node, *temp_root;
+
+
+
+        
+    
+            if ( btree::isEmpty()){
+                
+            root = new node;
+            root->data = d;
+            root->left = NULL;
+            root->right = NULL;
+            temp_root = root;
+                
+             // cout << "Btree is empty 1 : " << btree::isEmpty() << endl;
+                
+            }else{
+            
+           // cout << "Btree is empty 2 : " << btree::isEmpty() << endl;
+            
+            temp_root=root;
+            while (temp_root!=NULL) {
+                if ( d < temp_root->data )
+                {
+                    parent_node = temp_root;
+                    temp_root=temp_root->left;
+                    //cout << "left check point : " << endl;
+                }
+                else if ( d > temp_root->data )
+                {
+                    parent_node =temp_root;
+                    temp_root=temp_root->right;
+                    //cout << "Right check point : " << endl;
+                }
+            }
+            node *temp_node = new node;
+            temp_node->data = d;
+            temp_node->left = NULL;
+            temp_node->right = NULL;
+
+            if(d <= parent_node->data){
+                parent_node->left = temp_node;
+                
+            } else {
+                parent_node->right = temp_node;
+                
+            }
+            }
 }
+
+
+
 
 void btree::remove(int d)
 {
@@ -85,6 +147,7 @@ void btree::print_inorder()
 {
     // this function must call the private inorder(node*)
     // function passing the root as the parameter
+    btree::inorder(root);
 }
 
 void btree::inorder(node* p)
@@ -95,6 +158,13 @@ void btree::inorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    
+    if ( p != NULL ){
+        inorder( p->left );
+        cout << p->data << " ";
+        inorder( p->right );
+    }
+
 }
 
 void btree::print_preorder()
@@ -135,6 +205,8 @@ bool btree::search(int val)
     // search_element(node*,int) passing the root and
     // the integer value val as parameters. The function
     // must use recursion.
+    
+    return (btree::search_element(root, val));
 }
 
 bool btree::search_element(node* p, int val) {
@@ -144,6 +216,22 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
+    if ( p == NULL ){
+        
+        return 0;
+    } else if ( val == p->data ) {
+        
+                return 1;
+        
+    } else if ( val < p->data ) {
+        
+        // search again
+        
+        return search_element( p->left, val );
+    } else {
+        // search again
+        return search_element( p->right, val );
+    }
 }
 
 int main(int argc, char* argv[])
