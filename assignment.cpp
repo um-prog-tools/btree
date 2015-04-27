@@ -197,43 +197,27 @@ void btree::remove(int d)
             }
         }
     }
-        else //left child ok, no right child
-        {
-            if(parent->lChildptr==current)
-            {
-                parent->lChildptr = current->lChildptr;
-                delete current;
-            }
-            else
-            {
-                parent->rChildptr = current->lChildptr;
-                delete current;
-            }
-        }
-    return;
+    // Case 2: removing a leaf node
+    if (current_node->left == NULL and current_node->right == NULL) {
+      if (predecessor->left == current_node) {
+        predecessor->left = NULL;
+      }
+      else {
+        predecessor->right = NULL;
+      }
     }
-    //We found a leaf(a node with not a single child)
-    if(current->lChildptr == NULL && current->rChildptr == NULL)
-    {
-        if (parent->lChildptr == current)
-            parent->lChildptr = NULL;
-        else
-            parent->rChildptr = NULL;
-        delete current;
-        return;
-    }
-    //Node with 2 children
-    // replace node with smallest value in right subtree
-    if (current->lChildptr != NULL && current->rChildptr != NULL)
-    {
-        Node* checkr;
-        checkr = current->rChildptr;
-        if((checkr->lChildptr == NULL)&&(checkr->rChildptr == NULL))
-        {
-            current=checkr;
-            delete checkr;
-            current->rChildptr = NULL;
-        }
+    // Case 3: removing a  node with two children
+    if (current_node->left != NULL and current_node->right != NULL) {
+        node* check=current_node->right;
+      if((current_node->left==NULL)&&(current_node->right==NULL))
+      {
+        current_node=check;
+        delete check;
+        current_node->right = NULL;
+        cout << d << " has been removed from the Tree" << endl;
+      }
+
+
         else //right child has children
         {
         //if the node's right child has a left child
