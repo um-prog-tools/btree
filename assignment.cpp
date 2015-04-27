@@ -77,8 +77,8 @@ void btree::insert(int d)
 	// parent node to which the new node will be attached as a child
 
 	node *pnewnode = new node;
-	node *ptraverse = root;
-	node *tree;
+	node *ptrsave = NULL;
+	node *tree = root;
 	pnewnode->data = d;
 
 	if ( isEmpty()) {
@@ -89,36 +89,40 @@ void btree::insert(int d)
 		cout << "Root is created" << endl;
 		return;
 	}
-	
+
 	/*
 	if (search(d)) {
-		cout << "Element already exist in the tree" << endl;
+	cout << "Element already exist in the tree" << endl;
 	}
 	*/
 
-	if (tree->data > pnewnode->data) {
-		if (tree->left != NULL) {
+	while (tree != NULL) {
+		ptrsave = tree;
+		if (tree->data > pnewnode->data) {
 			tree = tree->left;
-			insert(d);
 		} else {
-			tree->left = pnewnode;
-			(tree->left)->left = NULL;
-			(tree->left)->right = NULL;
-			cout << "New node added to the left" << endl;
-		}
-	} else {
-		if (tree->right != NULL) {
-			tree = tree->left;
-			insert(d);
-		} else { 
-			tree->right = pnewnode;
-			(tree->right)->left = NULL;
-			(tree->right)->right = NULL;
-			cout << "New node added to the right" <<endl;
-			return;
+			if (tree->data < pnewnode->data) {
+				tree = tree->right;
+				//return;
+			}
 		}
 	}
+	if (ptrsave->data > pnewnode->data) {
+		ptrsave->left = pnewnode;
+		pnewnode->left = NULL;
+		pnewnode->right = NULL;
+		cout << "New node added to the left" << endl;
+		//return;
+	} else {
+		//if (ptrsave->data < pnewnode->data) {
+			ptrsave->right = pnewnode;
+			pnewnode->left = NULL;
+			pnewnode->right = NULL;
+			cout << "New node added to the right" <<endl;
+			//return;
+	}
 }
+
 
 void btree::remove(int d)
 {
@@ -147,7 +151,7 @@ void btree::remove(int d)
 	if (location != NULL && d != location->data) {
 		parent = location;
 	}
- 
+
 	// case_1_leaf:
 
 	if (location->left == NULL && location->right == NULL) {
@@ -162,7 +166,7 @@ void btree::remove(int d)
 			}
 		}
 	}
-	
+
 	// case_2_single_child:
 
 	if ((location->left != NULL && location->right == NULL) ||
@@ -185,7 +189,7 @@ void btree::remove(int d)
 			}
 			delete child;
 	}
- 
+
 	// case_3_two children:
 
 	if (location->left != NULL && location->right != NULL) {
