@@ -99,17 +99,104 @@ void btree::insert(int d)
 
 void btree::remove(int d)
 {
-    // this function must remove the node that has the value d
+    node *p = NULL;
+    node *c = root;
+    if (isEmpty() != true)
+    {
+        cout << "Tree is empty.";
+        return;
+    }
+    if (search(d) == true)
+    {
+        while (c != NULL && d != c->data)
+        {
+            if (c->data > d)
+            {
+                p = c;
+                c = c->left;
+            } else
+            {
+                p = c;
+                c = c->right;
+            }
+        }
 
-    // first of all, check if the tree is empty
-    // if it is not, then locate the element with the value
-    // once you know the location, that is, you have the pointer to the node
-    // with the value you want to eliminate, you will have three cases:
-    //    1. you're removing a leaf node
-    //    2. you're removing a node with a single child
-    //    3. you're removing a node with 2 children
-    // make sure you can handle all three cases.
+        if (c->right == NULL && c->left == NULL)
+        {
+            if (p == NULL)
+            {
+                root = NULL;
+                return;
+            } else if (c == p->left)
+            {
+                p->left = NULL;
+                delete c;
+                return;
+            } else if (c == p->right)
+            {
+                p->right = NULL;
+                delete c;
+                return;
+            }
+        } else if (c->left != NULL && c->right == NULL)
+        {
+            if (c == root)
+            {
+                root = c->left;
+                return;
+            } else if (c == p->left)
+            {
+                p->left = c->left;
+                delete c;
+                return;
+            } else if (c == p->right)
+            {
+                p->right = c->left;
+                delete c;
+                return;
+            }
+        } else if (c->left == NULL && c->right != NULL)
+        {
+            if (c == root)
+            {
+                root = c->right;
+                return;
+            } else if (c == p->left)
+            {
+                p->left = c->left;
+                delete c;
+                return;
+            } else if (c == p->right)
+            {
+                p->right = c->right;
+                delete c;
+                return;
+            }
+        } else
+        {
+            node* ChildtoRight = c->right;
+            node* ChildtoLeft = c;
+            while (ChildtoRight->left != NULL)
+            {
+                ChildtoLeft = ChildtoRight;
+                ChildtoRight = ChildtoRight->left;
+            }
+            c->data = ChildtoRight->data;
+            if (ChildtoLeft != c)
+            {
+                ChildtoLeft->left = NULL;
+            } else
+            {
+                ChildtoLeft->right = NULL;
+            }
+            delete ChildtoRight;
+        }
+
+    } else {
+        cout <<  << d << " is not in the tree.";
+    }
 }
+
 
 void btree::print_inorder()
 {
@@ -125,13 +212,6 @@ void btree::inorder(node* p)
         cout << p->data << " ";
         inorder(p->right);
     }
-}
-
-
-void btree::print_preorder()
-{
-    // This function must call the private pre-order(node*)
-    // function passing the root as the parameter
 }
 
 void btree::print_preorder()
