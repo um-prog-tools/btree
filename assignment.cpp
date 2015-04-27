@@ -8,9 +8,7 @@
  * @file    assignment.cpp
  * @author  Yuan Zhou
  * @date    April 17th 2015
- * @param   none
- * @return  0 on success
- * 
+ *
  * This assignment has two main objectives:
  * (1) Understand the structure of binary tree and 
  *     implement the differnt functions operate with
@@ -584,6 +582,17 @@ void btree::LevelOrder(node* p){
     }    
 } 
 
+/**
+ *@short Main Program
+ *@param  integer numbers to input into the tree or a file name
+ *@return  0 on success
+ *
+ * This program could take initial integer numbers by argument or 
+ * reading them from a input file when the argument is alphabatic.
+ * The program could store these numbers into a binary tree, then
+ * it could accomplish the task asked by user when they choose the
+ * corresponding option.
+ */
 
 int main(int argc, char* argv[])
 { 
