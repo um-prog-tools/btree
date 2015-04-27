@@ -76,8 +76,9 @@ void btree::insert(int d)
 	// in order to do this, you may need to keep track of the potential
 	// parent node to which the new node will be attached as a child
 
-	node * pnewnode = new node;
-	node * tree = root;
+	node *pnewnode = new node;
+	node *ptraverse = root;
+	node *tree;
 	pnewnode->data = d;
 
 	if ( isEmpty()) {
@@ -88,11 +89,16 @@ void btree::insert(int d)
 		cout << "Root is created" << endl;
 		return;
 	}
+	
+	/*
 	if (search(d)) {
 		cout << "Element already exist in the tree" << endl;
 	}
+	*/
+
 	if (tree->data > pnewnode->data) {
 		if (tree->left != NULL) {
+			tree = tree->left;
 			insert(d);
 		} else {
 			tree->left = pnewnode;
@@ -102,6 +108,7 @@ void btree::insert(int d)
 		}
 	} else {
 		if (tree->right != NULL) {
+			tree = tree->left;
 			insert(d);
 		} else { 
 			tree->right = pnewnode;
@@ -126,8 +133,86 @@ void btree::remove(int d)
 	//    3. you're removing a node with 2 children
 	// make sure you can handle all three cases.
 
+	node *parent, *location;
+	search_element(location, d);
 
+	if (isEmpty()) {
+		return;
+	}
+	if (location == NULL) {
+		cout << "Item not present in tree" << endl;
+		return;
+	}
 
+	if (location != NULL && d != location->data) {
+		parent = location;
+	}
+ 
+	// case_1_leaf:
+
+	if (location->left == NULL && location->right == NULL) {
+
+		if (parent == NULL) {
+			root = NULL;
+		} else {
+			if (location == parent->left) {
+				parent->left = NULL;
+			} else {
+				parent->right = NULL;
+			}
+		}
+	}
+	
+	// case_2_single_child:
+
+	if ((location->left != NULL && location->right == NULL) ||
+		(location->left == NULL && location->right != NULL)) {
+
+			node *child;
+			if (location->left != NULL) {
+				child = location->left;
+			} else {
+				child = location->right;
+			}
+			if (parent = NULL) {
+				root = child;
+			} else {
+				if (location == parent->left) {
+					parent->left = child;
+				} else {
+					parent->right = child;
+				}
+			}
+			delete child;
+	}
+ 
+	// case_3_two children:
+
+	if (location->left != NULL && location->right != NULL) {
+
+		node *ptrsave = location;
+		node *ptr = location->right;
+
+		while (ptr->left != NULL) {
+			ptrsave = ptr;
+			ptr = ptr->left;
+		}
+
+		node *suc = ptr;
+		node *parsuc = ptrsave;
+
+		if (parent == NULL) {
+			root = suc;
+		} else {
+			if (location == parent->left) {
+				parent->left = suc;
+			} else {
+				parent->right = suc;
+			}
+		}
+		suc->left = location->left;
+		suc->right = location->right;
+	}
 }
 
 void btree::print_inorder()
