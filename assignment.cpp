@@ -1,3 +1,11 @@
+/**
+ * @mainpage CIVL 8903/7903 Prog Tools for Scits Engrs Homework 9
+ * 
+ * This the homework 9 of CIVL 8903 which implements the basic functions
+ * of the binary tree. The homewrok is done by interacting with a main
+ * repository.
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <stack>
@@ -8,10 +16,17 @@
 
 using namespace std;
 
+/**
+   * @brief   This class to implement the basic function of binary tree
+ */
 class btree
 {
 private:
 
+    /**
+      * @brief   the struct of the node
+      * contain left node, right node, data and its occurrence time
+    */
     struct node
     {
         node* left;
@@ -25,27 +40,82 @@ private:
 
 public:
 
+    /**
+      * @brief   the default constructor of this class
+    */
     btree();
+
+    /**
+      * @brief   Check whether the tree is empty
+      * @return  true if the tree is empty
+    */
     bool isEmpty();
 
-    void insert(int);
-    void remove(int);
+    /**
+      * @brief   insert a number to the binary search tree
+      * @param   d the number need inserting
+    */
+    void insert(int d);
 
+    /**
+      * @brief   delete a number in the binary search tree
+      * @param   d the number need deleting
+    */
+    void remove(int d);
+
+    /**
+      * @brief   inorder tranversal public function
+    */
     void print_inorder();
+
+    /**
+      * @brief   preorder tranversal public function
+    */
     void print_preorder();
+
+    /**
+      * @brief   postorder tranversal public function
+    */
     void print_postorder();
+
+    /**
+      * @brief   reverse order tranversal public function
+    */
     void print_reveorder();
+
+    /**
+      * @brief   print out the tree by level public function
+    */
     void print_level();
 
-    int search(int);
+    /**
+      * @brief   search function
+      * @param   val the number need searching
+      * @return  true if searched
+    */
+    int search(int val);
 
+    /**
+      * @brief   give the height of the tree public function
+      * @return  the height of the tree
+    */
     int height();
 
+    /**
+      * @brief   give the number of leaves in this tree
+      * @return  the number of leaves in the tree
+    */
     int get_number_of_leaves();
+
+    /**
+      * @brief   give the number of nodes in this tree
+      * @return  the number of nodes in the tree
+    */
     int get_number_of_nodes();
 
 private:
 
+    // some private function to help implement its public version
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
@@ -62,28 +132,33 @@ private:
 
 };
 
-// check whether a string is an integer
+/**
+   * @brief   This function check whether a given string is an integer
+   * @param   text input string
+   * @return  true on success
+ */
 bool is_integer(string text);
 
+/**
+   * @short   Main program
+   * @file    assignment.cpp
+   * @author  Yang Yang
+   * @param   initial numbers or a file name in which contains a bunch of numbers
+   * @return  0 on success
+   * 
+   * This program creat a user frienly interface to manipulate the function of class
+   * btree. The btree is initialed with the numbers inputed as the the parameters when
+   * running the program. Users can also insert, delete, trversal ... by the prompt.
+ */
 int main(int argc, char* argv[]) {
-    // This is the main program.
 
-    // If the program is called without arguments, then
-    // the user is taken straight to the list of options
-    // if the program is called with parameters, the program
-    // assumes these parameters are a list of integers and
-    // inserts those into the tree.
-
-    // Reading the program may help you understand how the
-    // class functions are called.
-
-    // ********************** W A R N I N G **********************
-    // In general, you do not need to make any change in the main
-    // program.  The only case when you will need to make changes
-    // here is if you decide to implement the functions for extra
-    // credit. In which case, the place to make changes is indica-
-    // below.
-    // ***********************************************************
+    /** 
+      * If the program is called without arguments, then
+      * the user is taken straight to the list of options
+      * if the program is called with parameters, the program
+      * assumes these parameters are a list of integers and
+      * inserts those into the tree.
+    */
 
     // instantiate the tree
     btree my_tree;
@@ -92,10 +167,12 @@ int main(int argc, char* argv[]) {
     int ch,tmp,tmp1,ans;
     string tmp_str;
 
-    // if arguments are passed, then the program assumes the
-    // arguments are a list of integers and it inserts one by
-    // one into the tree. If an argument is not an integer, I
-    // assume it is a file contains a sequence of integers
+    /** 
+      * arguments are passed, then the program assumes the
+      * arguments are a list of integers and it inserts one by
+      * one into the tree. If an argument is not an integer, I
+      * assume it is a file contains a sequence of integers
+    */
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
             if (is_integer(argv[i])) {
@@ -138,13 +215,9 @@ int main(int argc, char* argv[]) {
         cout << " 8. Display height of the tree " << endl;
         cout << " 9. By-Level Traversal " << endl;
         cout << " 10. Print number of Nodes " << endl;
-        // ***************************************************
-        // If you decide to implement the extra credit options
-        // this is one place where you will need to add code
-        // to provide the user with those extra functions
-        // ***************************************************
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
+
         cin >> ch;
         switch(ch)
         {
@@ -173,13 +246,13 @@ int main(int argc, char* argv[]) {
             break;
         case 5:
             cout << endl;
-            cout << " Enter data to be deleted: ";
+            cout << " Enter number to be deleted: ";
             cin >> tmp1;
             my_tree.remove(tmp1);
             break;
         case 6:
             cout << endl;
-            cout << " Enter data to be searched: ";
+            cout << " Enter number to be searched: ";
             cin >> tmp1;
             ans = my_tree.search(tmp1);
             if (ans) cout << tmp1 << " was found with occurence times " << ans << "!!!" << endl;
@@ -206,11 +279,6 @@ int main(int argc, char* argv[]) {
             cout << "The tree has " << tmp << " total nodes." << endl;
             cout << tmp1 << " are leaves and " << tmp - tmp1 << " are interior nodes" << endl;
             break;
-        // ***************************************************
-        // If you decide to implement the extra credit options
-        // this is one place where you will need to add code
-        // to provide the user with those extra functions
-        // ***************************************************
         default:
             cout << "Please enter a correct choice!" << endl;
             break;
@@ -219,7 +287,6 @@ int main(int argc, char* argv[]) {
 }
 
 btree::btree() {
-    // set the root to NULL
 
     root = NULL;
     numberOfNodes = 0;
@@ -242,22 +309,12 @@ bool btree::isEmpty()
 
 void btree::insert(int d)
 {
-    // this function must insert the value d in the tree
 
-    // first of all, check if d already exists in the tree
-    // you can do this by calling to the search(int) function
-    // I didn't implement this using search, but using if statment below
-
-    // if d is not in the tree already, create a new node with data equal d
+    // creat a node which data is d
     node * new_node = new node;
     new_node->data = d;
 
-    // if the tree is empty, set the root to the new node
-
-    // if the tree is not empty, look for the right place where to insert d
-    // in order to do this, you may need to keep track of the potential
-    // parent node to which the new node will be attached as a child
-
+    // some auxiliary variables
     node * current_node = root;  // the node we are now dealing with
     node * old_node = NULL;   // the parent of current_node
 
@@ -291,21 +348,12 @@ void btree::insert(int d)
 
 void btree::remove(int d)
 {
-    // this function must remove the node that has the value d
-
     // first of all, check if the tree is empty
-    // if it is not, then locate the element with the value
-    // once you know the location, that is, you have the pointer to the node
-    // with the value you want to eliminate, you will have three cases:
-    //    1. you're removing a leaf node
-    //    2. you're removing a node with a single child
-    //    3. you're removing a node with 2 children
-    // make sure you can handle all three cases.
-
     if (root == NULL) {
         return;
     } 
 
+    // some auxiliary variables
     node * current_node = root;  // the node we are now dealing with
     node * old_node = NULL;  // the parent of current_node
 
@@ -381,7 +429,7 @@ void btree::remove(int d)
     }
 
     // case 3: removing a node with two children
-    if (current_node->left == NULL && current_node->right != NULL) {
+    if (current_node->left != NULL && current_node->right != NULL) {
         node * next_node = current_node->right; // use to check the status of the next node
 
         if (next_node->left == NULL && next_node->right == NULL) {
@@ -414,8 +462,6 @@ void btree::remove(int d)
 
 void btree::print_inorder()
 {
-    // this function must call the private inorder(node*)
-    // function passing the root as the parameter
 
     inorder(root);
 
@@ -423,12 +469,7 @@ void btree::print_inorder()
 
 void btree::inorder(node* p)
 {
-    // This function receives a node as parameter
-    // then traverses the tree following the in-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    // recursive alogorithm to implment in order tranversal
 
     if (p != NULL) {
         inorder(p->left);
@@ -440,8 +481,6 @@ void btree::inorder(node* p)
 
 void btree::print_preorder()
 {
-    // This function must call the private pre-order(node*)
-    // function passing the root as the parameter
 
     preorder(root);
 
@@ -449,25 +488,18 @@ void btree::print_preorder()
 
 void btree::preorder(node* p)
 {
-    // This function receives a node as parameter
-    // then traverses the tree following the pre-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    // recursive alogorithm to implment pre order tranversal
 
     if (p != NULL) {
         print_node(p);
-        inorder(p->left);
-        inorder(p->right);
+        preorder(p->left);
+        preorder(p->right);
     }
 
 }
 
 void btree::print_postorder()
 {
-    // This function must call the private post-order(node*)
-    // function passing the root as the parameter
 
     postorder(root);
 
@@ -475,16 +507,10 @@ void btree::print_postorder()
 
 void btree::postorder(node* p)
 {
-    // This function receives a node as parameter
-    // then traverses the tree following the post-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
-
+    // recursive alogorithm to implment post order tranversal
     if (p != NULL) {
-        inorder(p->left);
-        inorder(p->right);
+        postorder(p->left);
+        postorder(p->right);
         print_node(p);
     }
 
@@ -492,6 +518,7 @@ void btree::postorder(node* p)
 
 void btree::print_reveorder() {
 
+    // use stack to store the result of in order traversal
     stack<node *> treeStack;
     
     reveorder(root, treeStack);
@@ -505,6 +532,7 @@ void btree::print_reveorder() {
 
 void btree::reveorder(node* p, stack<node *> &myStack) {
 
+    // recursive alogorithm to implment reverse order tranversal
     if (p != NULL) {
         reveorder(p->left, myStack);
         myStack.push(p);
@@ -559,8 +587,7 @@ int btree::search(int val)
 {
     // This function must call the private function
     // search_element(node*,int) passing the root and
-    // the integer value val as parameters. The function
-    // must use recursion.
+    // the integer value val as parameters.
 
     return search_element(root, val);
 
@@ -648,7 +675,7 @@ bool is_integer(string text) {
     int len = static_cast<int>(text.length());
 
     for (int i = 0; i < len; i++) {
-        if (!isdigit(text[i]) && !(text[i] == '-' && i == 0)) {
+        if (!isdigit(text[i]) && !(text[i] == '-' && i == 0) && !(text[i] == '+' && i == 0)) {
             return false;
         }
     }
