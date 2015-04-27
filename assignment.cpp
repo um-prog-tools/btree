@@ -185,11 +185,13 @@ int main(int argc, char* argv[]) {
                     cout << "Warning: file " << argv[i] << " doesn't exist!" << endl;
                     continue;
                 } else {
+                    cout << "Reading numbers in file " << argv[i] << endl;
                     while (input_file >> tmp_str) {
                         if (is_integer(tmp_str)) {
                             tmp = atoi(tmp_str.c_str());
                             my_tree.insert(tmp);
                         } else {
+                            cout << "Warning: " << tmp_str << " is not a number! Skip it!" << endl;
                             continue;
                         }
                     }
@@ -219,6 +221,15 @@ int main(int argc, char* argv[]) {
         cout << " Enter your choice : ";
 
         cin >> ch;
+
+        if (cin.fail()) {
+            // if ch is not an int.
+            cerr << "Please enter a correct choice!" << endl;
+            cin.clear();
+            std::cin.ignore(256,'\n');
+            continue;
+        }
+
         switch(ch)
         {
         case 0:
@@ -280,7 +291,7 @@ int main(int argc, char* argv[]) {
             cout << tmp1 << " are leaves and " << tmp - tmp1 << " are interior nodes" << endl;
             break;
         default:
-            cout << "Please enter a correct choice!" << endl;
+            cerr << "Please enter a correct choice!" << endl;
             break;
         }
     }
