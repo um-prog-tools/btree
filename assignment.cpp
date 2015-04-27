@@ -253,6 +253,7 @@ void btree::print_inorder()
 {
     // this function must call the private inorder(node*)
     // function passing the root as the parameter
+    inorder(root);
 }
 
 void btree::inorder(node* p)
@@ -263,12 +264,18 @@ void btree::inorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if (p != NULL) {
+      inorder(p->left);
+      cout << p->data << " " ;
+      inorder(p->right);
+    }
 }
 
 void btree::print_preorder()
 {
     // This function must call the private pre-order(node*)
     // function passing the root as the parameter
+    preorder(root);
 }
 
 void btree::preorder(node* p)
@@ -279,12 +286,19 @@ void btree::preorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if (p != NULL)
+    {
+      cout << p->data << " " ;
+      preorder(p->left);
+      preorder(p->right);
+    }
 }
 
 void btree::print_postorder()
 {
     // This function must call the private post-order(node*)
     // function passing the root as the parameter
+    postorder(root);
 }
 
 void btree::postorder(node* p)
@@ -295,6 +309,11 @@ void btree::postorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if (p != NULL) {
+      postorder(p->left);
+      postorder(p->right);
+      cout << p->data << " " ;
+    }
 }
 
 bool btree::search(int val)
