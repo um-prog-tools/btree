@@ -17,11 +17,11 @@
  *     the structure of the tree.
  * (2) Learning how to interact with a main repository
  *     (with no push permission).
+ * Extra objective:
  * (3) Try to use the right way to document the code,
  *     so that to run with the Documentation Generator.
  * Github Repository:  https://github.com/YuanZhou2015/btree/commits/Yuan
  */
-
 
 #include <iostream>
 #include <cstdlib>
@@ -55,9 +55,9 @@ public:
     void print_preorder();
     void print_postorder();
     bool search(int);
-/******************************************************************
-        Bonus Functions prototype
- ******************************************************************/
+    //*********************************
+    //    Bonus Functions prototype
+    //*********************************
     void print_reverseorder();
     void print_height();
     void print_numberofinNode();
@@ -71,9 +71,9 @@ private:
     void preorder(node*);
     void postorder(node*);
     bool search_element(node*, int);
-/******************************************************************
-        Bonus Functions prototype
- ******************************************************************/
+    //*********************************** 
+    //    Bonus Functions prototype
+    //*********************************** 
     void reverseorder(node*);
     int height(node*);
     int l,r;
@@ -116,7 +116,8 @@ void btree::insert(int d)
     node* parent_node = NULL;
 
     // first of all, check if d already exists in the tree
-    // if d is not in the tree already, create a new node with data equal d
+    // if d is not in the tree already, create a new node 
+    // with data equal d
 
     if(!search(d)){
         while (child_node != NULL){
@@ -189,6 +190,7 @@ void btree::remove(int d)
         if (child_node == root){
             root = NULL;
             cout << "Number " << d << " is deleted.\n";
+            return;
         }
         if (child_node == parent_node->left){
             parent_node->left = NULL;
@@ -225,6 +227,7 @@ void btree::remove(int d)
         if (child_node == root){
             root = child_node->right;
             cout << "Number " << d << " is deleted.\n";
+            return;
         }
         if (child_node == parent_node->left){
             parent_node->left = child_node->right;
@@ -243,21 +246,29 @@ void btree::remove(int d)
     if (child_node->left != NULL && child_node->right != NULL){
         node* grandchild_node = child_node->left;
         if (grandchild_node->left == NULL && grandchild_node->right == NULL){
-            grandchild_node->right = child_node->right;
+            child_node->data = grandchild_node->data;
+            child_node->left = NULL;
             delete grandchild_node;
             cout << "Number " << d << " is deleted.\n";
         }
         else{
-            node* grc_right_node = grandchild_node->right;
-            node* grc_rightP_node = grandchild_node;
-            while (grc_right_node->right != NULL){
-                grc_rightP_node = grc_right_node;
-                grc_right_node = grc_right_node->right;
+            if (grandchild_node->left != NULL && grandchild_node->right == NULL) {
+                child_node->data = grandchild_node->data;
+                child_node->left = grandchild_node->left;
+                delete grandchild_node;
             }
-            child_node->data = grc_right_node->data;
-            grc_rightP_node->right = grc_right_node->left;
-            delete grc_right_node;
-            cout << "Number " << d << " is deleted.\n";
+            else{
+                node* grc_right_node = grandchild_node->right;
+                node* grc_rightP_node = grandchild_node;
+                while (grc_right_node->right != NULL){
+                    grc_rightP_node = grc_right_node;
+                    grc_right_node = grc_right_node->right;
+                }
+                child_node->data = grc_right_node->data;
+                grc_rightP_node->right = grc_right_node->left;
+                delete grc_right_node;
+                cout << "Number " << d << " is deleted.\n";
+            }
         }
     }
 }
@@ -395,11 +406,9 @@ bool btree::search_element(node* p, int val) {
     return false;
 }
 
-/******************************************************************
-
-       Bonus Functions
-
-******************************************************************/
+//*********************************************** 
+//       Bonus Functions                          
+//***********************************************
 
 /**
  * @short print out in reverseorder sequence
@@ -549,8 +558,10 @@ void btree::print_LevelOrder(){
  * then print out the tree in the level order.
 */
 void btree::LevelOrder(node* p){
-    if (!p)
+    if (!p){
+        cout << " The tree is empty.";
         return;
+    }
     queue<node*> nodesQueue;
     int nodeinCurrentLevel = 1;
     int nodeinNextlevel = 0;
@@ -571,20 +582,11 @@ void btree::LevelOrder(node* p){
             nodeinNextlevel = 0;
         }
     }    
-}
-
-
+} 
 
 
 int main(int argc, char* argv[])
-{
-
-    /**
-        If the program is called without arguments, then
-        the user is taken straight to the list of options
-    */
-
-
+{ 
     // ********************** W A R N I N G **********************
     // In general, you do not need to make any change in the main
     // program.  The only case when you will need to make changes
@@ -593,28 +595,31 @@ int main(int argc, char* argv[])
     // below.
     // ***********************************************************
 
-    // instantiate the tree
+    /** instantiate the tree */
     btree my_tree;
 
     // some auxiliary variables
     int ch,tmp,tmp1;
     bool ans;
 
-
-/******************************************************************
-
-       Bonus for Reading numbers from an input file.
-
-******************************************************************/
     /**
-        If an argument is passed to the program and that argument is
-        alphabetic, the program will assume that it refers to an input
-        file and the input file will contain a sequence of numbers 
-        which will be read and stored in the tree before prompting the 
-        menu to the terminal.
+        If the program is called WITHOUT arguments, then
+        the user is taken straight to the list of options
+    */
 
-        Else, then the program assumes the arguments are a list of
-        integers and it inserts one by one into the tree. 
+    //***********************************************************  
+    // Bonus for Reading numbers from an input file.
+    //***********************************************************
+
+    /**
+        If an argument is passed to the program and that argument 
+        is ALPHABETIC, the program will assume that it refers to 
+        an input file and the input file will contain a sequence 
+        of numbers which will be read and stored in the tree 
+        before prompting the menu to the terminal.
+
+        Else, then the program assumes the arguments are a list 
+        of integers and it inserts one by one into the tree. 
     */
 
     if (argc > 1) {
@@ -694,9 +699,9 @@ int main(int argc, char* argv[])
             if (ans) cout << tmp1 << " was found!!!" << endl;
             else cout << tmp1 << " was not found" << endl;
             break;
-        // ***************************************************
+        //***************************************************
         //     Implement the extra credit options
-        // ***************************************************
+        //***************************************************
         case 7:
             cout << endl;
             cout << " Reverse Order Traversal: " << endl << endl;
