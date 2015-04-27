@@ -279,6 +279,7 @@ bool btree::search(int val)
     // the integer value val as parameters and returning
     // the same answer it gets from search_element()
     // back to the main program.
+    return search_element(root, val);
 
 }
 
@@ -289,25 +290,20 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
-    while (p != NULL)
-    {
-        if (p->data == val)
-            break;
+    if (p != NULL) {
+     if (val == p->data) {
+       return true;
+     }
 
-        if (val > p->data)
-            p = p->right;
-        else
-        if (val < p->data)
-            p = p->left;
+     if (val > p->data) {
+       return search_element(p->right, val);
+     }
+     else
+       return search_element(p->left, val);
     }
-
-    if (p == NULL)
-        return false;
-
-    if (p->data == val)
-        return true;
-
+    else {
     return false;
+  }
 }
 
 int main(int argc, char* argv[])
