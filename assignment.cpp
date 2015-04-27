@@ -52,19 +52,46 @@ bool btree::isEmpty()
 
 void btree::insert(int d)
 {
-    // this function must insert the value d in the tree
 
-    // first of all, check if d already exists in the tree
-    // you can do this by calling to the search(int) function
+    node* c;
+    c = root;
+    node* p;
+    p = NULL;
+    if (search(d) == true) {
+        cout << "\n" << " The number " << d << " is already part of the existing tree.";
+        return;
+    }
+    if (isEmpty() != false) {
+        root = new node;
+        root->data = d;
+        root->left = NULL;
+        root->right = NULL;
+        cout << "\n" << " The number " << root->data << " was inserted into the tree.";
+    } else {
+        while (c != NULL) {
+            p = c;
+            if (c->data > d) {
+                c = c->left;
+            } else {
+                c = c->right;
+            }
+        }
+        if (p->data > d) {
+            p->left = new node;
+            p->left->data = d;
+            p->left->left = NULL;
+            p->left->right = NULL;
+        } else {
+            p->right = new node;
+            p->right->data = d;
+            p->right->left = NULL;
+            p->right->right = NULL;
+        }
 
-    // if d is not in the tree already, create a new node with data equal d
-
-    // if the tree is empty, set the root to the new node
-
-    // if the tree is not empty, look for the right place where to insert d
-    // in order to do this, you may need to keep track of the potential
-    // parent node to which the new node will be attached as a child
+        cout << "\n" << "The number " << d << " was inserted into the tree.";
+    }
 }
+
 
 void btree::remove(int d)
 {
@@ -82,19 +109,20 @@ void btree::remove(int d)
 
 void btree::print_inorder()
 {
-    // this function must call the private inorder(node*)
-    // function passing the root as the parameter
+    inorder(root);
 }
+
 
 void btree::inorder(node* p)
 {
-    // This function receives a node as parameter
-    // then traverses the tree following the in-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    if (p != NULL)
+    {
+        inorder(p->left);
+        cout << p->data << " ";
+        inorder(p->right);
+    }
 }
+
 
 void btree::print_preorder()
 {
