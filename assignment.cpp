@@ -216,39 +216,37 @@ void btree::remove(int d)
         current_node->right = NULL;
         cout << d << " has been removed from the Tree" << endl;
       }
-
-
-        else //right child has children
+    else // Right child has children
+    {
+    // If the node's right child has a left child
+    // Move all the way down left to locate smallest element
+      if((current_node->right)->left != NULL)
+      {
+        node* leftCurrent;
+        node* leftCurrentPred;
+        leftCurrentPred=current_node->right;
+        leftCurrent = (current_node->right)->left;
+        while(leftCurrent->left != NULL)
         {
-        //if the node's right child has a left child
-        //Move all the way down left to locate smallest element
-            if ((current->rChildptr)->lChildptr != NULL)
-            {
-            Node* lcurr;
-            Node* lcurrp;
-            lcurrp = current->rChildptr;
-            lcurr = (current->rChildptr)->lChildptr;
-            while(lcurr->lChildptr != NULL)
-                {
-                    lcurrp = lcurr;
-                    lcurr = lcurr->lChildptr;
-                }
-            current->data = lcurr->data;
-            delete lcurr;
-            lcurrp->lChildptr = NULL;
-            }
-            else 
-            {
-                Node* temp;
-                temp = current->rChildptr;
-                current->data = temp ->data;
-                current->rChildptr = temp->rChildptr;
-                delete temp;
-            }
-
+            leftCurrentPred=leftCurrent;
+            leftCurrent=leftCurrent->left;
         }
-        return;
+        current_node->data=leftCurrent->data;
+        delete leftCurrent;
+        leftCurrentPred->left = NULL;
+        cout << d << " has been removed from the Tree." << endl;
+      }
+      else
+      {
+        node* temp=current_node->right;
+        current_node->data=temp->data;
+        current_node->right=temp->right;
+        delete temp;
+        cout << d << " has been removed from the Tree." << endl;
+      }
     }
+   return;
+  }
 }
 
 void btree::print_inorder()
