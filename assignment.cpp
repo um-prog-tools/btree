@@ -239,7 +239,7 @@ void btree::inorder(node* p)
 
 	if (p != NULL) {
 		inorder(p->left);
-		cout << p->data << " " << endl;
+		cout << p->data << " ";
 		inorder(p->right);
 	}
 }
@@ -261,7 +261,7 @@ void btree::preorder(node* p)
 	// The function must use recursion.
 
 	if (p != NULL) {
-		cout << p->data << " " << endl;
+		cout << p->data << " ";
 		inorder(p->left);
 		inorder(p->right);
 	}
@@ -286,7 +286,7 @@ void btree::postorder(node* p)
 	if (p != NULL) {
 		inorder(p->left);
 		inorder(p->right);
-		cout << p->data << " " << endl;
+		cout << p->data << " ";
 	}
 }
 
