@@ -115,11 +115,11 @@ void btree::insert(int d)
 		//return;
 	} else {
 		//if (ptrsave->data < pnewnode->data) {
-			ptrsave->right = pnewnode;
-			pnewnode->left = NULL;
-			pnewnode->right = NULL;
-			cout << "New node added to the right" <<endl;
-			//return;
+		ptrsave->right = pnewnode;
+		pnewnode->left = NULL;
+		pnewnode->right = NULL;
+		cout << "New node added to the right" <<endl;
+		//return;
 	}
 }
 
@@ -296,7 +296,12 @@ bool btree::search(int val)
 	// search_element(node*,int) passing the root and
 	// the integer value val as parameters. The function
 	// must use recursion.
-	if (search_element(root, val)) return true;
+
+	if (search_element(root, val)) {
+		return true;
+	} else { 
+		return false;
+	}
 }
 
 bool btree::search_element(node* p, int val) {
@@ -307,38 +312,55 @@ bool btree::search_element(node* p, int val) {
 	// If the value is found, then it returns true.
 	// The function must use recursion.
 
-	bool found = false;
-	//node *ptraverse;
+	//bool found = true;
+	int num_of_occurance = 0;
+	node *ptrsave = 0;
 	if (val == root->data) {
+
 		p = root;
-		found = true;
+		//location = root;
+		//parent = NULL;
+
+		//found = true;
+		num_of_occurance++;
+		cout << "Item was found at root " << endl;
 		return true;
 	} 
 	else { 
 		if (val < root->data) {
 			p = root->left;
-			//ptraverse = root;
+			ptrsave = root;
+			//return false;
 		} 
 		else {
 			p = root->right;
-			//ptraverse = root;
+			ptrsave = root;
+			//return false;
 		}
 	}
 	while (p != NULL) {
-		search_element(p, val);
+		//search_element(p, val);
+		if (val == p->data) {
+			//node *location = p;
+			//node *parent = ptrsave;
+
+			//found = true;
+			num_of_occurance++;
+			cout << "Item was found with occurence of " << num_of_occurance << " times" << endl;
+			return true;
+		} else {
+			if (val < p->data) {
+				ptrsave = p;
+				p = p->left;
+				//return false;
+			} else {
+				ptrsave = p;
+				p = p->right;
+				//return false;
+			}
+		}
 	}
-	/*
-	if (val == p->data) {
-	return true;
-	}
-	if (val < p->data) {
-	p = p->left;
-	} 
-	else {
-	p = p->right;
-	}
-	} */
-	//return true;
+	return false;
 }
 
 int main(int argc, char* argv[])
