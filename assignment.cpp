@@ -314,53 +314,29 @@ bool btree::search_element(node* p, int val) {
 
 	//bool found = true;
 	int num_of_occurance = 0;
-	node *ptrsave = 0;
-	if (val == root->data) {
+	node *location, *parent, *ptrsave;
+	//location = root;
+	location = p;
+	ptrsave = NULL;
 
-		p = root;
-		//location = root;
-		//parent = NULL;
-
-		//found = true;
+	if (val == location->data) {
 		num_of_occurance++;
-		cout << "Item was found at root " << endl;
+		cout << "Item was found with occurence of " << num_of_occurance << " times" << endl;
 		return true;
-	} 
-	else { 
-		if (val < root->data) {
-			p = root->left;
-			ptrsave = root;
-			//return false;
-		} 
-		else {
-			p = root->right;
-			ptrsave = root;
-			//return false;
-		}
-	}
-	while (p != NULL) {
-		//search_element(p, val);
-		if (val == p->data) {
-			//node *location = p;
-			//node *parent = ptrsave;
-
-			//found = true;
-			num_of_occurance++;
-			cout << "Item was found with occurence of " << num_of_occurance << " times" << endl;
-			return true;
+	} else { 
+		if (val < location->data) {
+			ptrsave = location;
+			location = location->left;
 		} else {
-			if (val < p->data) {
-				ptrsave = p;
-				p = p->left;
-				//return false;
-			} else {
-				ptrsave = p;
-				p = p->right;
-				//return false;
-			}
+			ptrsave = location;
+			location = location->right;
 		}
 	}
+	if (location != NULL) {
+		search_element(location, val);
+	} else {
 	return false;
+	}
 }
 
 int main(int argc, char* argv[])
