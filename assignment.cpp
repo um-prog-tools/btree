@@ -1,3 +1,7 @@
+// Homework #9
+// By Shepherd Tate
+// Created April 25, 2015
+
 
 #include <iostream>
 #include <cstdlib>
@@ -130,31 +134,38 @@ void btree::print_preorder()
     // function passing the root as the parameter
 }
 
+void btree::print_preorder()
+{
+    preorder(root);
+}
+
 void btree::preorder(node* p)
 {
-    // This function receives a node as parameter
-    // then traverses the tree following the pre-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    if (p != NULL)
+    {
+        cout << p->data << " ";
+        preorder(p->left);
+        preorder(p->right);
+    }
 }
+
 
 void btree::print_postorder()
 {
-    // This function must call the private post-order(node*)
-    // function passing the root as the parameter
+    postorder(root);
 }
+
 
 void btree::postorder(node* p)
 {
-    // This function receives a node as parameter
-    // then traverses the tree following the post-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    if (p != NULL)
+    {
+        postorder(p->left);
+        postorder(p->right);
+        cout << p->data << " ";
+    }
 }
+
 
 bool btree::search(int val)
 {
