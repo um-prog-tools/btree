@@ -162,7 +162,41 @@ void btree::remove(int d)
     //    3. you're removing a node with 2 children
     // make sure you can handle all three cases.
     
-    
+    // Case 1: removing a node with single child
+    if ((current_node->left == NULL and current_node->right != NULL)
+        or (current_node->right == NULL and current_node->left != NULL)) {
+
+        if (current_node->left == NULL and current_node->right != NULL) {
+          if (predecessor->left == current_node) {
+            predecessor->left = current_node->right;
+            delete current_node;
+            current_node = NULL;
+            cout << d << "has been removed from the tree" << endl;
+            }
+          else {
+            predecessor->right = current_node->right;
+            delete current_node;
+            current_node = NULL;
+            cout << d << "has been removed from the tree" << endl;
+               }
+            }
+          else {
+           if (current_node->right == NULL and current_node->left != NULL) {
+            if (predecessor->left == current_node) {
+                predecessor->left = current_node->left;
+                delete current_node;
+                current_node = NULL;
+                cout << d << "has been removed from the tree" << endl;
+            }
+            else {
+                predecessor->right = current_node->left;
+                delete current_node;
+                current_node = NULL;
+                cout << d << "has been removed from the tree" << endl;
+                }
+            }
+        }
+    }
         else //left child ok, no right child
         {
             if(parent->lChildptr==current)
