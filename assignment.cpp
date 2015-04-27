@@ -119,14 +119,41 @@ void btree::insert(int d)
 
 void btree::remove(int d)
 {
+    bool found = false;
+    node* predecessor;
+    node* current_node = root;
     // this function must remove the node that has the value d
 
     // first of all, check if the tree is empty
-    if (!root)
-    {
-        cout << "The tree is empty\n";
+    if (isEmpty()) {
+        std::cout << "The tree is empty" << std::endl;
         return;
     }
+    if (current_node->left == NULL && current_node->right == NULL) {
+        root = NULL;
+        return;
+    }
+    while (current_node != NULL) {
+        if (current_node->data == d) {
+         found = true;
+        break;
+        }
+        else {
+         predecessor = current_node;
+         if (d < current_node->data) {
+            current_node = current_node->left;
+        }
+        else {
+            current_node = current_node->right;
+            }
+        }
+    }
+
+    if (!found) {
+        cout << d << " not in the tree" << endl;
+        return;
+    }
+
     // if it is not, then locate the element with the value
     // once you know the location, that is, you have the pointer to the node
     // with the value you want to eliminate, you will have three cases:
@@ -135,25 +162,7 @@ void btree::remove(int d)
     //    3. you're removing a node with 2 children
     // make sure you can handle all three cases.
     
-    Node* current;
-    Node* parent;
-    current=root;
-    //Node with single child.
-    if((current->lChildptr == NULL && current->rChildptr != NULL)||(current->lChildptr != NULL && current->rChildptr == NULL))
-    {
-        if(current->lChildptr == NULL && current->rChildptr != NULL)
-        {
-            if(parent->lChildptr==current)
-            {
-                parent->lChildptr = current->rChildptr;
-                delete current;
-            }
-            else
-            {
-                parent->rChildptr = current->rChildptr;
-                delete current;
-            }
-        }
+    
         else //left child ok, no right child
         {
             if(parent->lChildptr==current)
