@@ -55,10 +55,10 @@ bool btree::isEmpty()
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
-    if (root==NULL){
-    return true;
-    } else {
-    return false;
+    if (root==NULL)
+     return true;
+    else
+     return false;
     }
 }
 
@@ -76,21 +76,45 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
-    if( root == 0 )
-    {
-        root *temp = new root;
-        temp->setData(100);
-        temp->setRight(0);
-        temp->setLeft(0);
-        root = temp;
+    if (!search(d)) { // if 'd' is not in the tree.
+    if (isEmpty()) {  // if 'd' is the first element of the tree
+      root = new node;
+      root->data = d;
+      root->left = NULL;
+      root->right = NULL;
     }
-    else
-    {
-    if( d > root->getData() )
-        return insert( d, root->getRight() );
-    else
-        return insert( d, root->getLeft() );
+    else {
+      // search for a place to insert 'd'
+    node* current_node = root;
+
+    while(true) {
+      if (d < current_node->data) {
+        if (current_node->left != NULL) {
+          current_node = current_node->left;
+          }
+        else {
+          current_node->left = new node;
+          current_node->left->data = d;
+          current_node->left->left = NULL;
+          current_node->left->right = NULL;
+          break;
+        }
+      }
+      else if (d >= current_node->data) {
+        if (current_node->right != NULL) {
+          current_node = current_node->right;
+        }
+        else {
+          current_node->right = new node;
+          current_node->right->data = d;
+          current_node->right->left = NULL;
+          current_node->right->right = NULL;
+          break;
+          }
+        }
+      }
     }
+  }
 }
 
 void btree::remove(int d)
