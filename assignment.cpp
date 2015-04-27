@@ -64,7 +64,10 @@ bool btree::isEmpty()
     // empty and false if it is not empty. You just
     // need to look at the root.
 
-    return true;
+    if (root == NULL)
+        return true;
+    else
+        return false;
 }
 
 void btree::insert(int d)
@@ -72,8 +75,6 @@ void btree::insert(int d)
     // this function must insert the value d in the tree
 
     nnodes++;
-
-
 
     // first of all, check if d already exists in the tree
     // you can do this by calling to the search(int) function
@@ -346,6 +347,7 @@ int main(int argc, char* argv[])
             if (ans) cout << tmp1 << " was found!!!" << endl;
             else cout << tmp1 << " was not found" << endl;
         case 7:
+            cout << " Printing Tree Levels Traverse: " << endl;
             my_tree.printLevels();
             break;
             // ***************************************************
