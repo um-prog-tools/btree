@@ -10,7 +10,7 @@
  * @return 0 on Success
  * @return 1 on Failure
  */
- 
+
 /// External Libraries
 #include <iostream>
 #include <cstdlib>
@@ -23,7 +23,7 @@ using namespace std;
 class btree ///< Brief description after the member
 {
 private:
-
+    
     struct node
     {
         node* left;
@@ -31,15 +31,15 @@ private:
         int data;
     };
     node* root;
-
+    
 public:
-
+    
     btree();
     bool isEmpty();
-
+    
     void insert(int);
     void remove(int);
-
+    
     void print_inorder();
     void print_preorder();
     void print_postorder();
@@ -49,9 +49,9 @@ public:
     void print_info();
     
     bool search(int);
-
+    
 private:
-
+    
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
@@ -59,9 +59,9 @@ private:
     int Height(node*);
     void level_order(node*);
     void info(node*);
-
+    
     bool search_element(node*, int);
-
+    
 };
 
 btree::btree() {
@@ -74,39 +74,39 @@ btree::btree() {
 bool btree::isEmpty()
 {
     /** This functions returns true if the tree is
-    * empty and false if it is not empty. You just
-    * need to look at the root.
-    */
-    if ( root == NULL ) 
-    { 
+     * empty and false if it is not empty. You just
+     * need to look at the root.
+     */
+    if ( root == NULL )
+    {
         return true;
     }
     else
     {
         return false;
-    }         
+    }
 }
 
 void btree::insert(int d)
 {
     /// this function must insert the value d in the tree
-
+    
     node *temp, *parent;
     
     /// first of all, check if d already exists in the tree
     /// you can do this by calling to the search(int) function
     
     bool check = btree::search(d);
-
-    if ( !check )
     
-    /// if d is not in the tree already, create a new node with data equal d
-     
+    if ( !check )
+        
+        /// if d is not in the tree already, create a new node with data equal d
+        
     {
         if ( btree::isEmpty() )
-        
-        /// if the tree is empty, set the root to the new node
-
+            
+            /// if the tree is empty, set the root to the new node
+            
         {
             root = new node;
             root->data = d;
@@ -115,11 +115,11 @@ void btree::insert(int d)
             temp = root;
         }
         else
-        
-        /// if the tree is not empty, look for the right place where to insert d
-        /// in order to do this, you may need to keep track of the potential
-        /// parent node to which the new node will be attached as a child
-        
+            
+            /// if the tree is not empty, look for the right place where to insert d
+            /// in order to do this, you may need to keep track of the potential
+            /// parent node to which the new node will be attached as a child
+            
         {
             temp=root;
             while (temp!=NULL) {
@@ -132,28 +132,28 @@ void btree::insert(int d)
                 {
                     parent =temp;
                     temp=temp->right;
-                }               
-            }   
+                }
+            }
             node *newNode = new node;
             newNode->data = d;
             newNode->left = NULL;
             newNode->right = NULL;
-
+            
             /// Now insert the new node BELOW parent
             if(d <= parent->data)
             {
                 parent->left = newNode;
-            }   
+            }
             else
             {
                 parent->right = newNode;
-            }    
+            }
         }
     }
     else
     {
         return;
-    }    
+    }
 }
 
 void btree::remove(int d)
@@ -167,13 +167,13 @@ void btree::remove(int d)
         return;
     }
     else
-    /// if it is not, then locate the element with the value
+        /// if it is not, then locate the element with the value
     {
         check = btree::search(d);
-        if ( !check ) 
+        if ( !check )
         {
             cout << " There Is No Element Equal to That";
-        }       
+        }
         else
         {
             temp1 = root;
@@ -205,145 +205,145 @@ void btree::remove(int d)
                 if ( temp1 == root )
                 {
                     node *current, *trailCurrent, *temp;
-
-	                if (root->left == NULL && root->right == NULL)
-	                {
-		                temp = root;
-		                root = NULL;
-		                delete temp;
-	                }
-	                else if (root->left == NULL)
-	                {
-		                temp = root;
-		                root = temp->right;
-		                delete temp;
-	                }
-	               else if (root->right == NULL)
-	               {
-		                temp = root;
-		                root = temp->left;
-		                delete temp;
-	               }
-	               else
-	               {
-		                current = root->left;
-		                trailCurrent = NULL;
-
-		                while (current->right != NULL)
-		                {
-			                trailCurrent = current;
-			                current = current->right;
-		                }
-
-		                root->data = current->data;
-
-		                if (trailCurrent == NULL)
-		                {
-			                root->left = current->left;
-			            }    
-		                else
-		                {
-			                trailCurrent->right = current->left;
-			            }    
-
-		                delete current;
-		            }    
+                    
+                    if (root->left == NULL && root->right == NULL)
+                    {
+                        temp = root;
+                        root = NULL;
+                        delete temp;
+                    }
+                    else if (root->left == NULL)
+                    {
+                        temp = root;
+                        root = temp->right;
+                        delete temp;
+                    }
+                    else if (root->right == NULL)
+                    {
+                        temp = root;
+                        root = temp->left;
+                        delete temp;
+                    }
+                    else
+                    {
+                        current = root->left;
+                        trailCurrent = NULL;
+                        
+                        while (current->right != NULL)
+                        {
+                            trailCurrent = current;
+                            current = current->right;
+                        }
+                        
+                        root->data = current->data;
+                        
+                        if (trailCurrent == NULL)
+                        {
+                            root->left = current->left;
+                        }
+                        else
+                        {
+                            trailCurrent->right = current->left;
+                        }
+                        
+                        delete current;
+                    }
                 }
                 else if ( temp2->data > d)
                 {
                     node *current, *trailCurrent, *temp;
-
-	                if (temp2->left->left == NULL && temp2->left->right == NULL)
-	                {
-		                temp = temp2->left;
-		                temp2->left = NULL;
-		                delete temp;
-	                }
-	                else if (temp2->left->left == NULL)
-	                {
-		                temp = temp2->left;
-		                temp2->left = temp->right;
-		                delete temp;
-	                }
-	               else if (temp2->left->right == NULL)
-	               {
-		                temp = temp2->left;
-		                temp2->left = temp->left;
-		                delete temp;
-	               }
-	               else
-	               {
-		                current = temp2->left->left;
-		                trailCurrent = NULL;
-
-		                while (current->right != NULL)
-		                {
-			                trailCurrent = current;
-			                current = current->right;
-		                }
-
-		                temp2->left->data = current->data;
-
-		                if (trailCurrent == NULL) 
-		                {
-			                temp2->left->left = current->left;
-			            }    
-		                else
-		                {
-			                trailCurrent->right = current->left;
-			            }    
-
-		                delete current;
-		            }    
+                    
+                    if (temp2->left->left == NULL && temp2->left->right == NULL)
+                    {
+                        temp = temp2->left;
+                        temp2->left = NULL;
+                        delete temp;
                     }
+                    else if (temp2->left->left == NULL)
+                    {
+                        temp = temp2->left;
+                        temp2->left = temp->right;
+                        delete temp;
+                    }
+                    else if (temp2->left->right == NULL)
+                    {
+                        temp = temp2->left;
+                        temp2->left = temp->left;
+                        delete temp;
+                    }
+                    else
+                    {
+                        current = temp2->left->left;
+                        trailCurrent = NULL;
+                        
+                        while (current->right != NULL)
+                        {
+                            trailCurrent = current;
+                            current = current->right;
+                        }
+                        
+                        temp2->left->data = current->data;
+                        
+                        if (trailCurrent == NULL)
+                        {
+                            temp2->left->left = current->left;
+                        }
+                        else
+                        {
+                            trailCurrent->right = current->left;
+                        }
+                        
+                        delete current;
+                    }
+                }
                 else
                 {
                     node *current, *trailCurrent, *temp;
-
-	                if (temp2->right->left == NULL && temp2->right->right == NULL)
-	                {
-		                temp = temp2->right;
-		                temp2->right = NULL;
-		                delete temp;
-	                }
-	                else if (temp2->right->left == NULL)
-	                {
-		                temp = temp2->right;
-		                temp2->right = temp->right;
-		                delete temp;
-	                }
-	               else if (temp2->right->right == NULL)
-	               {
-		                temp = temp2->right;
-		                temp2->right = temp->left;
-		                delete temp;
-	               }
-	               else
-	               {
-		                current = temp2->right->left;
-		                trailCurrent = NULL;
-
-		                while (current->right != NULL)
-		                {
-			                trailCurrent = current;
-			                current = current->right;
-		                }
-
-		                temp2->right->data = current->data;
-
-		                if (trailCurrent == NULL)
-		                {
-			                temp2->right->left = current->left;
-			            }    
-		                else
-		                {
-			                trailCurrent->right = current->left;
-			            }    
-
-		                delete current;
-		            }                    }
+                    
+                    if (temp2->right->left == NULL && temp2->right->right == NULL)
+                    {
+                        temp = temp2->right;
+                        temp2->right = NULL;
+                        delete temp;
+                    }
+                    else if (temp2->right->left == NULL)
+                    {
+                        temp = temp2->right;
+                        temp2->right = temp->right;
+                        delete temp;
+                    }
+                    else if (temp2->right->right == NULL)
+                    {
+                        temp = temp2->right;
+                        temp2->right = temp->left;
+                        delete temp;
+                    }
+                    else
+                    {
+                        current = temp2->right->left;
+                        trailCurrent = NULL;
+                        
+                        while (current->right != NULL)
+                        {
+                            trailCurrent = current;
+                            current = current->right;
+                        }
+                        
+                        temp2->right->data = current->data;
+                        
+                        if (trailCurrent == NULL)
+                        {
+                            temp2->right->left = current->left;
+                        }
+                        else
+                        {
+                            trailCurrent->right = current->left;
+                        }
+                        
+                        delete current;
+                    }                    }
             }
-        }               
+        }
     }
 }
 
@@ -458,7 +458,7 @@ bool btree::search(int val)
     else
     {
         return false;
-    }        
+    }
 }
 
 bool btree::search_element(node* p, int val) {
@@ -487,8 +487,8 @@ bool btree::search_element(node* p, int val) {
     }
     else
     {
-    /// If the item occurs, it must be in the right subtree.
-    return search_element( p->right, val );
+        /// If the item occurs, it must be in the right subtree.
+        return search_element( p->right, val );
     }
 }
 
@@ -511,15 +511,15 @@ int btree::Height(node* p)
     if (root == NULL)
     {
         return 0;
-    }    
- 
+    }
+    
     /// Create an empty queue for LEVEL ORDER tarversal
     queue<node *> q;
- 
+    
     /// Enqueue Root and initialize height
     q.push(root);
     int height = 0;
- 
+    
     while (1)
     {
         /// nodeCount (queue size) indicates NUMBER of nodes
@@ -527,9 +527,9 @@ int btree::Height(node* p)
         int nodeCount = q.size();
         if (nodeCount == 0)
             return height;
- 
+        
         height++;
- 
+        
         /// Dequeue all nodes of current level and Enqueue all
         /// nodes of next level
         while (nodeCount > 0)
@@ -558,7 +558,7 @@ void btree::level_order(node* p)
     if ( root == NULL )
     {
         return;
-    }    
+    }
     queue<node *> clevel, nlevel;
     clevel.push(root);
     while (!clevel.empty())
@@ -589,8 +589,8 @@ void btree::print_info()
 void btree::info(node* p)
 {
     int num_nodes = 0, num_leaf_nodes = 0, num_interior_nodes = 0;
-    cout << "The tree has " << num_nodes << " total nodes, out of which " 
-         << num_interior_nodes << " are interior, and " << num_leaf_nodes << " are leaves.";    
+    cout << "The tree has " << num_nodes << " total nodes, out of which "
+    << num_interior_nodes << " are interior, and " << num_leaf_nodes << " are leaves.";
 }
 
 int main(int argc, char* argv[])
@@ -617,11 +617,11 @@ int main(int argc, char* argv[])
      * instantiate the tree
      */
     btree my_tree;
-
+    
     /// some auxiliary variables
     int ch,tmp,tmp1;
     bool ans;
-
+    
     /// if arguments are passed, then the program assumes the
     /// arguments are a list of integers and it inserts one by
     /// one into the tree.
@@ -631,7 +631,7 @@ int main(int argc, char* argv[])
             my_tree.insert(tmp);
         }
     }
-
+    
     while(1)
     {
         cout << endl << endl;
@@ -658,67 +658,68 @@ int main(int argc, char* argv[])
         cin >> ch;
         switch(ch)
         {
-        case 0:
-            return 0;
-        case 1:
-            cout << " Enter Number to be inserted: ";
-            cin >> tmp;
-            my_tree.insert(tmp);
-            break;
-        case 2:
-            cout << endl;
-            cout << " In-Order Traversal: " << endl << endl;
-            my_tree.print_inorder();
-            break;
-        case 3:
-            cout << endl;
-            cout << " Pre-Order Traversal: " << endl << endl;
-            my_tree.print_preorder();
-            break;
-        case 4:
-            cout << endl;
-            cout << " Post-Order Traversal: " << endl << endl;
-            my_tree.print_postorder();
-            break;
-        case 5:
-            cout << " Enter data to be deleted: ";
-            cin >> tmp1;
-            my_tree.remove(tmp1);
-            break;
-        case 6:
-            cout << " Enter data to be searched: ";
-            cin >> tmp1;
-            ans = my_tree.search(tmp1);
-            if (ans) cout << tmp1 << " was found!!!" << endl;
-            else cout << tmp1 << " was not found" << endl;
-            break;
-        /**
-         * ***************************************************
-         * If you decide to implement the extra credit options
-         * this is one place where you will need to add code
-         * to provide the user with those extra functions
-         * ***************************************************
-         */
-        case 7:
-            cout << endl;
-            cout << " Reverse-Order Traversal: " << endl << endl;
-            my_tree.print_reverse_order_traversal();
-            break;
-        case 8:
-            cout << endl;
-            cout << " Height of the tree: " << endl << endl;
-            my_tree.print_Height();
-            break;
-        case 9:
-            cout << endl;
-            cout << " Level Order: " << endl << endl;
-            my_tree.print_level_order();
-            break;
-        case 10:
-            cout << endl;
-            cout << " Info: " << endl << endl;
-            my_tree.print_info();
-            break;    
+            case 0:
+                return 0;
+            case 1:
+                cout << " Enter Number to be inserted: ";
+                cin >> tmp;
+                my_tree.insert(tmp);
+                break;
+            case 2:
+                cout << endl;
+                cout << " In-Order Traversal: " << endl << endl;
+                my_tree.print_inorder();
+                break;
+            case 3:
+                cout << endl;
+                cout << " Pre-Order Traversal: " << endl << endl;
+                my_tree.print_preorder();
+                break;
+            case 4:
+                cout << endl;
+                cout << " Post-Order Traversal: " << endl << endl;
+                my_tree.print_postorder();
+                break;
+            case 5:
+                cout << " Enter data to be deleted: ";
+                cin >> tmp1;
+                my_tree.remove(tmp1);
+                break;
+            case 6:
+                cout << " Enter data to be searched: ";
+                cin >> tmp1;
+                ans = my_tree.search(tmp1);
+                if (ans) cout << tmp1 << " was found!!!" << endl;
+                else cout << tmp1 << " was not found" << endl;
+                break;
+                /**
+                 * ***************************************************
+                 * If you decide to implement the extra credit options
+                 * this is one place where you will need to add code
+                 * to provide the user with those extra functions
+                 * ***************************************************
+                 */
+            case 7:
+                cout << endl;
+                cout << " Reverse-Order Traversal: " << endl << endl;
+                my_tree.print_reverse_order_traversal();
+                break;
+            case 8:
+                cout << endl;
+                cout << " Height of the tree: " << endl << endl;
+                my_tree.print_Height();
+                break;
+            case 9:
+                cout << endl;
+                cout << " Level Order: " << endl << endl;
+                my_tree.print_level_order();
+                break;
+            case 10:
+                cout << endl;
+                cout << " Info: " << endl << endl;
+                my_tree.print_info();
+                break;    
         }
     }
 }
+
