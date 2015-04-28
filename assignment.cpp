@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <queue>
 
 using namespace std;
 
@@ -402,6 +403,9 @@ int main(int argc, char* argv[])
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
         // to provide the user with those extra functions
+        cout << " 7. Reverse-Order Traversal " << endl;
+        cout << " 8. Height of the tree " << endl;
+        cout << " 9. No. of leaves of the tree " << endl;
         // ***************************************************
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
@@ -446,6 +450,19 @@ int main(int argc, char* argv[])
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
         // to provide the user with those extra functions
+        case 7:
+            cout << endl;
+            cout << "Reverse-Order Traversal: " << endl << endl;
+            my_tree.print_reverseorder();
+            break;
+        case 8:
+            cout << endl;
+            my_tree.print_height();
+            break;
+        case 9:
+            cout << endl;
+            my_tree.print_leafCount();
+            break;
         // ***************************************************
         }
     }
