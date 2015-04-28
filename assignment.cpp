@@ -33,8 +33,13 @@ public:
     void print_inorder();
     void print_preorder();
     void print_postorder();
+    void print_reverseorder();
+    void print_levelorder();
 
     bool search(int);
+
+    void print_height();
+    void print_leafCount();
 
 private:
 
@@ -42,14 +47,23 @@ private:
     void preorder(node*);
     void postorder(node*);
 
+    void reverseorder(node*);
+    void levelorder(node*);
+
     bool search_element(node*, int);
 
+    int height(node*);
+    int leafCount(node*);
 };
 
 btree::btree() {
     // set the root to NULL
     root = NULL;
 }
+
+/**
+ * @brief returns true is the tree is empty, false otherwise
+ */
 
 bool btree::isEmpty()
 {
@@ -62,6 +76,11 @@ bool btree::isEmpty()
      return false;
     }
 }
+
+ /**
+  * @brief creates a node with the specified data
+  * @param d value of the node
+  **/
 
 void btree::insert(int d)
 {
@@ -77,6 +96,7 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
+
     if (!search(d)) { // if 'd' is not in the tree.
     if (isEmpty()) {  // if 'd' is the first element of the tree
       root = new node;
@@ -117,6 +137,11 @@ void btree::insert(int d)
     }
   }
 }
+
+/**
+ * @brief remove the node for the specified value
+ * @param value to be searched
+ */
 
 void btree::remove(int d)
 {
@@ -250,6 +275,10 @@ void btree::remove(int d)
   }
 }
 
+/**
+ * @brief print the tree inorder
+ */
+
 void btree::print_inorder()
 {
     // this function must call the private inorder(node*)
@@ -271,6 +300,10 @@ void btree::inorder(node* p)
       inorder(p->right);
     }
 }
+
+/**
+ * @brief print the tree preorder
+ */
 
 void btree::print_preorder()
 {
@@ -295,6 +328,10 @@ void btree::preorder(node* p)
     }
 }
 
+/**
+ * @brief print the tree postorder
+ */
+
 void btree::print_postorder()
 {
     // This function must call the private post-order(node*)
@@ -316,6 +353,105 @@ void btree::postorder(node* p)
       cout << p->data << " " ;
     }
 }
+
+/**
+ * @brief print the tree reverseorder
+ */
+
+void btree::print_reverseorder()
+{
+    reverseorder(root);
+}
+
+void btree::reverseorder(node* p)
+{
+    if (p != NULL) {
+    reverseorder(p->right);
+    cout << p->data << " ";
+    reverseorder(p->left);
+    }
+}
+
+/**
+ * @brief print the tree levelorder
+ */
+
+void btree::print_levelorder()
+{
+    levelorder(root);
+}
+
+void btree::levelorder(node* p)
+{
+    if (!root) return;
+    queue<node*> currentLevel, nextLevel;
+    currentLevel.push(p);
+    while (!currentLevel.empty()) {
+    node *currNode = currentLevel.front();
+    currentLevel.pop();
+    if (currNode) {
+        cout << currNode->data << " ";
+        nextLevel.push(currNode->left);
+        nextLevel.push(currNode->right);
+    }
+    if (currentLevel.empty()) {
+        cout << endl;
+        swap(currentLevel, nextLevel);
+        }
+    }
+}
+
+/**
+ * @brief print the height of the tree
+ */
+
+void btree::print_height()
+{
+    cout << "Height of the tree is: " << height(root) << endl;
+}
+
+
+int btree::height(node *p)
+{
+    if (p == NULL)
+    {
+    return -1;
+    }
+
+    int left_height = height(p->left);
+    int right_height = height(p->right);
+
+    return 1 + std::max(left_height, right_height);
+}
+
+/**
+ * @brief print the number of leaves in the tree
+ */
+
+void btree::print_leafCount()
+{
+    cout << "The number leaves in the tree is : " << leafCount(root) << endl;
+}
+
+int btree::leafCount(node* p)
+{
+    if(p == NULL) {
+    return 0;
+    }
+
+    if(p->left == NULL && p->right==NULL) {
+    return 1;
+    }
+    else {
+    return leafCount(p->left)+
+           leafCount(p->right);
+    }
+}
+
+/**
+ * @brief search the tree for the specified value
+ * @param value to be searched
+ */
 
 bool btree::search(int val)
 {
