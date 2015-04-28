@@ -30,6 +30,8 @@ public:
 	void print_inorder();
 	void print_preorder();
 	void print_postorder();
+	void print_reverseorder();
+	void display(int);
 
 	bool search(int);
 
@@ -38,6 +40,8 @@ private:
 	void inorder(node*);
 	void preorder(node*);
 	void postorder(node*);
+	void reverseorder(node*);
+	void display_levels(node*, int);
 
 	bool search_element(node*, int);
 
@@ -291,8 +295,8 @@ void btree::preorder(node* p)
 
 	if (p != NULL) {
 		cout << p->data << " ";
-		inorder(p->left);
-		inorder(p->right);
+		preorder(p->left);
+		preorder(p->right);
 	}
 }
 
@@ -313,9 +317,35 @@ void btree::postorder(node* p)
 	// The function must use recursion.
 
 	if (p != NULL) {
-		inorder(p->left);
-		inorder(p->right);
+		postorder(p->left);
+		postorder(p->right);
 		cout << p->data << " ";
+	}
+}
+
+void btree::print_reverseorder()
+{
+	// this function must call the private inorder(node*)
+	// function passing the root as the parameter
+	reverseorder(root);
+}
+
+void btree::reverseorder(node* p)
+{
+	// This function receives a node as parameter
+	// then traverses the tree following the in-order
+	// sequence. Every time it visits a node it will
+	// print the data in the node to cout leaving a blank
+	// space to separate from the next/previous value.
+	// The function must use recursion.
+
+	//node *ptraverse;
+
+	if (p != NULL) {
+
+		reverseorder(p->right);
+		cout << p->data << " ";
+		reverseorder(p->left);
 	}
 }
 
@@ -343,8 +373,7 @@ bool btree::search_element(node* p, int val) {
 
 	//bool found = true;
 	int num_of_occurance = 0;
-	node *location, *parent, *ptrsave;
-	//location = root;
+	node *location, *ptrsave; //*parent, 
 	location = p;
 	ptrsave = NULL;
 
@@ -366,6 +395,31 @@ bool btree::search_element(node* p, int val) {
 	} else {
 		return false;
 	}
+}
+
+void btree::display(int level) {
+	// This function must call the private function
+	// search_element(node*,int) passing the root and
+	// the integer value val as parameters. The function
+	// must use recursion.
+
+	display_levels(root, level);
+}
+
+void btree::display_levels(node* p, int level) {
+	int i;
+    if (p != NULL) {
+        display_levels(p->right, level+1);
+        cout << endl;
+        if (p == root) {
+            cout << "Root->:  ";
+		} else {
+            for (i = 0; i < level; i++)
+                cout<<"   ";
+	}
+        cout << p->data ;
+        display_levels(p->left, level+1);
+    }
 }
 
 int main(int argc, char* argv[])
@@ -414,8 +468,10 @@ int main(int argc, char* argv[])
 		cout << " 2. In-Order Traversal " << endl;
 		cout << " 3. Pre-Order Traversal " << endl;
 		cout << " 4. Post-Order Traversal " << endl;
-		cout << " 5. Removal "<< endl;
-		cout << " 6. Search "<< endl;
+		cout << " 5. Reverse-Order Traversal " << endl;
+		cout << " 6. Removal "<< endl;
+		cout << " 7. Search "<< endl;
+		cout << " 8. Display "<< endl;
 		// ***************************************************
 		// If you decide to implement the extra credit options
 		// this is one place where you will need to add code
@@ -449,16 +505,27 @@ int main(int argc, char* argv[])
 			my_tree.print_postorder();
 			break;
 		case 5:
+			cout << endl;
+			cout << " Reverse Traversal: " << endl << endl;
+			my_tree.print_reverseorder();
+			break;
+		case 6:
 			cout << " Enter data to be deleted: ";
 			cin >> tmp1;
 			my_tree.remove(tmp1);
 			break;
-		case 6:
+		case 7:
 			cout << " Enter data to be searched: ";
 			cin >> tmp1;
 			ans = my_tree.search(tmp1);
 			if (ans) cout << tmp1 << " was found!!!" << endl;
 			else cout << tmp1 << " was not found" << endl;
+			break;
+		case 8:
+			cout<<"Enter the level to display:"<<endl;
+			cin >> tmp1;
+			my_tree.display(tmp1);
+			cout<< endl;
 			break;
 			// ***************************************************
 			// If you decide to implement the extra credit options
