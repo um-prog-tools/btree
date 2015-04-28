@@ -2,9 +2,12 @@
 // By Shepherd Tate
 // Created April 25, 2015
 
-
 #include <iostream>
 #include <cstdlib>
+#include <string>
+#include <fstream>
+#include <math.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -31,6 +34,7 @@ public:
     void print_inorder();
     void print_preorder();
     void print_postorder();
+    void print_reverseorder();
 
     bool search(int);
 
@@ -39,8 +43,9 @@ private:
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
+    void reverseorder(node*);
 
-    bool search_element(node*, int);
+    bool search_element(node*, int val);
 
 };
 
@@ -50,8 +55,11 @@ btree::btree() {
 
 bool btree::isEmpty()
 {
-    if (root == NULL) return true;
-    return false;
+    if (root == NULL) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void btree::insert(int d)
@@ -73,10 +81,11 @@ void btree::insert(int d)
         cout << "\n" << " The number " << root->data << " was inserted into the tree.";
     } else {
         while (c != NULL) {
-            p = c;
             if (c->data > d) {
+                p = c;
                 c = c->left;
             } else {
+                p = c;
                 c = c->right;
             }
         }
@@ -101,7 +110,7 @@ void btree::remove(int d)
 {
     node *p = NULL;
     node *c = root;
-    if (isEmpty() != true)
+    if (isEmpty() == true)
     {
         cout << "Tree is empty.";
         return;
@@ -163,7 +172,7 @@ void btree::remove(int d)
                 return;
             } else if (c == p->left)
             {
-                p->left = c->left;
+                p->left = c->right;
                 delete c;
                 return;
             } else if (c == p->right)
@@ -174,26 +183,29 @@ void btree::remove(int d)
             }
         } else
         {
-            node* ChildtoRight = c->right;
-            node* ChildtoLeft = c;
-            while (ChildtoRight->left != NULL)
-            {
-                ChildtoLeft = ChildtoRight;
-                ChildtoRight = ChildtoRight->left;
+            node* gc = c->left;
+            if (gc->left == NULL && gc->right == NULL) {
+                c->data = gc->data;
+                c->left = NULL;
+                delete gc;
+            } else if (gc->left != NULL && gc->right == NULL) {
+                c->data = gc->data;
+                c->left = gc->left;
+                delete gc;
+            } else {
+                node* info = gc->right;
+                node* info2 = gc;
+                while (info->right != NULL) {
+                    info2 = info;
+                    info = info->right;
+                }
+                c->data = info->data;
+                info2->right = info->left;
+                delete info;
             }
-            c->data = ChildtoRight->data;
-            if (ChildtoLeft != c)
-            {
-                ChildtoLeft->left = NULL;
-            } else
-            {
-                ChildtoLeft->right = NULL;
-            }
-            delete ChildtoRight;
         }
-
     } else {
-        cout <<  << d << " is not in the tree.";
+        cout << "The number " << d << " does not exist in the tree.";
     }
 }
 
@@ -246,16 +258,34 @@ void btree::postorder(node* p)
     }
 }
 
+void btree::print_reverseorder()
+{
+    reverseorder(root);
+}
+
+void btree::reverseorder(node* p)
+{
+    if (p != NULL) {
+        reverseorder(p->right);
+        cout << p->data << " ";
+        reverseorder(p->left);
+    }
+}
 
 bool btree::search(int val)
 {
-    if (search_element(root, val) == true) {
+    if (root == NULL)
+    {
+        return false;
+    }
+
+    if (search_element(root, val) == true)
+    {
         return true;
     } else {
         return false;
     }
 }
-
 
 bool btree::search_element(node* p, int val)
 {
@@ -284,47 +314,46 @@ bool btree::search_element(node* p, int val)
     return false;
 }
 
+void open_input(ifstream &input, string filename)
+{
+    input.open(filename.c_str());
+    if (!input.is_open())
+    {
+        cout << "Cannot open input file: "
+             << filename
+             << endl;
+        return;
+    }
+}
 
 int main(int argc, char* argv[])
 {
-    // This is the main program.
-
-    // If the program is called without arguments, then
-    // the user is taken straight to the list of options
-    // if the program is called with parameters, the program
-    // assumes these parameters are a list of integers and
-    // inserts those into the tree.
-
-    // Reading the program may help you understand how the
-    // class functions are called.
-
-    // ********************** W A R N I N G **********************
-    // In general, you do not need to make any change in the main
-    // program.  The only case when you will need to make changes
-    // here is if you decide to implement the functions for extra
-    // credit. In which case, the place to make changes is indica-
-    // below.
-    // ***********************************************************
-
-    // instantiate the tree
     btree my_tree;
 
-    // some auxiliary variables
     int ch, tmp, tmp1;
     bool ans;
 
-    // if arguments are passed, then the program assumes the
-    // arguments are a list of integers and it inserts one by
-    // one into the tree.
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
-            tmp = atoi(argv[i]);
-            my_tree.insert(tmp);
+            if (isalpha(argv[i][0]))
+            {
+                string filename = argv[i];
+                ifstream inputfile;
+                open_input(inputfile, filename);
+                while (inputfile >> tmp)
+                {
+                    my_tree.insert(tmp);
+                }
+            } else {
+                tmp = atoi(argv[i]);
+                my_tree.insert(tmp);
+            }
         }
     }
 
     while (1)
     {
+
         cout << endl << endl;
         cout << " Binary Tree Operations " << endl;
         cout << " 1. Insertion/Creation " << endl;
@@ -333,11 +362,7 @@ int main(int argc, char* argv[])
         cout << " 4. Post-Order Traversal " << endl;
         cout << " 5. Removal " << endl;
         cout << " 6. Search " << endl;
-        // ***************************************************
-        // If you decide to implement the extra credit options
-        // this is one place where you will need to add code
-        // to provide the user with those extra functions
-        // ***************************************************
+        cout << " 7. Reverse-Order Traversal " << endl;
         cout << " 0. Exit " << endl;
         cout << " Enter your choice : ";
         cin >> ch;
@@ -377,11 +402,11 @@ int main(int argc, char* argv[])
             if (ans) cout << tmp1 << " was found!!!" << endl;
             else cout << tmp1 << " was not found" << endl;
             break;
-            // ***************************************************
-            // If you decide to implement the extra credit options
-            // this is one place where you will need to add code
-            // to provide the user with those extra functions
-            // ***************************************************
+        case 7:
+            cout << endl;
+            cout << " Reverse Order Traversal: " << endl << endl;
+            my_tree.print_reverseorder();
+            break;
         }
     }
 }
