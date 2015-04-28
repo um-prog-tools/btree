@@ -18,6 +18,9 @@
 /// Additional Libraries for Additional Parts
 #include <queue>
 
+/// Global Variables for Additional Part
+int num_nodes = 0, num_leaf_nodes = 0, num_interior_nodes = 0;
+
 using namespace std;
 
 class btree ///< Brief description after the member
@@ -521,7 +524,6 @@ int btree::Height(node* p)
     /// Enqueue Root and initialize height
     q.push(root);
     int height = 0;
-    
     while (1)
     {
         /// nodeCount (queue size) indicates NUMBER of nodes
@@ -591,9 +593,38 @@ void btree::print_info()
 
 void btree::info(node* p)
 {
-    int num_nodes = 0, num_leaf_nodes = 0, num_interior_nodes = 0;
+    /// Create an empty queue
+    queue<node *> q;
+    q.push(p);
+    num_nodes = q.size();
+    if ( root == NULL )
+    {
+        return;
+    }
+    queue<node *> clevel, nlevel;
+    clevel.push(root);
+    while (!clevel.empty())
+    {
+        node *currNode = clevel.front();
+        clevel.pop();
+        if (currNode)
+        {
+            cout << currNode->data << " ";
+            nlevel.push(currNode->left);
+            nlevel.push(currNode->right);
+            num_leaf_nodes = num_leaf_nodes + 1;
+
+        }
+        if (clevel.empty())
+        {
+            cout << endl;
+            swap(clevel, nlevel);
+        }
+    }
+    num_interior_nodes =  num_nodes - num_leaf_nodes;
     cout << "The tree has " << num_nodes << " total nodes, out of which "
     << num_interior_nodes << " are interior, and " << num_leaf_nodes << " are leaves.";
+
 }
 
 int main(int argc, char* argv[])
