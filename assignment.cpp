@@ -45,7 +45,7 @@ public:
 
     void printLevels();
     void printHeight();
-    
+
     int getNumOfIntNodes() {
         return NodeIntCount(root);
     };
@@ -150,18 +150,18 @@ void btree::remove(int d)
     // this function must remove the node that has the value d
 
     // first of all, check if the tree is empty
-    if (root == NULL) 
+    if (root == NULL)
         return;
 
-    node * nod = root; 
+    node * nod = root;
     node * old_node = NULL;
 
     // if it is not, then locate the element with the value
     while (nod != NULL && d != nod->data) {
         old_node = nod;
-        if (d < nod->data) 
+        if (d < nod->data)
             nod = nod->left;
-        else 
+        else
             nod = nod->right;
     }
 
@@ -195,9 +195,9 @@ void btree::remove(int d)
             root = nod->left;
         }
         else {
-            if (old_node->left == nod) 
+            if (old_node->left == nod)
                 old_node->left = nod->left;
-            else 
+            else
                 old_node->right = nod->left;
         }
 
@@ -210,9 +210,9 @@ void btree::remove(int d)
             root = nod->right;
         }
         else {
-            if (old_node->left == nod) 
+            if (old_node->left == nod)
                 old_node->left = nod->right;
-            else 
+            else
                 old_node->right = nod->right;
         }
 
@@ -285,7 +285,7 @@ int btree::LeafCount(node* n){
 
     if (n == NULL)
         return 0;
-    
+
     if (n->left == NULL && n->right == NULL)
         return 1;
     else
@@ -408,7 +408,7 @@ void btree::printHeight(){
 }
 
 int btree::height(node* n){
-    
+
     if (n == NULL)
         return -1;
 
@@ -486,7 +486,7 @@ bool btree::search_element(node* n, int val) {
     }
 }
 
-/* 
+/*
 * @short Print by levels
 * @param nothing
 * @return nothing
@@ -640,12 +640,12 @@ int main(int argc, char* argv[])
             break;
         case 9:
             cout << endl << endl
-                << "Total Number of Nodes in the Tree is " 
+                << "Total Number of Nodes in the Tree is "
                 << my_tree.getNumOfNodes()
-                << " which contains of " 
-            << my_tree.getNumOfIntNodes()
-            << " interior nodes, and "
-            << my_tree.getNumOfLeaf() << "leaf.";
+                << " which contains of "
+                << my_tree.getNumOfIntNodes()
+                << " interior nodes, and "
+                << my_tree.getNumOfLeaf() << "leaf.";
             break;
         case 10:
             cout << "Reverse Order Traversal : " << endl;
