@@ -64,7 +64,8 @@ private:
     
 };
 
-btree::btree() {
+btree::btree()
+{
     /**
      * set the root to NULL
      */
@@ -122,7 +123,8 @@ void btree::insert(int d)
             
         {
             temp=root;
-            while (temp!=NULL) {
+            while (temp!=NULL)
+            {
                 if ( d < temp->data )
                 {
                     parent = temp;
@@ -571,7 +573,8 @@ void btree::level_order(node* p)
             nlevel.push(currNode->left);
             nlevel.push(currNode->right);
         }
-        if (clevel.empty()) {
+        if (clevel.empty())
+        {
             cout << endl;
             swap(clevel, nlevel);
         }
@@ -625,8 +628,10 @@ int main(int argc, char* argv[])
     /// if arguments are passed, then the program assumes the
     /// arguments are a list of integers and it inserts one by
     /// one into the tree.
-    if (argc > 1) {
-        for (int i=1; i < argc; i++) {
+    if (argc > 1)
+    {
+        for (int i=1; i < argc; i++)
+        {
             tmp = atoi(argv[i]);
             my_tree.insert(tmp);
         }
