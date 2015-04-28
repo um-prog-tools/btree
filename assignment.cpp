@@ -90,12 +90,6 @@ void btree::insert(int d)
 		return;
 	}
 
-	/*
-	if (search(d)) {
-	cout << "Element already exist in the tree" << endl;
-	}
-	*/
-
 	while (tree != NULL) {
 		ptrsave = tree;
 		if (tree->data > pnewnode->data) {
@@ -103,7 +97,6 @@ void btree::insert(int d)
 		} else {
 			if (tree->data < pnewnode->data) {
 				tree = tree->right;
-				//return;
 			}
 		}
 	}
@@ -112,14 +105,11 @@ void btree::insert(int d)
 		pnewnode->left = NULL;
 		pnewnode->right = NULL;
 		cout << "New node added to the left" << endl;
-		//return;
 	} else {
-		//if (ptrsave->data < pnewnode->data) {
 		ptrsave->right = pnewnode;
 		pnewnode->left = NULL;
 		pnewnode->right = NULL;
 		cout << "New node added to the right" <<endl;
-		//return;
 	}
 }
 
@@ -137,19 +127,26 @@ void btree::remove(int d)
 	//    3. you're removing a node with 2 children
 	// make sure you can handle all three cases.
 
-	node *parent, *location;
-	search_element(location, d);
+	node *parent = NULL;
+	node *location = root;
 
 	if (isEmpty()) {
 		return;
 	}
-	if (location == NULL) {
-		cout << "Item not present in tree" << endl;
+	if (!search(d)) {
+		cout << "Item not present in the tree" << endl;
 		return;
 	}
 
-	if (location != NULL && d != location->data) {
+	// first finding the location of d and the parent
+
+	while (location != NULL && d != location->data) {
 		parent = location;
+		if (d < location->data) {
+			location = location->left;
+		} else {
+			location = location->right;
+		}
 	}
 
 	// case_1_leaf:
@@ -165,6 +162,8 @@ void btree::remove(int d)
 				parent->right = NULL;
 			}
 		}
+		free(location);
+		return;
 	}
 
 	// case_2_single_child:
@@ -187,7 +186,8 @@ void btree::remove(int d)
 					parent->right = child;
 				}
 			}
-			delete child;
+			free(location);
+			return;
 	}
 
 	// case_3_two children:
@@ -202,20 +202,49 @@ void btree::remove(int d)
 			ptr = ptr->left;
 		}
 
-		node *suc = ptr;
-		node *parsuc = ptrsave;
+		node *grand_child = ptr;
+		node *pargrand_child = ptrsave;
 
-		if (parent == NULL) {
-			root = suc;
-		} else {
-			if (location == parent->left) {
-				parent->left = suc;
+		if (grand_child->left == NULL && grand_child->right == NULL) {
+			if (pargrand_child == NULL) {
+				root = NULL;
 			} else {
-				parent->right = suc;
+				if (grand_child == pargrand_child->left) {
+					pargrand_child->left = NULL;
+				} else {
+					pargrand_child->right = NULL;
+				}
+			}
+		} else {
+			node *child;
+			if (grand_child->left != NULL) {
+				child = grand_child->left;
+			} else {
+				child = grand_child->right;
+			}
+			if (pargrand_child = NULL) {
+				root = child;
+			} else {
+				if (grand_child == pargrand_child->left) {
+					pargrand_child->left = child;
+				} else {
+					pargrand_child->right = child;
+				}
 			}
 		}
-		suc->left = location->left;
-		suc->right = location->right;
+		if (parent == NULL) {
+			root = grand_child;
+		} else {
+			if (location == parent->left) {
+				parent->left = grand_child;
+			} else {
+				parent->right = grand_child;
+			}
+		}
+		grand_child->left = location->left;
+		grand_child->right = location->right;
+		free(location);
+		return;
 	}
 }
 
@@ -335,7 +364,7 @@ bool btree::search_element(node* p, int val) {
 	if (location != NULL) {
 		search_element(location, val);
 	} else {
-	return false;
+		return false;
 	}
 }
 
