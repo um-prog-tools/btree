@@ -227,30 +227,30 @@ void btree::remove(int d)
 
     // case 3: removing a node with two children
     if (nod->left != NULL && nod->right != NULL) {
-        node * next_node = nod->right; // use to check the status of the next node
+        node * nextNod = nod->right; // use to check the status of the next node
 
-        if (next_node->left == NULL && next_node->right == NULL) {
-            next_node->left = nod->left;
-            delete next_node;
+        if (nextNod->left == NULL && nextNod->right == NULL) {
+            nextNod->left = nod->left;
+            delete nextNod;
         }
         else {
-            if (next_node->left != NULL) {
-                node * left_current = next_node->left;
-                node * left_old = next_node;
+            if (nextNod->left != NULL) {
+                node * lnod = nextNod->left;
+                node * left_old = nextNod;
 
-                while (left_current->left != NULL) {
-                    left_old = left_current;
-                    left_current = left_current->left;
+                while (lnod->left != NULL) {
+                    left_old = lnod;
+                    lnod = lnod->left;
                 }
 
-                nod->data = left_current->data;
-                delete left_current;
+                nod->data = lnod->data;
+                delete lnod;
                 left_old->left = NULL;
             }
             else {
-                nod->data = next_node->data;
-                nod->right = next_node->right;
-                delete next_node;
+                nod->data = nextNod->data;
+                nod->right = nextNod->right;
+                delete nextNod;
             }
         }
 
@@ -415,7 +415,7 @@ void btree::printHeight(){
 int btree::height(node* n){
     
     if (n == NULL)
-        return;
+        return -1;
 
     if (height(n->left) > height(n->right))
         return height(n->left) + 1;
