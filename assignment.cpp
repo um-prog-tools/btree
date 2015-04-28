@@ -171,7 +171,7 @@ void btree::remove(int d)
     // once you know the location, that is, you have the pointer to the node
     // with the value you want to eliminate, you will have three cases:
 
-    // case 1: removing a leaf code
+    //    1. you're removing a leaf node
     if (nod->left == NULL && nod->right == NULL) {
         if (nod == root) {
             root = NULL;
@@ -189,45 +189,40 @@ void btree::remove(int d)
         return;
     }
 
-    // case 2(a): removing a node with a single left child
+    //    2. you're removing a node with a single child
     if (nod->left != NULL && nod->right == NULL) {
         if (nod == root) {
             root = nod->left;
         }
         else {
-            if (old_node->left == nod) {
+            if (old_node->left == nod) 
                 old_node->left = nod->left;
-            }
-            else {
+            else 
                 old_node->right = nod->left;
-            }
         }
 
         delete nod;
         return;
     }
 
-    // case 2(b): removing a node with a single right child
     if (nod->left == NULL && nod->right != NULL) {
         if (nod == root) {
             root = nod->right;
         }
         else {
-            if (old_node->left == nod) {
+            if (old_node->left == nod) 
                 old_node->left = nod->right;
-            }
-            else {
+            else 
                 old_node->right = nod->right;
-            }
         }
 
         delete nod;
         return;
     }
 
-    // case 3: removing a node with two children
+    //    3. you're removing a node with 2 children
     if (nod->left != NULL && nod->right != NULL) {
-        node * nextNod = nod->right; // use to check the status of the next node
+        node * nextNod = nod->right;
 
         if (nextNod->left == NULL && nextNod->right == NULL) {
             nextNod->left = nod->left;
