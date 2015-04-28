@@ -1,3 +1,26 @@
+/**
+ * @mainpage   Binary Search Tree
+ *
+ * Prog Tools for Scits Engrs - CIVL 8903/7903 001
+ * Prof. Ricardo Taborda
+ *
+ * @author Naeem Khoshnevis, nkhshnvs@memphis.edu
+ * @date   Apr 26, 2015
+ *
+ * @section Homework
+ *
+ *  9
+ *
+ * @section GitHub
+ * https://github.com/Naeemkh/btree.git
+ *
+ * @section LICENSE
+ *
+ * This program is written at the Center for Earthquake Research
+ * and Information (CERI) at University of Memphis.
+ * All rights reserved.
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -27,6 +50,9 @@ public:
     void print_inorder();
     void print_preorder();
     void print_postorder();
+    void print_rorder();
+    void print_height();
+    void print_lorder();
     
     bool search(int);
     
@@ -35,20 +61,31 @@ private:
     void inorder(node*);
     void preorder(node*);
     void postorder(node*);
+    void rorder(node*);
+    int tree_height(node*);
+    void lorder(node*);
+    void level_print(node*, int);
+    void level_print_all(node*);
     
     bool search_element(node*, int);
     
 };
 
 btree::btree() {
-    // set the root to NULL
+    /**
+     * set the root to NULL
+     */
     root = NULL;
 }
 
 bool btree::isEmpty() {
-    // This functions returns true if the tree is
-    // empty and false if it is not empty. You just
-    // need to look at the root.
+    /**
+     * This functions returns true if the tree is
+     * empty and false if it is not empty. You just
+     * need to look at the root.
+     * \return 1 empty
+     * \return 0 not empty
+     */
     
     if (root == NULL) {
         return 1;
@@ -58,20 +95,25 @@ bool btree::isEmpty() {
 }
 
 void btree::insert(int d) {
-    // this function must insert the value d in the tree
     
-    // first of all, check if d already exists in the tree
-    // you can do this by calling to the search(int) function
+    /*
+     * this function must insert the value d in the tree
+     *
+     * first of all, check if d already exists in the tree
+     * you can do this by calling to the search(int) function
+     *
+     * if d is not in the tree already, create a new node with data equal d
+     *
+     * if the tree is empty, set the root to the new node
+     *
+     * if the tree is not empty, look for the right place where to insert d
+     * in order to do this, you may need to keep track of the potential
+     * parent node to which the new node will be attached as a child
+     *
+     * \return void
+     */
     
-    // if d is not in the tree already, create a new node with data equal d
-    
-    // if the tree is empty, set the root to the new node
-    
-    // if the tree is not empty, look for the right place where to insert d
-    // in order to do this, you may need to keep track of the potential
-    // parent node to which the new node will be attached as a child
-    
-    node *parent_node, *temp_root;
+    node *parent_node, *temp_root; /** Defining parent and temporal root */
     
     if (btree::isEmpty()) {
         
@@ -81,22 +123,18 @@ void btree::insert(int d) {
         root->right = NULL;
         temp_root = root;
         
-        // cout << "Btree is empty 1 : " << btree::isEmpty() << endl;
-        
     } else if (btree::search(d) == 1) {
         
-        // cout << "Btree is empty 2 : " << btree::isEmpty() << endl;
     } else {
         temp_root = root;
         while (temp_root != NULL) {
             if (d < temp_root->data) {
                 parent_node = temp_root;
                 temp_root = temp_root->left;
-                //cout << "left check point : " << endl;
+                
             } else if (d > temp_root->data) {
                 parent_node = temp_root;
                 temp_root = temp_root->right;
-                //cout << "Right check point : " << endl;
             }
         }
         node *temp_node = new node;
@@ -116,37 +154,34 @@ void btree::insert(int d) {
 }
 
 void btree::remove(int d) {
-    // this function must remove the node that has the value d
+    /**
+     * this function must remove the node that has the value d
+     * first of all, check if the tree is empty
+     * if it is not, then locate the element with the value
+     * once you know the location, that is, you have the pointer to the node
+     * with the value you want to eliminate, you will have three cases:
+     *    1. you're removing a leaf node
+     *    2. you're removing a node with a single child
+     *    3. you're removing a node with 2 children
+     * make sure you can handle all three cases.
+     */
     
-    // first of all, check if the tree is empty
-    // if it is not, then locate the element with the value
-    // once you know the location, that is, you have the pointer to the node
-    // with the value you want to eliminate, you will have three cases:
-    //    1. you're removing a leaf node
-    //    2. you're removing a node with a single child
-    //    3. you're removing a node with 2 children
-    // make sure you can handle all three cases.
-    
-    //cout << "Remove function got here. " << endl;
-    
-    // Making sure that btree is not empty
-    
-    // first case, deleting leaf node.
-    // first make sure that the value is in the tree.
+    /**
+     * Making sure that btree is not empty
+     * first case, deleting leaf node.
+     * first make sure that the value is in the tree.
+     */
     
     bool d_exist = btree::search(d);
     
     if (d_exist == 1) {
         
-        //        cout << "I'm going to remove this number." << endl;
         //finding the position of the number.
         
         node *temp_root1, *temp_root2, *temp_root_max, *temp_root_bmax;
         
         temp_root1 = root;
         temp_root2 = root;
-        
-        //cout << "the initial value of temp_root1 : " << temp_root1->data << endl;
         
         while (temp_root1->data != d) {
             if (d < temp_root1->data) {
@@ -159,12 +194,10 @@ void btree::remove(int d) {
             }
         }
         
-        //cout << "I got the data that you were looking at :" << temp_root1->data <<endl;
-        
-        if ((temp_root1->right == NULL) && (temp_root1->left == NULL)&& (temp_root1->data != root->data)) {
+        if ((temp_root1->right == NULL) && (temp_root1->left == NULL)
+            && (temp_root1->data != root->data)) {
             
             // the number is on the leaf.
-            cout << "The number was on leaf and deleted." << endl;
             
             if (temp_root1->data < temp_root2->data) {
                 delete temp_root1;
@@ -174,173 +207,142 @@ void btree::remove(int d) {
                 temp_root2->right = NULL; // if the leaf is in the right side of previous node, now it should point to null.
             }
             
-            cout << "Is empty btree : " << btree::isEmpty() << endl;
-            
-            cout << " root data :" << root->data << endl;
-            cout << " root left pointer :" << root->left;
-            cout << " root right pointer :" << root->right;
-            
             if (btree::isEmpty() == 1) {
                 
                 root = NULL;
             }
             
-        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)&& (temp_root1->data != root->data)) {
+        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)
+                   && (temp_root1->data != root->data)) {
             
             // the node only has one child on left side.
             
             if (temp_root2->data < temp_root1->data) {
                 
-                cout
-                << "The number has one child on left side, and we need to attach that to rightside of the upper node. deleted."
-                << endl;
                 temp_root2->right = temp_root1->left;
                 delete temp_root1;
                 
             } else {
                 
-                cout
-                << "The number has one child on left side, and we need to attach that to leftside of the upper node. deleted."
-                << endl;
                 temp_root2->left = temp_root1->left;
                 delete temp_root1;
                 
             }
             
-        } else if ((temp_root1->right != NULL) && (temp_root1->left == NULL)&& (temp_root1->data != root->data)) {
+        } else if ((temp_root1->right != NULL) && (temp_root1->left == NULL)
+                   && (temp_root1->data != root->data)) {
             
             // the node only has one child on right side.
             
             if (temp_root2->data < temp_root1->data) {
                 
-                cout
-                << "The number has one child on right side, and we need to attach that to rightside of the upper node. deleted."
-                << endl;
                 temp_root2->right = temp_root1->right;
                 delete temp_root1;
                 
             } else {
                 
-                cout
-                << "The number has one child on right side, and we need to attach that to leftside of the upper node. deleted."
-                << endl;
                 temp_root2->left = temp_root1->right;
                 delete temp_root1;
                 
             }
-        } else if ((temp_root1->right != NULL) && (temp_root1->left == NULL) && (temp_root1->data == root->data))  {
+        } else if ((temp_root1->right != NULL) && (temp_root1->left == NULL)
+                   && (temp_root1->data == root->data)) {
             
             node *fnode_handle;
             
             fnode_handle = temp_root1->right;
             
             temp_root1->data = fnode_handle->data;
-            temp_root1->right = fnode_handle -> right;
-            temp_root1->left = fnode_handle -> left;
+            temp_root1->right = fnode_handle->right;
+            temp_root1->left = fnode_handle->left;
             delete fnode_handle;
             
-        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL) && (temp_root1->data == root->data))  {
+        } else if ((temp_root1->right == NULL) && (temp_root1->left != NULL)
+                   && (temp_root1->data == root->data)) {
             
             node *fnode_handle;
             
             fnode_handle = temp_root1->left;
             
             temp_root1->data = fnode_handle->data;
-            temp_root1->right = fnode_handle -> right;
-            temp_root1->left = fnode_handle -> left;
+            temp_root1->right = fnode_handle->right;
+            temp_root1->left = fnode_handle->left;
             delete fnode_handle;
-
-        } else if ((temp_root1->right == NULL) && (temp_root1->left == NULL) && (temp_root1->data == root->data)){
-        
+            
+        } else if ((temp_root1->right == NULL) && (temp_root1->left == NULL)
+                   && (temp_root1->data == root->data)) {
+            
             delete root;
             root = NULL;
         } else {
             
-//            if (temp_root1->data == root->data){
-//                
-//                cout << "This is the head node, needs extra attention. deleted." << endl;
-//                
-//                node *fnode_handle;
-//                
-//                fnode_handle = temp_root1->left;
-//                
-//                temp_root1->data = fnode_handle->data;
-//                00
-//                temp_root1->left = fnode_handle -> left;
-//                delete fnode_handle;
-//                
-//            }else{
-            
-            //cout << "The number exist but it has two childs. Can't delete."<< endl;
-            
-            // need to find the maximum number in the left hand side.
-            // put the maximum number instead of the node data.
-            // remove the max number.
+            /**
+             * need to find the maximum number in the left hand side.
+             * put the maximum number instead of the node data.
+             * remove the max number.
+             */
             
             int temp_max = temp_root1->data;
             int k = 1; // check to see whether is the first node in the left or not.
             
             temp_root_max = temp_root1->left;
             
-            cout << "temp root max data left : " << temp_root_max->data << endl;
-            
             while (temp_root_max->right != NULL) {
                 
                 temp_root_bmax = temp_root_max;
                 temp_root_max = temp_root_max->right;
-                cout << "Level is not null. " << endl;
+                
                 k = k + 1;
                 
             }
             
             if (k > 1) {
-                cout << "temp root bmax data: " << temp_root_bmax->data << endl;
-                cout << "temp_root_max : " << temp_root_max->data << endl;
                 
                 temp_root1->data = temp_root_max->data;
                 
                 temp_root_bmax->right = NULL;
                 delete temp_root_max;
                 
-                cout
-                << "Point had two child. It substituted with max of left hand side. and the max deleted."
-                << endl;
             } else {
                 temp_root1->data = temp_root_max->data;
-                temp_root1->left =temp_root_max->left;
+                temp_root1->left = temp_root_max->left;
                 
-                if (temp_root_max->left == NULL){
-                delete temp_root_max;
-                temp_root1->left = NULL; // the case that we have only child on the left side.
-                }else{
-                delete temp_root_max;// the case that we have children just on left side on the left side.
+                if (temp_root_max->left == NULL) {
+                    delete temp_root_max;
+                    temp_root1->left = NULL; // the case that we have only child on the left side.
+                } else {
+                    delete temp_root_max; // the case that we have children just on left side on the left side.
                 }
-//            }
+                
+            }
             
-        }
-        
         }
         
     } else if (d_exist == 0) {
         
-        cout << "The number is not in the list. " << endl;
+        cout << "The number is not in the list." << endl;
+        
     }
     
 }
 
 void btree::print_inorder() {
-    // this function must call the private inorder(node*)
-    // function passing the root as the parameter
+    /**
+     * this function must call the private inorder(node*)
+     * function passing the root as the parameter
+     */
     btree::inorder(root);
 }
 
 void btree::inorder(node* p) {
-    // This function receives a node as parameter
-    // then traverses the tree following the in-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    /**
+     * This function receives a node as parameter
+     * then traverses the tree following the in-order
+     * sequence. Every time it visits a node it will
+     * print the data in the node to cout leaving a blank
+     * space to separate from the next/previous value.
+     * The function must use recursion.
+     */
     
     if (p != NULL) {
         inorder(p->left);
@@ -351,19 +353,22 @@ void btree::inorder(node* p) {
 }
 
 void btree::print_preorder() {
-    // This function must call the private pre-order(node*)
-    // function passing the root as the parameter
-    
+    /**
+     * This function must call the private pre-order(node*)
+     * function passing the root as the parameter
+     */
     btree::preorder(root);
 }
 
 void btree::preorder(node* p) {
-    // This function receives a node as parameter
-    // then traverses the tree following the pre-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    /**
+     * This function receives a node as parameter
+     * then traverses the tree following the pre-order
+     * sequence. Every time it visits a node it will
+     * print the data in the node to cout leaving a blank
+     * space to separate from the next/previous value.
+     * The function must use recursion.
+     */
     
     if (p != NULL) {
         
@@ -374,43 +379,55 @@ void btree::preorder(node* p) {
 }
 
 void btree::print_postorder() {
-    // This function must call the private post-order(node*)
-    // function passing the root as the parameter
+    /**
+     * This function must call the private post-order(node*)
+     * function passing the root as the parameter
+     */
+    
     btree::postorder(root);
 }
 
 void btree::postorder(node* p) {
-    // This function receives a node as parameter
-    // then traverses the tree following the post-order
-    // sequence. Every time it visits a node it will
-    // print the data in the node to cout leaving a blank
-    // space to separate from the next/previous value.
-    // The function must use recursion.
+    /**
+     * This function receives a node as parameter
+     * then traverses the tree following the post-order
+     * sequence. Every time it visits a node it will
+     * print the data in the node to cout leaving a blank
+     * space to separate from the next/previous value.
+     * The function must use recursion.
+     */
     
     if (p != NULL) {
         
-        preorder(p->left);
-        preorder(p->right);
+        postorder(p->left);
+        postorder(p->right);
         cout << p->data << " ";
     }
 }
 
 bool btree::search(int val) {
-    // This function must call the private function
-    // search_element(node*,int) passing the root and
-    // the integer value val as parameters. The function
-    // must use recursion.
+    /**
+     * This function must call the private function
+     * search_element(node*,int) passing the root and
+     * the integer value val as parameters. The function
+     * must use recursion.
+     * \return 1 (find the number)
+     * \return 0 (not find the number)
+     */
     
     return (btree::search_element(root, val));
 }
 
 bool btree::search_element(node* p, int val) {
-    // this function receives a node and an integer as
-    // parameters and searches for the value val in the
-    // data of the node. The function must be such that
-    // if the value is never found, it returns false.
-    // If the value is found, then it returns true.
-    // The function must use recursion.
+    /**
+     * this function receives a node and an integer as
+     * parameters and searches for the value val in the
+     * data of the node. The function must be such that
+     * if the value is never found, it returns false.
+     * If the value is found, then it returns true.
+     * The function must use recursion.
+     */
+    
     if (p == NULL) {
         
         return 0;
@@ -429,25 +446,90 @@ bool btree::search_element(node* p, int val) {
     }
 }
 
+void btree::print_rorder() {
+    btree::rorder(root);
+}
+
+void btree::rorder(node* p) {
+    if (p != NULL) {
+        rorder(p->right);
+        cout << p->data << " ";
+        rorder(p->left);
+    }
+}
+
+void btree::print_height() {
+    int h = btree::tree_height(root);
+    cout << " " << h + 1 << endl;
+}
+
+int btree::tree_height(node* p) {
+    if (p == NULL) {
+        return -1;
+    }
+    
+    int left = tree_height(p->left);
+    int right = tree_height(p->right);
+    
+    return 1 + max(left, right);
+    
+}
+
+void btree::print_lorder() {
+    btree::level_print_all(root);
+}
+
+void btree::lorder(node* p) {
+    
+    if (p != NULL) {
+        lorder(p->right);
+        cout << p->data << " ";
+        lorder(p->left);
+        cout << p->data << " ";
+        cout << "\n" << endl;
+    }
+}
+
+void btree::level_print_all(node* p) {
+    int h = btree::tree_height(root) + 1;
+    int i;
+    for (i = 1; i <= h; i++) {
+        level_print(p, i);
+        cout << "\n";
+    }
+}
+
+void btree::level_print(node* p, int level) {
+    if (p == NULL)
+        return;
+    if (level == 1)
+        cout << p->data << " ";
+    else if (level > 1) {
+        level_print(p->left, level - 1);
+        level_print(p->right, level - 1);
+    }
+}
+
 int main(int argc, char* argv[]) {
-    // This is the main program.
-    
-    // If the program is called without arguments, then
-    // the user is taken straight to the list of options
-    // if the program is called with parameters, the program
-    // assumes these parameters are a list of integers and
-    // inserts those into the tree.
-    
-    // Reading the program may help you understand how the
-    // class functions are called.
-    
-    // ********************** W A R N I N G **********************
-    // In general, you do not need to make any change in the main
-    // program.  The only case when you will need to make changes
-    // here is if you decide to implement the functions for extra
-    // credit. In which case, the place to make changes is indica-
-    // below.
-    // ***********************************************************
+    /**
+     * This is the main program.
+     * If the program is called without arguments, then
+     * the user is taken straight to the list of options
+     * if the program is called with parameters, the program
+     * assumes these parameters are a list of integers and
+     * inserts those into the tree.
+     *
+     * Reading the program may help you understand how the
+     * class functions are called.
+     *
+     * ********************** W A R N I N G **********************
+     * In general, you do not need to make any change in the main
+     * program.  The only case when you will need to make changes
+     * here is if you decide to implement the functions for extra
+     * credit. In which case, the place to make changes is indica-
+     * below.
+     * ***********************************************************
+     */
     
     // instantiate the tree
     btree my_tree;
@@ -489,8 +571,6 @@ int main(int argc, char* argv[]) {
         
         if ((nd == 0) && (sn > 0)) {
             
-            
-            
             ifstream inputfile;
             string inputfilename;
             inputfilename = pfilename;
@@ -514,7 +594,7 @@ int main(int argc, char* argv[]) {
             cout
             << "File name is not valid! (file name may contain alphabetic chars and dot.) "
             << endl;
-            exit (EXIT_FAILURE);
+            exit(EXIT_FAILURE);
             
         } else if (sn == nd) {
             
@@ -541,6 +621,9 @@ int main(int argc, char* argv[]) {
         cout << " 4. Post-Order Traversal " << endl;
         cout << " 5. Removal " << endl;
         cout << " 6. Search " << endl;
+        cout << " 7. Reverse-Order Traversal " << endl;
+        cout << " 8. Tree's Height " << endl;
+        cout << " 9. Level-Order Traversal " << endl;
         // ***************************************************
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
@@ -586,6 +669,21 @@ int main(int argc, char* argv[]) {
                 else
                     cout << tmp1 << " was not found" << endl;
                 break;
+            case 7:
+                cout << " Reverse-Order Traversal: " << endl << endl;
+                my_tree.print_rorder();
+                break;
+                
+            case 8:
+                cout << " Tree's Height: " << endl << endl;
+                my_tree.print_height();
+                break;
+                
+            case 9:
+                cout << " Level-Order Traversal: " << endl << endl;
+                my_tree.print_lorder();
+                break;
+                
                 // ***************************************************
                 // If you decide to implement the extra credit options
                 // this is one place where you will need to add code
