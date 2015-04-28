@@ -408,18 +408,18 @@ void btree::display(int level) {
 
 void btree::display_levels(node* p, int level) {
 	int i;
-    if (p != NULL) {
-        display_levels(p->right, level+1);
-        cout << endl;
-        if (p == root) {
-            cout << "Root->:  ";
+	if (p != NULL) {
+		display_levels(p->right, level+1);
+		cout << endl;
+		if (p == root) {
+			cout << "Root->:  ";
 		} else {
-            for (i = 0; i < level; i++)
-                cout<<"   ";
+			for (i = 0; i < level; i++)
+				cout<<"   ";
+		}
+		cout << p->data ;
+		display_levels(p->left, level+1);
 	}
-        cout << p->data ;
-        display_levels(p->left, level+1);
-    }
 }
 
 int main(int argc, char* argv[])
