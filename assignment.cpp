@@ -74,7 +74,6 @@ bool btree::isEmpty()
      return true;
     else
      return false;
-    }
 }
 
  /**
