@@ -1,3 +1,6 @@
+///Md Nayeem Al Noman
+///Homework-9
+///Programming tools for Eanginners and scientists
 
 #include <iostream>
 #include <cstdlib>
@@ -53,18 +56,45 @@ bool btree::isEmpty()
 
 void btree::insert(int d)
 {
-    // this function must insert the value d in the tree
-
-    // first of all, check if d already exists in the tree
-    // you can do this by calling to the search(int) function
-
-    // if d is not in the tree already, create a new node with data equal d
-
-    // if the tree is empty, set the root to the new node
-
-    // if the tree is not empty, look for the right place where to insert d
-    // in order to do this, you may need to keep track of the potential
-    // parent node to which the new node will be attached as a child
+    node *newNode,	// Pointer to a new node
+		 *nodePtr;	// Pointer to traverse the tree
+	
+	// Create a new node
+	newNode = new node;
+	newNode->data = d;
+	newNode->left = newNode->right = NULL;
+	
+	if (!root)	// Is the tree empty?
+		root = newNode;
+	else
+	{	 
+		nodePtr = root;
+		while (nodePtr != NULL)	{
+		    if (d < nodePtr->data) {				
+		        if (nodePtr->left)					
+		        nodePtr = nodePtr->left;
+		        else
+		        {
+		            nodePtr->left = newNode;
+		            break;
+		        }
+		    }
+		     else if (d > nodePtr->data) {
+		         if (nodePtr->right)					
+		         nodePtr = nodePtr->right;				
+		         else
+		         {					
+		             nodePtr->right = newNode;					
+		             break;
+		         }
+		     }
+		     else 
+		     {
+		         cout << "Duplicate value found in tree.\n";				
+		         break;			
+		     }		
+		 }	
+	}
 }
 
 void btree::remove(int d)
