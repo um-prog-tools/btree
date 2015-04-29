@@ -1,6 +1,12 @@
+/* Homework 9
+   Khademul Haque
+   Github Repository: https://github.com/khademul/btree/commits/khademul
+*/
+
 
 #include <iostream>
 #include <cstdlib>
+#include <queue>
 
 using namespace std;
 
@@ -27,8 +33,13 @@ public:
     void print_inorder();
     void print_preorder();
     void print_postorder();
+    void print_reverseorder();
+    void print_levelorder();
 
     bool search(int);
+
+    void print_height();
+    void print_leafCount();
 
 private:
 
@@ -36,20 +47,39 @@ private:
     void preorder(node*);
     void postorder(node*);
 
+    void reverseorder(node*);
+    void levelorder(node*);
+
     bool search_element(node*, int);
 
+    int height(node*);
+    int leafCount(node*);
 };
 
 btree::btree() {
     // set the root to NULL
+    root = NULL;
 }
+
+/**
+ * @brief returns true is the tree is empty, false otherwise
+ */
 
 bool btree::isEmpty()
 {
     // This functions returns true if the tree is
     // empty and false if it is not empty. You just
     // need to look at the root.
+    if (root==NULL)
+     return true;
+    else
+     return false;
 }
+
+ /**
+  * @brief creates a node with the specified data
+  * @param d value of the node
+  **/
 
 void btree::insert(int d)
 {
@@ -65,13 +95,90 @@ void btree::insert(int d)
     // if the tree is not empty, look for the right place where to insert d
     // in order to do this, you may need to keep track of the potential
     // parent node to which the new node will be attached as a child
+
+    if (!search(d)) { // if 'd' is not in the tree.
+    if (isEmpty()) {  // if 'd' is the first element of the tree
+      root = new node;
+      root->data = d;
+      root->left = NULL;
+      root->right = NULL;
+    }
+    else {
+      // search for a place to insert 'd'
+    node* current_node = root;
+
+    while(true) {
+      if (d < current_node->data) {
+        if (current_node->left != NULL) {
+          current_node = current_node->left;
+          }
+        else {
+          current_node->left = new node;
+          current_node->left->data = d;
+          current_node->left->left = NULL;
+          current_node->left->right = NULL;
+          break;
+        }
+      }
+      else if (d >= current_node->data) {
+        if (current_node->right != NULL) {
+          current_node = current_node->right;
+        }
+        else {
+          current_node->right = new node;
+          current_node->right->data = d;
+          current_node->right->left = NULL;
+          current_node->right->right = NULL;
+          break;
+          }
+        }
+      }
+    }
+  }
 }
+
+/**
+ * @brief remove the node for the specified value
+ * @param value to be searched
+ */
 
 void btree::remove(int d)
 {
+    bool found = false;
+    node* predecessor;
+    node* current_node = root;
     // this function must remove the node that has the value d
 
     // first of all, check if the tree is empty
+    if (isEmpty()) {
+        std::cout << "The tree is empty" << std::endl;
+        return;
+    }
+    if (current_node->left == NULL && current_node->right == NULL) {
+        root = NULL;
+        return;
+    }
+    while (current_node != NULL) {
+        if (current_node->data == d) {
+         found = true;
+        break;
+        }
+        else {
+         predecessor = current_node;
+         if (d < current_node->data) {
+            current_node = current_node->left;
+        }
+        else {
+            current_node = current_node->right;
+            }
+        }
+    }
+
+    if (!found) {
+        cout << d << " not in the tree" << endl;
+        return;
+    }
+
     // if it is not, then locate the element with the value
     // once you know the location, that is, you have the pointer to the node
     // with the value you want to eliminate, you will have three cases:
@@ -79,12 +186,103 @@ void btree::remove(int d)
     //    2. you're removing a node with a single child
     //    3. you're removing a node with 2 children
     // make sure you can handle all three cases.
+    
+    // Case 1: removing a node with single child
+    if ((current_node->left == NULL and current_node->right != NULL)
+        or (current_node->right == NULL and current_node->left != NULL)) {
+
+        if (current_node->left == NULL and current_node->right != NULL) {
+          if (predecessor->left == current_node) {
+            predecessor->left = current_node->right;
+            delete current_node;
+            current_node = NULL;
+            cout << d << "has been removed from the tree" << endl;
+            }
+          else {
+            predecessor->right = current_node->right;
+            delete current_node;
+            current_node = NULL;
+            cout << d << "has been removed from the tree" << endl;
+               }
+            }
+          else {
+           if (current_node->right == NULL and current_node->left != NULL) {
+            if (predecessor->left == current_node) {
+                predecessor->left = current_node->left;
+                delete current_node;
+                current_node = NULL;
+                cout << d << "has been removed from the tree" << endl;
+            }
+            else {
+                predecessor->right = current_node->left;
+                delete current_node;
+                current_node = NULL;
+                cout << d << "has been removed from the tree" << endl;
+                }
+            }
+        }
+    }
+    // Case 2: removing a leaf node
+    if (current_node->left == NULL and current_node->right == NULL) {
+      if (predecessor->left == current_node) {
+        predecessor->left = NULL;
+      }
+      else {
+        predecessor->right = NULL;
+      }
+    }
+    // Case 3: removing a  node with two children
+    if (current_node->left != NULL and current_node->right != NULL) {
+        node* check=current_node->right;
+      if((current_node->left==NULL)&&(current_node->right==NULL))
+      {
+        current_node=check;
+        delete check;
+        current_node->right = NULL;
+        cout << d << " has been removed from the Tree" << endl;
+      }
+    else // Right child has children
+    {
+    // If the node's right child has a left child
+    // Move all the way down left to locate smallest element
+      if((current_node->right)->left != NULL)
+      {
+        node* leftCurrent;
+        node* leftCurrentPred;
+        leftCurrentPred=current_node->right;
+        leftCurrent = (current_node->right)->left;
+        while(leftCurrent->left != NULL)
+        {
+            leftCurrentPred=leftCurrent;
+            leftCurrent=leftCurrent->left;
+        }
+        current_node->data=leftCurrent->data;
+        delete leftCurrent;
+        leftCurrentPred->left = NULL;
+        cout << d << " has been removed from the Tree." << endl;
+      }
+      else
+      {
+        node* temp=current_node->right;
+        current_node->data=temp->data;
+        current_node->right=temp->right;
+        delete temp;
+        cout << d << " has been removed from the Tree." << endl;
+      }
+    }
+   return;
+  }
 }
+
+/**
+ * @brief print the tree inorder
+ */
 
 void btree::print_inorder()
 {
     // this function must call the private inorder(node*)
     // function passing the root as the parameter
+    inorder(root);
 }
 
 void btree::inorder(node* p)
@@ -95,12 +293,22 @@ void btree::inorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if (p != NULL) {
+      inorder(p->left);
+      cout << p->data << " " ;
+      inorder(p->right);
+    }
 }
+
+/**
+ * @brief print the tree preorder
+ */
 
 void btree::print_preorder()
 {
     // This function must call the private pre-order(node*)
     // function passing the root as the parameter
+    preorder(root);
 }
 
 void btree::preorder(node* p)
@@ -111,12 +319,23 @@ void btree::preorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if (p != NULL)
+    {
+      cout << p->data << " " ;
+      preorder(p->left);
+      preorder(p->right);
+    }
 }
+
+/**
+ * @brief print the tree postorder
+ */
 
 void btree::print_postorder()
 {
     // This function must call the private post-order(node*)
     // function passing the root as the parameter
+    postorder(root);
 }
 
 void btree::postorder(node* p)
@@ -127,14 +346,121 @@ void btree::postorder(node* p)
     // print the data in the node to cout leaving a blank
     // space to separate from the next/previous value.
     // The function must use recursion.
+    if (p != NULL) {
+      postorder(p->left);
+      postorder(p->right);
+      cout << p->data << " " ;
+    }
 }
+
+/**
+ * @brief print the tree reverseorder
+ */
+
+void btree::print_reverseorder()
+{
+    reverseorder(root);
+}
+
+void btree::reverseorder(node* p)
+{
+    if (p != NULL) {
+    reverseorder(p->right);
+    cout << p->data << " ";
+    reverseorder(p->left);
+    }
+}
+
+/**
+ * @brief print the tree levelorder
+ */
+
+void btree::print_levelorder()
+{
+    levelorder(root);
+}
+
+void btree::levelorder(node* p)
+{
+    if (!root) return;
+    queue<node*> currentLevel, nextLevel;
+    currentLevel.push(p);
+    while (!currentLevel.empty()) {
+    node *currNode = currentLevel.front();
+    currentLevel.pop();
+    if (currNode) {
+        cout << currNode->data << " ";
+        nextLevel.push(currNode->left);
+        nextLevel.push(currNode->right);
+    }
+    if (currentLevel.empty()) {
+        cout << endl;
+        swap(currentLevel, nextLevel);
+        }
+    }
+}
+
+/**
+ * @brief print the height of the tree
+ */
+
+void btree::print_height()
+{
+    cout << "Height of the tree is: " << height(root) << endl;
+}
+
+
+int btree::height(node *p)
+{
+    if (p == NULL)
+    {
+    return -1;
+    }
+
+    int left_height = height(p->left);
+    int right_height = height(p->right);
+
+    return 1 + std::max(left_height, right_height);
+}
+
+/**
+ * @brief print the number of leaves in the tree
+ */
+
+void btree::print_leafCount()
+{
+    cout << "The number leaves in the tree is : " << leafCount(root) << endl;
+}
+
+int btree::leafCount(node* p)
+{
+    if(p == NULL) {
+    return 0;
+    }
+
+    if(p->left == NULL && p->right==NULL) {
+    return 1;
+    }
+    else {
+    return leafCount(p->left)+
+           leafCount(p->right);
+    }
+}
+
+/**
+ * @brief search the tree for the specified value
+ * @param value to be searched
+ */
 
 bool btree::search(int val)
 {
     // This function must call the private function
     // search_element(node*,int) passing the root and
-    // the integer value val as parameters. The function
-    // must use recursion.
+    // the integer value val as parameters and returning
+    // the same answer it gets from search_element()
+    // back to the main program.
+    return search_element(root, val);
+
 }
 
 bool btree::search_element(node* p, int val) {
@@ -144,6 +470,20 @@ bool btree::search_element(node* p, int val) {
     // if the value is never found, it returns false.
     // If the value is found, then it returns true.
     // The function must use recursion.
+    if (p != NULL) {
+     if (val == p->data) {
+       return true;
+     }
+
+     if (val > p->data) {
+       return search_element(p->right, val);
+     }
+     else
+       return search_element(p->left, val);
+    }
+    else {
+    return false;
+  }
 }
 
 int main(int argc, char* argv[])
@@ -198,6 +538,9 @@ int main(int argc, char* argv[])
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
         // to provide the user with those extra functions
+        cout << " 7. Reverse-Order Traversal " << endl;
+        cout << " 8. Height of the tree " << endl;
+        cout << " 9. No. of leaves of the tree " << endl;
         // ***************************************************
         cout << " 0. Exit "<< endl;
         cout << " Enter your choice : ";
@@ -242,6 +585,19 @@ int main(int argc, char* argv[])
         // If you decide to implement the extra credit options
         // this is one place where you will need to add code
         // to provide the user with those extra functions
+        case 7:
+            cout << endl;
+            cout << "Reverse-Order Traversal: " << endl << endl;
+            my_tree.print_reverseorder();
+            break;
+        case 8:
+            cout << endl;
+            my_tree.print_height();
+            break;
+        case 9:
+            cout << endl;
+            my_tree.print_leafCount();
+            break;
         // ***************************************************
         }
     }
